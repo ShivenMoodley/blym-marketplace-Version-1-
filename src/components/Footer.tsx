@@ -1,4 +1,3 @@
-
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +9,7 @@ const Footer: React.FC = () => {
           <div className="md:col-span-1">
             <a href="/" className="inline-block">
               <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
-                blym
+                Blym
               </span>
             </a>
             <p className="mt-4 text-gray-600 text-sm max-w-xs">

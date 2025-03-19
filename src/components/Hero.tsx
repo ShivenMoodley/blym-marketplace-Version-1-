@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -68,6 +67,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
           
+          {/* Hero graphic and animations */}
           <div className="relative animate-fade-in-up">
             <div className="relative w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import MainLayout from "@/layouts/MainLayout";
 import Hero from "@/components/Hero";
@@ -86,17 +85,17 @@ const Index: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <p className="text-xs text-gray-500">Asking Price</p>
-                  <p className="text-xl font-semibold">$750,000</p>
+                  <p className="text-xl font-semibold">R750,000</p>
                 </div>
                 
                 <div className="flex justify-between text-sm">
                   <div>
                     <p className="text-gray-500">Revenue</p>
-                    <p className="font-medium">$1.2M</p>
+                    <p className="font-medium">R1.2M</p>
                   </div>
                   <div>
                     <p className="text-gray-500">Profit</p>
-                    <p className="font-medium">$280K</p>
+                    <p className="font-medium">R280K</p>
                   </div>
                   <div>
                     <p className="text-gray-500">Multiple</p>
@@ -339,7 +338,7 @@ const Index: React.FC = () => {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
         />
       </svg>
     ),
@@ -378,18 +377,18 @@ const Index: React.FC = () => {
                     <p className="text-xs text-gray-500">Valuation Range</p>
                     <p className="text-xs text-green-600 font-medium">High Confidence</p>
                   </div>
-                  <p className="text-xl font-semibold">$1.2M - $1.5M</p>
+                  <p className="text-xl font-semibold">R1.2M - R1.5M</p>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="grid grid-cols-3 gap-2">
                     <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
                       <p className="text-xs text-gray-500">Revenue</p>
-                      <p className="text-sm font-medium">$3.2M</p>
+                      <p className="text-sm font-medium">R3.2M</p>
                     </div>
                     <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
                       <p className="text-xs text-gray-500">EBITDA</p>
-                      <p className="text-sm font-medium">$780K</p>
+                      <p className="text-sm font-medium">R780K</p>
                     </div>
                     <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
                       <p className="text-xs text-gray-500">Multiple</p>

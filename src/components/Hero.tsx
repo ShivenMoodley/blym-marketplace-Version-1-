@@ -100,7 +100,7 @@ const Hero: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div className="text-left">
                           <p className="text-sm text-gray-500">Estimated Value</p>
-                          <p className="text-xl font-semibold">$1.2M - $1.5M</p>
+                          <p className="text-xl font-semibold">R1.2M - R1.5M</p>
                         </div>
                         <div className="h-8 w-8 bg-green-50 rounded-full flex items-center justify-center">
                           <svg 
@@ -130,7 +130,7 @@ const Hero: React.FC = () => {
               <div className="w-full h-full glass rounded-lg bg-white/70 shadow-lg flex items-center justify-center p-4">
                 <div className="text-center">
                   <div className="text-xs text-gray-500">Annual Revenue</div>
-                  <div className="text-lg font-semibold">$4.2M</div>
+                  <div className="text-lg font-semibold">R4.2M</div>
                 </div>
               </div>
             </div>

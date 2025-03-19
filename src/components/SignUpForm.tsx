@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const SignUpForm: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -27,12 +29,36 @@ const SignUpForm: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    console.log("Form submitted:", formState);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      // Insert data into the waitlist table
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([
+          { 
+            name: formState.name,
+            email: formState.email,
+            interest: formState.interest
+          }
+        ]);
+      
+      if (error) {
+        console.error("Error submitting form:", error);
+        toast.error(error.message === "duplicate key value violates unique constraint \"waitlist_email_key\"" 
+          ? "This email is already on our waitlist." 
+          : "There was an error submitting your information. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      console.log("Form submitted successfully:", formState);
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast.success("Successfully joined our waitlist!");
+    } catch (error) {
+      console.error("Exception submitting form:", error);
+      toast.error("An unexpected error occurred. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   return (

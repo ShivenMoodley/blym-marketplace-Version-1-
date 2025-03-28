@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,7 @@ const Navbar: React.FC = () => {
         "fixed top-0 w-full z-50 transition-all duration-300",
         isScrolled
           ? "bg-white/90 backdrop-blur-md py-3 shadow-sm"
-          : "bg-transparent py-5"
+          : "bg-white py-4"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

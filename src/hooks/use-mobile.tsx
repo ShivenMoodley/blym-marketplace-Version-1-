@@ -8,7 +8,8 @@ export function useIsMobile() {
 
   React.useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+      const width = window.innerWidth
+      setIsMobile(width < MOBILE_BREAKPOINT)
     }
 
     // Check on mount
@@ -24,7 +25,10 @@ export function useIsMobile() {
     }
     
     window.addEventListener("resize", handleResize)
-    window.addEventListener("orientationchange", checkMobile)
+    window.addEventListener("orientationchange", () => {
+      // On orientation change, wait a bit to get accurate dimensions
+      setTimeout(checkMobile, 100)
+    })
     
     // Clean up
     return () => {
@@ -36,5 +40,6 @@ export function useIsMobile() {
     }
   }, [])
 
-  return !!isMobile
+  // Return false as a fallback if undefined (server-side rendering)
+  return isMobile === undefined ? false : isMobile
 }

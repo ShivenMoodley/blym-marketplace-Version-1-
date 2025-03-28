@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
   return (
     <div
       ref={heroRef}
-      className={`relative flex items-center justify-center overflow-hidden ${isMobile ? 'pt-24 pb-10' : 'pt-20 pb-10 min-h-screen'} hero-container`}
+      className={`relative flex items-center justify-center overflow-hidden pt-20 pb-10 ${isMobile ? 'min-h-full' : 'min-h-screen'} hero-container`}
     >
       {/* Background circles */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blym-soft-pink/20 blur-3xl"></div>
@@ -43,7 +43,10 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`grid grid-cols-1 ${isMobile ? '' : 'lg:grid-cols-2'} gap-8 lg:gap-12 items-center`}>
           <div className="text-left space-y-4 sm:space-y-6 animate-fade-in">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-left">
+            {isMobile && (
+              <div className="inline-block text-xs text-gray-600 mb-2">Business Marketplace</div>
+            )}
+            <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight ${isMobile ? 'text-left' : 'text-balance'}`}>
               The Modern Way to <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Buy & Sell Businesses</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl">

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -34,7 +35,9 @@ const Hero: React.FC = () => {
   return (
     <div
       ref={heroRef}
-      className={`relative flex items-center justify-center overflow-hidden pt-16 pb-10 ${isMobile ? 'min-h-full' : 'min-h-screen'} hero-container`}
+      className={`relative flex items-center justify-center overflow-hidden ${
+        isMobile ? 'pt-28 pb-10' : 'min-h-screen pt-16 pb-10'
+      } hero-container`}
     >
       {/* Background circles */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blym-soft-pink/20 blur-3xl"></div>
@@ -43,18 +46,24 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`grid grid-cols-1 ${isMobile ? '' : 'lg:grid-cols-2'} gap-8 lg:gap-12 items-center`}>
           <div className="text-left space-y-4 sm:space-y-6 animate-fade-in">
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/5 mb-4">
+            {/* Adjusted mobile layout for the badge */}
+            <div className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/5 ${isMobile ? 'mb-2' : 'mb-4'}`}>
               <span className="text-sm font-medium text-gray-900">Business Marketplace</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
+            
+            {/* Adjusted heading size for mobile */}
+            <h1 className={`${isMobile ? 'text-2xl leading-tight' : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl'} font-bold leading-tight text-balance`}>
               The Modern Way to <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Buy & Sell Businesses</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl">
-              Connecting buyers, sellers, and investors with AI-powered tools and expert guidance for successful business transactions.
+            
+            {/* Simplified description for mobile */}
+            <p className={`${isMobile ? 'text-sm' : 'text-base sm:text-lg md:text-xl'} text-gray-600 max-w-xl`}>
+              Connecting buyers, sellers, and investors with AI-powered tools and expert guidance.
             </p>
+            
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button 
-                size="lg" 
+                size={isMobile ? "default" : "lg"}
                 className="bg-black hover:bg-gray-900 text-white transition-smooth touch-target"
                 onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
               >
@@ -62,7 +71,7 @@ const Hero: React.FC = () => {
               </Button>
               <Button 
                 variant="outline" 
-                size="lg" 
+                size={isMobile ? "default" : "lg"}
                 className="border-gray-300 hover:bg-gray-100 transition-smooth touch-target"
                 onClick={() => document.getElementById("sell")?.scrollIntoView({ behavior: "smooth" })}
               >
@@ -71,36 +80,33 @@ const Hero: React.FC = () => {
             </div>
           </div>
           
-          {/* Hero graphic and animations - Simplified for mobile */}
+          {/* Hero graphic - size reduced for mobile */}
           <div className={`relative animate-fade-in-up ${isMobile ? 'mt-6' : ''}`}>
-            <div className="relative w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-xl">
+            <div className={`relative w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[4/3]'} bg-white rounded-2xl overflow-hidden shadow-xl`}>
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
               
-              {/* Main display area */}
+              {/* Main display area - simplified for mobile */}
               <div className="absolute inset-0 flex items-center justify-center">
-                {/* AI Valuation Report Card - Redesigned to match the image */}
                 {isMobile ? (
-                  <div className="w-full max-w-[290px] mx-auto">
-                    {/* Main Card - Simplified to match the image */}
+                  <div className="w-full max-w-[280px] mx-auto">
                     <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
-                      <CardContent className="p-5">
-                        <div className="flex flex-col items-center text-center mb-4">
-                          <h3 className="text-lg font-semibold mt-2">AI Valuation Report</h3>
+                      <CardContent className="p-4">
+                        <div className="flex flex-col items-center text-center mb-3">
+                          <h3 className="text-md font-semibold mt-1">AI Valuation</h3>
                         </div>
                         
-                        <div className="space-y-2 mb-6">
-                          <div className="h-2.5 w-full bg-gray-100 rounded-full"></div>
-                          <div className="h-2.5 w-5/6 bg-gray-100 rounded-full"></div>
-                          <div className="h-2.5 w-4/6 bg-gray-100 rounded-full"></div>
+                        <div className="space-y-2 mb-4">
+                          <div className="h-2 w-full bg-gray-100 rounded-full"></div>
+                          <div className="h-2 w-5/6 bg-gray-100 rounded-full"></div>
                         </div>
                         
                         <div className="flex items-center justify-between">
                           <div className="text-left">
-                            <p className="text-sm text-gray-500">Estimated Value</p>
-                            <p className="text-lg font-semibold">R1.2M - R1.5M</p>
+                            <p className="text-xs text-gray-500">Value</p>
+                            <p className="text-sm font-semibold">R1.2M - R1.5M</p>
                           </div>
-                          <div className="h-6 w-6 text-green-600">
-                            <ArrowUp className="h-5 w-5" />
+                          <div className="h-5 w-5 text-green-600">
+                            <ArrowUp className="h-4 w-4" />
                           </div>
                         </div>
                       </CardContent>

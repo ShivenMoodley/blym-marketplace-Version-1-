@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,7 +32,6 @@ const SignUpForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Insert data into the waitlist table
       const { error } = await supabase
         .from('waitlist')
         .insert([
@@ -160,24 +158,12 @@ const SignUpForm: React.FC = () => {
                         </div>
                         
                         <div className={`flex items-center px-4 py-3 rounded-lg border ${formState.interest === 'selling' ? 'border-black' : 'border-gray-200'}`}>
-                          {formState.interest === 'selling' ? (
-                            <RadioGroupItem value="selling" id="option-selling" className="mr-2" />
-                          ) : (
-                            <div className="h-4 w-4 rounded-full border border-primary mr-2 flex items-center justify-center">
-                              <Minus className="h-3 w-3 text-gray-700" />
-                            </div>
-                          )}
+                          <RadioGroupItem value="selling" id="option-selling" className="mr-2" />
                           <Label htmlFor="option-selling" className="flex-grow">Selling</Label>
                         </div>
                         
                         <div className={`flex items-center px-4 py-3 rounded-lg border ${formState.interest === 'financing' ? 'border-black' : 'border-gray-200'}`}>
-                          {formState.interest === 'financing' ? (
-                            <RadioGroupItem value="financing" id="option-financing" className="mr-2" />
-                          ) : (
-                            <div className="h-4 w-4 rounded-full border border-primary mr-2 flex items-center justify-center">
-                              <Minus className="h-3 w-3 text-gray-700" />
-                            </div>
-                          )}
+                          <RadioGroupItem value="financing" id="option-financing" className="mr-2" />
                           <Label htmlFor="option-financing" className="flex-grow">Financing</Label>
                         </div>
                       </RadioGroup>

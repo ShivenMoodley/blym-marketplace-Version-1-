@@ -91,52 +91,22 @@ const Hero: React.FC = () => {
                   <div className="w-full max-w-[280px] mx-auto">
                     <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
                       <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-md font-semibold">Business Valuation</h3>
-                          <div className="w-6 h-6 text-gray-800">
-                            <FileText className="h-4 w-4" />
-                          </div>
+                        <div className="flex flex-col items-center text-center mb-3">
+                          <h3 className="text-md font-semibold mt-1">AI Valuation</h3>
                         </div>
                         
-                        <p className="text-xs text-gray-500 mb-4">Based on market data and AI analysis</p>
+                        <div className="space-y-2 mb-4">
+                          <div className="h-2 w-full bg-gray-100 rounded-full"></div>
+                          <div className="h-2 w-5/6 bg-gray-100 rounded-full"></div>
+                        </div>
                         
-                        <div className="space-y-4">
-                          <div>
-                            <div className="flex items-center justify-between">
-                              <p className="text-xs text-gray-500">Valuation Range</p>
-                              <p className="text-xs text-green-600 font-medium">High Confidence</p>
-                            </div>
-                            <p className="text-xl font-semibold">R1.2M - R1.5M</p>
+                        <div className="flex items-center justify-between">
+                          <div className="text-left">
+                            <p className="text-xs text-gray-500">Value</p>
+                            <p className="text-sm font-semibold">R1.2M - R1.5M</p>
                           </div>
-                          
-                          <div className="grid grid-cols-3 gap-2">
-                            <div className="text-center">
-                              <p className="text-xs text-gray-500">Revenue</p>
-                              <p className="text-sm font-medium">R3.2M</p>
-                            </div>
-                            <div className="text-center">
-                              <p className="text-xs text-gray-500">EBITDA</p>
-                              <p className="text-sm font-medium">R780K</p>
-                            </div>
-                            <div className="text-center">
-                              <p className="text-xs text-gray-500">Multiple</p>
-                              <p className="text-sm font-medium">1.8x</p>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <p className="text-xs text-gray-500">Growth Trend</p>
-                            <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
-                              <div 
-                                className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
-                                style={{ width: '65%' }}
-                              ></div>
-                            </div>
-                            <div className="flex justify-between text-xs text-gray-500">
-                              <span>1 Year</span>
-                              <span>3 Years</span>
-                              <span>5 Years</span>
-                            </div>
+                          <div className="h-5 w-5 text-green-600">
+                            <ArrowUp className="h-4 w-4" />
                           </div>
                         </div>
                       </CardContent>

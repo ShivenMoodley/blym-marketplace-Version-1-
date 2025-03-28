@@ -262,7 +262,7 @@ const Index: React.FC = () => {
                 
                 <div className="space-y-2">
                   <div className="grid grid-cols-3 gap-2">
-                    <div className="bg-white p-2 shadow-sm border border-gray-100 rounded-full">
+                    <div className="bg-white p-2 shadow-sm border border-gray-100 rounded-lg">
                       <p className="text-xs text-gray-500">Revenue</p>
                       <p className="text-sm font-medium">R3.2M</p>
                     </div>

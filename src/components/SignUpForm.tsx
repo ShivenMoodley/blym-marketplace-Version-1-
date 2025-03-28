@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Minus } from "lucide-react";
 
 const SignUpForm: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -114,11 +115,11 @@ const SignUpForm: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6">Get Started with Blym</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Get Started with Blym</h3>
                 
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="block text-center mb-2">Full Name</Label>
                     <Input
                       id="name"
                       name="name"
@@ -132,7 +133,7 @@ const SignUpForm: React.FC = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="email">Email Address</Label>
+                    <Label htmlFor="email" className="block text-center mb-2">Email Address</Label>
                     <Input
                       id="email"
                       name="email"
@@ -146,34 +147,69 @@ const SignUpForm: React.FC = () => {
                   </div>
                   
                   <div>
-                    <Label>Business Interest</Label>
-                    <RadioGroup
-                      value={formState.interest}
-                      onValueChange={handleInterestChange}
-                      className={`grid grid-cols-1 ${isMobile ? 'space-y-2 mt-2' : 'sm:grid-cols-3 gap-4 mt-2'}`}
-                    >
-                      <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-smooth">
-                        <RadioGroupItem value="buying" id="option-buying" />
-                        <Label htmlFor="option-buying" className="cursor-pointer">Buying</Label>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-smooth">
-                        <RadioGroupItem value="selling" id="option-selling" />
-                        <Label htmlFor="option-selling" className="cursor-pointer">Selling</Label>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-smooth">
-                        <RadioGroupItem value="financing" id="option-financing" />
-                        <Label htmlFor="option-financing" className="cursor-pointer">Financing</Label>
-                      </div>
-                    </RadioGroup>
+                    <Label className="block text-center mb-2">Business Interest</Label>
+                    {isMobile ? (
+                      <RadioGroup
+                        value={formState.interest}
+                        onValueChange={handleInterestChange}
+                        className="space-y-2 mt-2"
+                      >
+                        <div className={`flex items-center px-4 py-3 rounded-lg border ${formState.interest === 'buying' ? 'border-black' : 'border-gray-200'}`}>
+                          <RadioGroupItem value="buying" id="option-buying" className="mr-2" />
+                          <Label htmlFor="option-buying" className="flex-grow">Buying</Label>
+                        </div>
+                        
+                        <div className={`flex items-center px-4 py-3 rounded-lg border ${formState.interest === 'selling' ? 'border-black' : 'border-gray-200'}`}>
+                          {formState.interest === 'selling' ? (
+                            <RadioGroupItem value="selling" id="option-selling" className="mr-2" />
+                          ) : (
+                            <div className="h-4 w-4 rounded-full border border-primary mr-2 flex items-center justify-center">
+                              <Minus className="h-3 w-3 text-gray-700" />
+                            </div>
+                          )}
+                          <Label htmlFor="option-selling" className="flex-grow">Selling</Label>
+                        </div>
+                        
+                        <div className={`flex items-center px-4 py-3 rounded-lg border ${formState.interest === 'financing' ? 'border-black' : 'border-gray-200'}`}>
+                          {formState.interest === 'financing' ? (
+                            <RadioGroupItem value="financing" id="option-financing" className="mr-2" />
+                          ) : (
+                            <div className="h-4 w-4 rounded-full border border-primary mr-2 flex items-center justify-center">
+                              <Minus className="h-3 w-3 text-gray-700" />
+                            </div>
+                          )}
+                          <Label htmlFor="option-financing" className="flex-grow">Financing</Label>
+                        </div>
+                      </RadioGroup>
+                    ) : (
+                      <RadioGroup
+                        value={formState.interest}
+                        onValueChange={handleInterestChange}
+                        className="grid grid-cols-3 gap-4 mt-2"
+                      >
+                        <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-smooth">
+                          <RadioGroupItem value="buying" id="option-buying" />
+                          <Label htmlFor="option-buying" className="cursor-pointer">Buying</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-smooth">
+                          <RadioGroupItem value="selling" id="option-selling" />
+                          <Label htmlFor="option-selling" className="cursor-pointer">Selling</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-smooth">
+                          <RadioGroupItem value="financing" id="option-financing" />
+                          <Label htmlFor="option-financing" className="cursor-pointer">Financing</Label>
+                        </div>
+                      </RadioGroup>
+                    )}
                   </div>
                 </div>
                 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-black text-white hover:bg-gray-900 transition-smooth"
+                  className="w-full bg-black text-white hover:bg-gray-900 transition-smooth py-3 rounded-md"
                 >
                   {isSubmitting ? "Processing..." : "Join Waitlist"}
                 </Button>

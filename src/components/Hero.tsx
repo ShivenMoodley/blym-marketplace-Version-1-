@@ -71,7 +71,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
           
-          {/* Hero graphic and animations - Completely redesigned for mobile */}
+          {/* Hero graphic and animations - Simplified for mobile */}
           <div className={`relative animate-fade-in-up ${isMobile ? 'mt-6' : ''}`}>
             <div className="relative w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
@@ -80,15 +80,12 @@ const Hero: React.FC = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 {/* AI Valuation Report Card - Redesigned to match the image */}
                 {isMobile ? (
-                  <div className="flex flex-col w-full max-w-[320px] gap-4">
-                    {/* Main Card */}
-                    <Card className="w-full shadow-md border border-gray-100 bg-white">
-                      <CardContent className="p-6">
-                        <div className="flex flex-col items-center text-center space-y-4 mb-4">
-                          <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center">
-                            <FileText className="h-6 w-6 text-gray-800" />
-                          </div>
-                          <h3 className="text-lg font-semibold">AI Valuation Report</h3>
+                  <div className="w-full max-w-[290px] mx-auto">
+                    {/* Main Card - Simplified to match the image */}
+                    <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
+                      <CardContent className="p-5">
+                        <div className="flex flex-col items-center text-center mb-4">
+                          <h3 className="text-lg font-semibold mt-2">AI Valuation Report</h3>
                         </div>
                         
                         <div className="space-y-2 mb-6">
@@ -102,33 +99,12 @@ const Hero: React.FC = () => {
                             <p className="text-sm text-gray-500">Estimated Value</p>
                             <p className="text-lg font-semibold">R1.2M - R1.5M</p>
                           </div>
-                          <div className="h-8 w-8 bg-green-50 rounded-full flex items-center justify-center">
-                            <ArrowUp className="h-4 w-4 text-green-600" />
+                          <div className="h-6 w-6 text-green-600">
+                            <ArrowUp className="h-5 w-5" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
-                    
-                    {/* Two smaller cards in a row */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <Card className="bg-white shadow-sm border border-gray-100">
-                        <CardContent className="p-4 flex flex-col items-center justify-center">
-                          <p className="text-xs text-gray-500 mb-1">Annual Revenue</p>
-                          <p className="text-lg font-semibold">R4.2M</p>
-                        </CardContent>
-                      </Card>
-                      
-                      <Card className="bg-white shadow-sm border border-gray-100">
-                        <CardContent className="p-4">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center">
-                              <CheckCircle className="h-3.5 w-3.5 text-green-600" />
-                            </div>
-                            <div className="text-sm font-medium">Verified Seller</div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
                   </div>
                 ) : (
                   // Desktop version remains the same

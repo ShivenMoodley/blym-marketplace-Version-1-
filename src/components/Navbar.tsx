@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,31 +26,21 @@ const Navbar: React.FC = () => {
         "fixed top-0 w-full z-50 transition-all duration-300",
         isScrolled
           ? "bg-white/90 backdrop-blur-md py-3 shadow-sm"
-          : "bg-white py-4"
+          : "bg-transparent py-5"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <a href="/" className="flex flex-col items-start">
-              {isMobile ? (
-                <div className="py-1">
-                  <span className="text-xs text-gray-600 block mb-1">Business Marketplace</span>
-                  <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
-                    Blym
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
-                    Blym
-                  </span>
-                  <span className="text-xs text-gray-600 -mt-1">Business Marketplace</span>
-                </>
-              )}
+              <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
+                Blym
+              </span>
+              <span className="text-xs text-gray-600 mt-0.5">Business Marketplace</span>
             </a>
           </div>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <a
               href="#sell"
@@ -86,6 +74,7 @@ const Navbar: React.FC = () => {
             </Button>
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
               type="button"
@@ -127,6 +116,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
+        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-3 pb-3 space-y-1 animate-fade-in">
             <a

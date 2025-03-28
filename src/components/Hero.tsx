@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -35,9 +34,7 @@ const Hero: React.FC = () => {
   return (
     <div
       ref={heroRef}
-      className={`relative flex items-center justify-center overflow-hidden ${
-        isMobile ? 'pt-48 pb-10' : 'pt-20 pb-10 min-h-screen'
-      } hero-container`}
+      className={`relative flex items-center justify-center overflow-hidden pt-16 pb-10 ${isMobile ? 'min-h-full' : 'min-h-screen'} hero-container`}
     >
       {/* Background circles */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blym-soft-pink/20 blur-3xl"></div>
@@ -46,30 +43,15 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`grid grid-cols-1 ${isMobile ? '' : 'lg:grid-cols-2'} gap-8 lg:gap-12 items-center`}>
           <div className="text-left space-y-4 sm:space-y-6 animate-fade-in">
-            {isMobile ? (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold leading-tight">
-                    The Modern Way to
-                  </h1>
-                  <h1 className="text-3xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-                    Buy & Sell Businesses
-                  </h1>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Connecting buyers, sellers, and investors with AI-powered tools for successful business transactions.
-                </p>
-              </div>
-            ) : (
-              <>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  The Modern Way to <span className="block mt-1 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Buy & Sell Businesses</span>
-                </h1>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl">
-                  Connecting buyers, sellers, and investors with AI-powered tools and expert guidance for successful business transactions.
-                </p>
-              </>
-            )}
+            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/5 mb-4">
+              <span className="text-sm font-medium text-gray-900">Business Marketplace</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
+              The Modern Way to <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Buy & Sell Businesses</span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl">
+              Connecting buyers, sellers, and investors with AI-powered tools and expert guidance for successful business transactions.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button 
                 size="lg" 
@@ -90,7 +72,7 @@ const Hero: React.FC = () => {
           </div>
           
           {/* Hero graphic and animations - Simplified for mobile */}
-          <div className={`relative animate-fade-in-up ${isMobile ? 'mt-8' : ''}`}>
+          <div className={`relative animate-fade-in-up ${isMobile ? 'mt-6' : ''}`}>
             <div className="relative w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
               
@@ -98,9 +80,9 @@ const Hero: React.FC = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 {/* AI Valuation Report Card - Redesigned to match the image */}
                 {isMobile ? (
-                  <div className="w-full max-w-[280px] mx-auto">
+                  <div className="w-full max-w-[290px] mx-auto">
                     {/* Main Card - Simplified to match the image */}
-                    <Card className="w-full shadow-md border border-gray-100 bg-white">
+                    <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
                       <CardContent className="p-5">
                         <div className="flex flex-col items-center text-center mb-4">
                           <h3 className="text-lg font-semibold mt-2">AI Valuation Report</h3>
@@ -125,6 +107,7 @@ const Hero: React.FC = () => {
                     </Card>
                   </div>
                 ) : (
+                  // Desktop version remains the same
                   <Card className="w-4/5 shadow-lg bg-white/90 border-gray-100">
                     <CardContent className="p-6 space-y-6">
                       <div className="flex flex-col items-center text-center space-y-4">

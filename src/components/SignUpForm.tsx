@@ -173,7 +173,7 @@ const SignUpForm: React.FC = () => {
                   disabled={isSubmitting}
                   className="w-full bg-black text-white hover:bg-gray-900 transition-smooth"
                 >
-                  {isSubmitting ? "Processing..." : "Create Your Account"}
+                  {isSubmitting ? "Processing..." : "Join Waitlist"}
                 </Button>
                 
                 <p className="text-xs text-gray-500 text-center mt-4">

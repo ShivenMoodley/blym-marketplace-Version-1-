@@ -32,11 +32,10 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <a href="/" className="flex flex-col items-start">
+            <a href="/" className="flex items-center">
               <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
                 Blym
               </span>
-              <span className="text-xs text-gray-600 mt-0.5">Business Marketplace</span>
             </a>
           </div>
 

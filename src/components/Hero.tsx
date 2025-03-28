@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, ArrowUp, CheckCircle, Clipboard } from "lucide-react";
+import { FileText, ArrowUp, CheckCircle } from "lucide-react";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -89,54 +89,24 @@ const Hero: React.FC = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 {isMobile ? (
                   <div className="w-full max-w-[280px] mx-auto">
-                    <Card className="w-full shadow-md border border-gray-100 bg-white">
-                      <CardContent className="p-5">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-base font-semibold">Business Valuation</h3>
-                          <div className="h-6 w-6 text-gray-600">
-                            <Clipboard className="h-4 w-4" />
-                          </div>
+                    <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
+                      <CardContent className="p-4">
+                        <div className="flex flex-col items-center text-center mb-3">
+                          <h3 className="text-md font-semibold mt-1">AI Valuation</h3>
                         </div>
                         
-                        <p className="text-xs text-center text-gray-500 mb-3">
-                          Based on market data and AI analysis
-                        </p>
-                        
-                        <div className="mb-4">
-                          <div className="flex justify-between items-center">
-                            <p className="text-xs text-gray-500">Valuation Range</p>
-                            <p className="text-xs text-green-600 font-medium">High Confidence</p>
-                          </div>
-                          <p className="text-lg font-semibold">R1.2M - R1.5M</p>
+                        <div className="space-y-2 mb-4">
+                          <div className="h-2 w-full bg-gray-100 rounded-full"></div>
+                          <div className="h-2 w-5/6 bg-gray-100 rounded-full"></div>
                         </div>
                         
-                        <div className="grid grid-cols-3 gap-2 mb-4">
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500">Revenue</p>
-                            <p className="text-sm font-medium">R3.2M</p>
+                        <div className="flex items-center justify-between">
+                          <div className="text-left">
+                            <p className="text-xs text-gray-500">Value</p>
+                            <p className="text-sm font-semibold">R1.2M - R1.5M</p>
                           </div>
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500">EBITDA</p>
-                            <p className="text-sm font-medium">R780K</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500">Multiple</p>
-                            <p className="text-sm font-medium">1.8x</p>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <p className="text-xs text-gray-500">Growth Trend</p>
-                          <div className="h-6 bg-gray-100 rounded-lg overflow-hidden">
-                            <div 
-                              className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-lg"
-                              style={{ width: '65%' }}
-                            ></div>
-                          </div>
-                          <div className="flex justify-between text-xs text-gray-500">
-                            <span>1 Year</span>
-                            <span>3 Years</span>
-                            <span>5 Years</span>
+                          <div className="h-5 w-5 text-green-600">
+                            <ArrowUp className="h-4 w-4" />
                           </div>
                         </div>
                       </CardContent>

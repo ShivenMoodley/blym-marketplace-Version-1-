@@ -2,12 +2,15 @@
 import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     // Fix viewport height issues on mobile browsers
     const setVh = () => {
@@ -16,13 +19,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     };
 
     setVh();
-    window.addEventListener('resize', setVh);
     
-    return () => window.removeEventListener('resize', setVh);
+    // Use both orientationchange and resize events
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
+    
+    return () => {
+      window.removeEventListener('resize', setVh);
+      window.removeEventListener('orientationchange', setVh);
+    };
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
+    <div className={`flex flex-col min-h-screen-real overflow-x-hidden ${isMobile ? 'mobile-view' : ''}`}>
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />

@@ -1,4 +1,3 @@
-
 import React from "react";
 import MainLayout from "@/layouts/MainLayout";
 import Hero from "@/components/Hero";
@@ -289,7 +288,7 @@ const Index: React.FC = () => {
                     <p className="font-medium text-sm">Bridge Loan</p>
                     <div className="chip bg-green-100 text-green-800">Fast</div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Short-term financing up to R500K</p>
+                  <p className="text-xs text-gray-500 mt-1">Short-term financing up to $500K</p>
                 </div>
                 
                 <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">

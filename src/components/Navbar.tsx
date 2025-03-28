@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +38,9 @@ const Navbar: React.FC = () => {
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
                 Blym
               </span>
-              <span className="text-xs text-gray-600 -mt-1">Business Marketplace</span>
+              {!isMobile && (
+                <span className="text-xs text-gray-600 -mt-1">Business Marketplace</span>
+              )}
             </a>
           </div>
 

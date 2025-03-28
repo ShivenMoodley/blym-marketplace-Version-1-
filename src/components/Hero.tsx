@@ -44,10 +44,10 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`grid grid-cols-1 ${isMobile ? '' : 'lg:grid-cols-2'} gap-8 lg:gap-12 items-center`}>
           <div className="text-left space-y-4 sm:space-y-6 animate-fade-in">
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/5 mb-4">
-              <span className="text-sm font-medium text-gray-900">Business Marketplace</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
+            {isMobile && (
+              <div className="inline-block text-xs text-gray-600 mb-2">Business Marketplace</div>
+            )}
+            <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight ${isMobile ? 'text-left' : 'text-balance'}`}>
               The Modern Way to <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Buy & Sell Businesses</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl">

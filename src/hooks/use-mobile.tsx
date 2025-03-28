@@ -24,10 +24,12 @@ export function useIsMobile() {
     }
     
     window.addEventListener("resize", handleResize)
+    window.addEventListener("orientationchange", checkMobile)
     
     // Clean up
     return () => {
       window.removeEventListener("resize", handleResize)
+      window.removeEventListener("orientationchange", checkMobile)
       if (timeoutId) {
         clearTimeout(timeoutId)
       }

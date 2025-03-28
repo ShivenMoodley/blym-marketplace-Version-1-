@@ -2,6 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Card, CardContent } from "@/components/ui/card";
+import { FileText, ArrowUp, CheckCircle } from "lucide-react";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -70,97 +72,91 @@ const Hero: React.FC = () => {
             </div>
           </div>
           
-          {/* Hero graphic and animations */}
+          {/* Hero graphic and animations - Improved for mobile */}
           <div className={`relative animate-fade-in-up ${isMobile ? 'mt-6' : ''}`}>
             <div className="relative w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className={`${isMobile ? 'w-11/12' : 'w-4/5'} h-4/5 glass rounded-xl flex items-center justify-center bg-white/50 prevent-overlap`}>
-                  <div className="space-y-4 sm:space-y-6 px-4 sm:px-6 py-6 sm:py-8 text-center">
-                    <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center mx-auto">
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-8 w-8 text-gray-800" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={1.5} 
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
-                        />
-                      </svg>
+                {/* Main valuation card - Redesigned for better mobile layout */}
+                <Card className={`${isMobile ? 'w-11/12' : 'w-4/5'} shadow-lg bg-white/90 border-gray-100`}>
+                  <CardContent className="p-6 space-y-6">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                        <FileText className="h-8 w-8 text-gray-800" />
+                      </div>
+                      <h3 className="text-xl font-semibold">AI Valuation Report</h3>
                     </div>
-                    <h3 className="text-xl font-semibold">AI Valuation Report</h3>
+                    
                     <div className="space-y-2">
                       <div className="h-3 w-full bg-gray-100 rounded-full"></div>
                       <div className="h-3 w-5/6 bg-gray-100 rounded-full"></div>
                       <div className="h-3 w-4/6 bg-gray-100 rounded-full"></div>
                     </div>
-                    <div className="pt-2 sm:pt-4">
-                      <div className="flex items-center justify-between">
-                        <div className="text-left">
-                          <p className="text-sm text-gray-500">Estimated Value</p>
-                          <p className="text-xl font-semibold">R1.2M - R1.5M</p>
-                        </div>
-                        <div className="h-8 w-8 bg-green-50 rounded-full flex items-center justify-center">
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            className="h-4 w-4 text-green-600" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M5 10l7-7m0 0l7 7m-7-7v18" 
-                            />
-                          </svg>
-                        </div>
+                    
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="text-left">
+                        <p className="text-sm text-gray-500">Estimated Value</p>
+                        <p className="text-xl font-semibold">R1.2M - R1.5M</p>
+                      </div>
+                      <div className="h-8 w-8 bg-green-50 rounded-full flex items-center justify-center">
+                        <ArrowUp className="h-4 w-4 text-green-600" />
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
             
-            {/* Floating elements with mobile fix */}
-            <div className={`${isMobile ? 'mobile-float-fix' : 'absolute -top-6 -right-6 w-32 h-32 animate-float delay-100'}`}>
-              <div className="w-full h-full glass rounded-lg bg-white/70 shadow-lg flex items-center justify-center p-4 prevent-overlap">
-                <div className="text-center">
-                  <div className="text-xs text-gray-500">Annual Revenue</div>
-                  <div className="text-lg font-semibold">R4.2M</div>
-                </div>
+            {/* Floating elements - Fixed for mobile */}
+            {isMobile ? (
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <Card className="bg-white/90 shadow-md border-gray-100">
+                  <CardContent className="p-4">
+                    <div className="text-center">
+                      <div className="text-xs text-gray-500">Annual Revenue</div>
+                      <div className="text-lg font-semibold">R4.2M</div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white/90 shadow-md border-gray-100">
+                  <CardContent className="p-4">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      </div>
+                      <div className="text-sm font-medium">Verified Seller</div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </div>
-            
-            <div className={`${isMobile ? 'mobile-float-fix' : 'absolute -bottom-4 -left-4 animate-float delay-300'}`}>
-              <div className="glass rounded-lg bg-white/70 shadow-lg p-3 prevent-overlap">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className="h-4 w-4 text-green-600" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
-                      />
-                    </svg>
-                  </div>
-                  <div className="text-sm font-medium">Verified Seller</div>
+            ) : (
+              <>
+                <div className="absolute -top-6 -right-6 w-32 h-32 animate-float delay-100">
+                  <Card className="w-full h-full bg-white/70 shadow-lg">
+                    <CardContent className="h-full flex items-center justify-center p-4">
+                      <div className="text-center">
+                        <div className="text-xs text-gray-500">Annual Revenue</div>
+                        <div className="text-lg font-semibold">R4.2M</div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </div>
-            </div>
+                
+                <div className="absolute -bottom-4 -left-4 animate-float delay-300">
+                  <Card className="bg-white/70 shadow-lg">
+                    <CardContent className="p-3">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                        </div>
+                        <div className="text-sm font-medium">Verified Seller</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

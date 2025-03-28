@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, ArrowUp, CheckCircle, Clipboard } from "lucide-react";
+import { FileText, ArrowUp, CheckCircle } from "lucide-react";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -85,48 +85,48 @@ const Hero: React.FC = () => {
             <div className={`relative w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[4/3]'} bg-white rounded-2xl overflow-hidden shadow-xl`}>
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
               
-              {/* Main display area - simplified for mobile */}
+              {/* Main display area - updated for mobile */}
               <div className="absolute inset-0 flex items-center justify-center">
                 {isMobile ? (
                   <div className="w-full max-w-[280px] mx-auto">
-                    <Card className="w-full shadow-md border border-gray-100 bg-white">
-                      <CardContent className="p-5">
+                    <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
+                      <CardContent className="p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-base font-semibold">Business Valuation</h3>
-                          <div className="h-6 w-6 text-gray-600">
-                            <Clipboard className="h-4 w-4" />
+                          <h3 className="text-md font-semibold">Business Valuation</h3>
+                          <div className="h-6 w-6 text-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
                           </div>
                         </div>
                         
-                        <p className="text-xs text-center text-gray-500 mb-3">
-                          Based on market data and AI analysis
-                        </p>
+                        <p className="text-xs text-gray-500 text-center mb-3">Based on market data and AI analysis</p>
                         
                         <div className="mb-4">
-                          <div className="flex justify-between items-center">
-                            <p className="text-xs text-gray-500">Valuation Range</p>
-                            <p className="text-xs text-green-600 font-medium">High Confidence</p>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm text-gray-500">Valuation Range</span>
+                            <span className="text-xs text-green-600 font-medium">High Confidence</span>
                           </div>
-                          <p className="text-lg font-semibold">R1.2M - R1.5M</p>
+                          <p className="text-lg font-semibold text-center mb-2">R1.2M - R1.5M</p>
                         </div>
                         
                         <div className="grid grid-cols-3 gap-2 mb-4">
                           <div className="text-center">
-                            <p className="text-xs text-gray-500">Revenue</p>
+                            <p className="text-xs text-gray-500 mb-1">Revenue</p>
                             <p className="text-sm font-medium">R3.2M</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-xs text-gray-500">EBITDA</p>
+                            <p className="text-xs text-gray-500 mb-1">EBITDA</p>
                             <p className="text-sm font-medium">R780K</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-xs text-gray-500">Multiple</p>
+                            <p className="text-xs text-gray-500 mb-1">Multiple</p>
                             <p className="text-sm font-medium">1.8x</p>
                           </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <p className="text-xs text-gray-500">Growth Trend</p>
+                        <div className="space-y-1">
+                          <p className="text-xs text-gray-500 text-center">Growth Trend</p>
                           <div className="h-6 bg-gray-100 rounded-lg overflow-hidden">
                             <div 
                               className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-lg"

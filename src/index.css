@@ -33,6 +33,7 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --vh: 1vh;
   }
 
   .dark {
@@ -75,6 +76,7 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -110,8 +112,32 @@
   }
   
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+    @apply max-w-7xl mx-auto py-10 md:py-16 lg:py-24;
   }
+
+  /* Mobile-specific viewport height fix */
+  .min-h-screen-real {
+    min-height: 100vh; /* Fallback */
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+
+  /* Better touch targets for mobile */
+  .touch-target {
+    @apply p-2 min-h-[44px] min-w-[44px];
+  }
+
+  /* Mobile-friendly padding adjustments */
+  .mobile-friendly-padding {
+    @apply px-4 py-3 md:px-6 md:py-4;
+  }
+}
+
+/* Fix for iOS form elements */
+input,
+textarea,
+button,
+select {
+  @apply appearance-none;
 }
 
 #root {
@@ -119,4 +145,22 @@
   margin: 0 auto;
   padding: 0;
   text-align: center;
+}
+
+/* Media queries for better mobile responsiveness */
+@media (max-width: 640px) {
+  .section-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  h1 {
+    font-size: calc(1.5rem + 1vw);
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: calc(1.25rem + 0.5vw);
+    line-height: 1.3;
+  }
 }

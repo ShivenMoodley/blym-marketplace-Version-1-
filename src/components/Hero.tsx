@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, ArrowUp, CheckCircle, Clipboard } from "lucide-react";
+import { FileText, ArrowUp, CheckCircle } from "lucide-react";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -91,48 +91,22 @@ const Hero: React.FC = () => {
                   <div className="w-full max-w-[280px] mx-auto">
                     <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
                       <CardContent className="p-4">
-                        <div className="flex flex-col items-start mb-4">
-                          <div className="flex justify-between w-full items-start">
-                            <div>
-                              <h3 className="text-md font-semibold">Business Valuation</h3>
-                              <p className="text-xs text-gray-500 mt-0.5">Based on market data and AI analysis</p>
-                            </div>
-                            <div className="h-7 w-7 bg-gray-50 text-gray-600 rounded-full flex items-center justify-center">
-                              <Clipboard className="h-3.5 w-3.5" />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="mb-4">
-                          <div className="flex justify-between items-center mb-1">
-                            <p className="text-xs text-gray-500">Valuation Range</p>
-                            <p className="text-xs text-green-600 font-medium">High Confidence</p>
-                          </div>
-                          <p className="text-xl font-semibold">R1.2M - R1.5M</p>
+                        <div className="flex flex-col items-center text-center mb-3">
+                          <h3 className="text-md font-semibold mt-1">AI Valuation</h3>
                         </div>
                         
-                        <div className="grid grid-cols-3 gap-3 mb-4">
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500">Revenue</p>
-                            <p className="text-sm font-medium mt-1">R3.2M</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500">EBITDA</p>
-                            <p className="text-sm font-medium mt-1">R780K</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500">Multiple</p>
-                            <p className="text-sm font-medium mt-1">1.8x</p>
-                          </div>
+                        <div className="space-y-2 mb-4">
+                          <div className="h-2 w-full bg-gray-100 rounded-full"></div>
+                          <div className="h-2 w-5/6 bg-gray-100 rounded-full"></div>
                         </div>
                         
-                        <div>
-                          <p className="text-xs text-gray-500 mb-2">Growth Trend</p>
-                          <div className="h-5 bg-gradient-to-r from-green-400 to-blue-500 rounded-md"></div>
-                          <div className="flex justify-between text-xs text-gray-500 mt-1">
-                            <span>1 Year</span>
-                            <span>3 Years</span>
-                            <span>5 Years</span>
+                        <div className="flex items-center justify-between">
+                          <div className="text-left">
+                            <p className="text-xs text-gray-500">Value</p>
+                            <p className="text-sm font-semibold">R1.2M - R1.5M</p>
+                          </div>
+                          <div className="h-5 w-5 text-green-600">
+                            <ArrowUp className="h-4 w-4" />
                           </div>
                         </div>
                       </CardContent>

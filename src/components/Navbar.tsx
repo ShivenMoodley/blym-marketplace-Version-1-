@@ -36,12 +36,12 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <a href="/" className="flex flex-col items-start">
               {isMobile ? (
-                <>
-                  <span className="text-xs text-gray-600">Business Marketplace</span>
+                <div className="py-1">
+                  <span className="text-xs text-gray-600 block mb-1">Business Marketplace</span>
                   <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
                     Blym
                   </span>
-                </>
+                </div>
               ) : (
                 <>
                   <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">

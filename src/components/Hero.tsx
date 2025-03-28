@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -34,7 +35,7 @@ const Hero: React.FC = () => {
   return (
     <div
       ref={heroRef}
-      className={`relative flex items-center justify-center overflow-hidden pt-20 pb-10 ${isMobile ? 'min-h-full' : 'min-h-screen'} hero-container`}
+      className={`relative flex items-center justify-center overflow-hidden ${isMobile ? 'pt-32 pb-10' : 'pt-20 pb-10 min-h-screen'} hero-container`}
     >
       {/* Background circles */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blym-soft-pink/20 blur-3xl"></div>

@@ -85,58 +85,28 @@ const Hero: React.FC = () => {
             <div className={`relative w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[4/3]'} bg-white rounded-2xl overflow-hidden shadow-xl`}>
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
               
-              {/* Main display area - updated for mobile */}
+              {/* Main display area - simplified for mobile */}
               <div className="absolute inset-0 flex items-center justify-center">
                 {isMobile ? (
                   <div className="w-full max-w-[280px] mx-auto">
                     <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
                       <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-md font-semibold">Business Valuation</h3>
-                          <div className="h-6 w-6 text-gray-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                          </div>
+                        <div className="flex flex-col items-center text-center mb-3">
+                          <h3 className="text-md font-semibold mt-1">AI Valuation</h3>
                         </div>
                         
-                        <p className="text-xs text-gray-500 text-center mb-3">Based on market data and AI analysis</p>
-                        
-                        <div className="mb-4">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-gray-500">Valuation Range</span>
-                            <span className="text-xs text-green-600 font-medium">High Confidence</span>
-                          </div>
-                          <p className="text-lg font-semibold text-center mb-2">R1.2M - R1.5M</p>
+                        <div className="space-y-2 mb-4">
+                          <div className="h-2 w-full bg-gray-100 rounded-full"></div>
+                          <div className="h-2 w-5/6 bg-gray-100 rounded-full"></div>
                         </div>
                         
-                        <div className="grid grid-cols-3 gap-2 mb-4">
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500 mb-1">Revenue</p>
-                            <p className="text-sm font-medium">R3.2M</p>
+                        <div className="flex items-center justify-between">
+                          <div className="text-left">
+                            <p className="text-xs text-gray-500">Value</p>
+                            <p className="text-sm font-semibold">R1.2M - R1.5M</p>
                           </div>
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500 mb-1">EBITDA</p>
-                            <p className="text-sm font-medium">R780K</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-xs text-gray-500 mb-1">Multiple</p>
-                            <p className="text-sm font-medium">1.8x</p>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          <p className="text-xs text-gray-500 text-center">Growth Trend</p>
-                          <div className="h-6 bg-gray-100 rounded-lg overflow-hidden">
-                            <div 
-                              className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-lg"
-                              style={{ width: '65%' }}
-                            ></div>
-                          </div>
-                          <div className="flex justify-between text-xs text-gray-500">
-                            <span>1 Year</span>
-                            <span>3 Years</span>
-                            <span>5 Years</span>
+                          <div className="h-5 w-5 text-green-600">
+                            <ArrowUp className="h-4 w-4" />
                           </div>
                         </div>
                       </CardContent>

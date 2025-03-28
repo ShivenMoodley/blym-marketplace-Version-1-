@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, ArrowUp, CheckCircle } from "lucide-react";
+import { FileText, ArrowUp, CheckCircle, ClipboardIcon } from "lucide-react";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -85,28 +85,65 @@ const Hero: React.FC = () => {
             <div className={`relative w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[4/3]'} bg-white rounded-2xl overflow-hidden shadow-xl`}>
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
               
-              {/* Main display area - simplified for mobile */}
+              {/* Main display area - redesigned for mobile to match the image */}
               <div className="absolute inset-0 flex items-center justify-center">
                 {isMobile ? (
                   <div className="w-full max-w-[280px] mx-auto">
-                    <Card className="w-full shadow-md border border-gray-100 bg-white mb-4">
-                      <CardContent className="p-4">
-                        <div className="flex flex-col items-center text-center mb-3">
-                          <h3 className="text-md font-semibold mt-1">AI Valuation</h3>
-                        </div>
-                        
-                        <div className="space-y-2 mb-4">
-                          <div className="h-2 w-full bg-gray-100 rounded-full"></div>
-                          <div className="h-2 w-5/6 bg-gray-100 rounded-full"></div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="text-left">
-                            <p className="text-xs text-gray-500">Value</p>
-                            <p className="text-sm font-semibold">R1.2M - R1.5M</p>
+                    <Card className="w-full bg-gray-50 border border-gray-100 shadow-sm">
+                      <CardContent className="p-5">
+                        <div className="space-y-5">
+                          {/* Header with clipboard icon */}
+                          <div className="flex justify-between items-center">
+                            <h3 className="text-base font-semibold">Business Valuation</h3>
+                            <div className="w-6 h-6 text-gray-700">
+                              <FileText className="w-5 h-5" />
+                            </div>
                           </div>
-                          <div className="h-5 w-5 text-green-600">
-                            <ArrowUp className="h-4 w-4" />
+                          
+                          {/* Subtitle */}
+                          <p className="text-xs text-gray-500 -mt-1">
+                            Based on market data and AI analysis
+                          </p>
+                          
+                          {/* Valuation range with confidence */}
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-gray-500">Valuation Range</span>
+                              <span className="text-xs text-green-600 font-medium">High Confidence</span>
+                            </div>
+                            <p className="text-xl font-semibold">R1.2M - R1.5M</p>
+                          </div>
+                          
+                          {/* Metrics row */}
+                          <div className="grid grid-cols-3 gap-2 pt-2">
+                            <div className="text-center">
+                              <p className="text-xs text-gray-500">Revenue</p>
+                              <p className="text-sm font-medium">R3.2M</p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-xs text-gray-500">EBITDA</p>
+                              <p className="text-sm font-medium">R780K</p>
+                            </div>
+                            <div className="text-center bg-blue-500 py-1 rounded">
+                              <p className="text-xs text-white">Multiple</p>
+                              <p className="text-sm font-medium text-white">1.8x</p>
+                            </div>
+                          </div>
+                          
+                          {/* Growth trend */}
+                          <div className="space-y-2 pt-1">
+                            <p className="text-xs text-gray-500">Growth Trend</p>
+                            <div className="h-6 bg-gray-100 rounded-lg overflow-hidden">
+                              <div 
+                                className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-lg"
+                                style={{ width: '50%' }}
+                              ></div>
+                            </div>
+                            <div className="flex justify-between text-xs text-gray-500">
+                              <span>1 Year</span>
+                              <span>3 Years</span>
+                              <span>5 Years</span>
+                            </div>
                           </div>
                         </div>
                       </CardContent>

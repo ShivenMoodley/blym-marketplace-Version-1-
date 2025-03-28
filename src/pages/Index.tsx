@@ -270,7 +270,7 @@ const Index: React.FC = () => {
                       <p className="text-xs text-gray-500">EBITDA</p>
                       <p className="text-sm font-medium">R780K</p>
                     </div>
-                    <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
+                    <div className="">
                       <p className="text-xs text-gray-500">Multiple</p>
                       <p className="text-sm font-medium">1.8x</p>
                     </div>

@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import BuyerProfileSetup from "./components/buyer/BuyerProfileSetup";
 import SellerProfileSetup from "./components/seller/SellerProfileSetup";
 import SellerDashboard from "./components/seller/SellerDashboard";
+import BuyerDashboard from "./components/buyer/BuyerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/buyer/setup" element={<BuyerProfileSetup />} />
+          <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
           <Route path="/seller/setup" element={<SellerProfileSetup />} />
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
           <Route path="*" element={<NotFound />} />

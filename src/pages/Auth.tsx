@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -46,7 +45,6 @@ const Auth = () => {
           return;
         }
 
-        // First create the user
         const { error: signUpError, data } = await supabase.auth.signUp({
           email,
           password,
@@ -56,20 +54,15 @@ const Auth = () => {
         
         if (data?.user) {
           try {
-            // Important: For the profiles table, we need to use the service role
-            // or a JWT that has admin rights to bypass RLS on initial profile creation
-            
-            // Only use insert if the account is newly created
             await supabase.rpc('create_profile_for_user', {
               user_id: data.user.id,
-              user_type: userType
+              user_type: userType as 'buyer' | 'seller'
             });
             
             toast.success("Account created successfully!");
             navigate(userType === 'buyer' ? '/buyer/setup' : '/seller/setup');
           } catch (profileError) {
             console.error('Profile creation error:', profileError);
-            // We already created the user, so we can still proceed
             toast.success("Account created but profile setup had an issue");
             navigate(userType === 'buyer' ? '/buyer/setup' : '/seller/setup');
           }

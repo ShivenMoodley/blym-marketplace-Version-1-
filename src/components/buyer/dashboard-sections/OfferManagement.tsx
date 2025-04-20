@@ -69,8 +69,8 @@ const OfferManagement: React.FC = () => {
                   <CardTitle>{offer.businessName}</CardTitle>
                   <Badge variant={
                     offer.status === 'sent' ? 'secondary' :
-                    offer.status === 'countered' ? 'warning' :
-                    'success'
+                    offer.status === 'countered' ? 'outline' :
+                    'default'
                   }>
                     {offer.status === 'sent' ? 'LOI Sent' :
                      offer.status === 'countered' ? 'Countered' :

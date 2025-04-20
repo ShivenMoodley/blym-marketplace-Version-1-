@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Upload, BadgeCheck, User, Settings, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
 
 const ProfileManagement: React.FC = () => {
   // States for profile data

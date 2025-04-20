@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -142,42 +141,48 @@ const BuyerProfileSetup: React.FC = () => {
   const prevStep = () => setStep(step - 1);
 
   const handleCheckboxChange = (field: 'industries' | 'businessModels' | 'preferredLocation', value: string) => {
-    setFormData(prev => {
-      const currentValues = prev[field];
-      const exists = currentValues.includes(value);
-      
-      if (exists) {
-        // For removal, we need to maintain the proper type for businessModels
-        if (field === 'businessModels') {
+    if (field === 'businessModels') {
+      // Handle businessModels separately to ensure type safety
+      setFormData(prev => {
+        const currentValues = prev[field];
+        const exists = currentValues.includes(value as BusinessModel);
+        
+        if (exists) {
+          // For removal, filter out the value
           return {
             ...prev,
-            [field]: currentValues.filter(v => v !== value) as BusinessModel[]
+            [field]: currentValues.filter(v => v !== value)
           };
-        }
-        return {
-          ...prev,
-          [field]: currentValues.filter(v => v !== value)
-        };
-      } else {
-        // For addition, we need special handling for businessModels
-        if (field === 'businessModels') {
-          // Type-check: Only add if it's a valid business model
-          const businessModelValue = value as BusinessModel;
-          if (BUSINESS_MODELS.includes(businessModelValue)) {
+        } else {
+          // For addition, validate and cast to BusinessModel
+          if (BUSINESS_MODELS.includes(value as BusinessModel)) {
             return {
               ...prev,
-              [field]: [...currentValues, businessModelValue]
+              [field]: [...currentValues, value as BusinessModel]
             };
           }
           return prev; // If invalid, return unchanged state
         }
+      });
+    } else {
+      // Handle other fields normally (industries and preferredLocation)
+      setFormData(prev => {
+        const currentValues = prev[field];
+        const exists = currentValues.includes(value);
         
-        return {
-          ...prev,
-          [field]: [...currentValues, value]
-        };
-      }
-    });
+        if (exists) {
+          return {
+            ...prev,
+            [field]: currentValues.filter(v => v !== value)
+          };
+        } else {
+          return {
+            ...prev,
+            [field]: [...currentValues, value]
+          };
+        }
+      });
+    }
   };
 
   return (

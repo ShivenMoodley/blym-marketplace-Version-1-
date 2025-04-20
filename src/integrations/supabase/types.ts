@@ -112,12 +112,36 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+          user_type: Database["public"]["Enums"]["user_type"]
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          updated_at?: string
+          user_type: Database["public"]["Enums"]["user_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_type?: Database["public"]["Enums"]["user_type"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_profile_for_user: {
+        Args: { user_id: string; user_type: string }
+        Returns: undefined
+      }
     }
     Enums: {
       business_model:
@@ -132,6 +156,7 @@ export type Database = {
         | "investor"
         | "private_equity"
         | "corporate_acquirer"
+      user_type: "buyer" | "seller"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -261,6 +286,7 @@ export const Constants = {
         "private_equity",
         "corporate_acquirer",
       ],
+      user_type: ["buyer", "seller"],
     },
   },
 } as const

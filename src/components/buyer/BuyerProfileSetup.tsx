@@ -8,17 +8,21 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
+// Define the business model type to match our database enum
+type BusinessModel = "subscription" | "one_time" | "agency" | "marketplace" | "ecommerce" | "other";
+type BuyerType = "individual" | "investor" | "private_equity" | "corporate_acquirer";
+
 const BuyerProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    buyerType: "individual" as const,
+    buyerType: "individual" as BuyerType,
     minRevenue: "",
     maxRevenue: "",
     minBudget: "",
     maxBudget: "",
     industries: [] as string[],
-    businessModels: [] as string[],
+    businessModels: [] as BusinessModel[],
     preferredLocation: [] as string[],
     preferredDealType: "",
     linkedinUrl: "",
@@ -73,14 +77,14 @@ const BuyerProfileSetup: React.FC = () => {
         }
       }
 
-      // Add business models
+      // Add business models - properly typed to match the database enum
       if (formData.businessModels.length > 0) {
         const { error: modelsError } = await supabase
           .from('buyer_business_models')
           .insert(
-            formData.businessModels.map(model => ({
+            formData.businessModels.map(businessModel => ({
               buyer_id: user.id,
-              business_model: model
+              business_model: businessModel
             }))
           );
 
@@ -110,7 +114,7 @@ const BuyerProfileSetup: React.FC = () => {
             <RadioGroup
               value={formData.buyerType}
               onValueChange={(value) => 
-                setFormData(prev => ({ ...prev, buyerType: value as any }))
+                setFormData(prev => ({ ...prev, buyerType: value as BuyerType }))
               }
               className="space-y-3"
             >

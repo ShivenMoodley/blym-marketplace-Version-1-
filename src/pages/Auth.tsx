@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -14,9 +16,13 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState<"buyer" | "seller" | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
     
     try {
       if (isLogin) {
@@ -35,29 +41,37 @@ const Auth = () => {
         navigate(profile?.user_type === 'buyer' ? '/buyer/dashboard' : '/seller/dashboard');
       } else {
         if (!userType) {
-          toast.error("Please select if you're a buyer or seller");
+          setError("Please select if you're a buyer or seller");
+          setLoading(false);
           return;
         }
 
+        // First create the user
         const { error: signUpError, data } = await supabase.auth.signUp({
           email,
           password,
         });
         
         if (signUpError) throw signUpError;
+        
+        if (data?.user) {
+          // Then explicitly update the profile with the user_type
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({ user_type: userType })
+            .eq('id', data.user.id);
+            
+          if (profileError) throw profileError;
 
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({ user_type: userType })
-          .eq('id', data.user?.id);
-          
-        if (profileError) throw profileError;
-
-        navigate(userType === 'buyer' ? '/buyer/setup' : '/seller/setup');
+          toast.success("Account created successfully!");
+          navigate(userType === 'buyer' ? '/buyer/setup' : '/seller/setup');
+        }
       }
     } catch (error) {
       console.error('Auth error:', error);
-      toast.error(error.message || 'An error occurred during authentication');
+      setError(error.message || 'An error occurred during authentication');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,6 +83,14 @@ const Auth = () => {
             {isLogin ? "Sign in to your account" : "Create your account"}
           </h2>
         </div>
+        
+        {error && (
+          <Alert variant="destructive" className="my-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        
         <form className="mt-8 space-y-6" onSubmit={handleAuth}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
@@ -113,8 +135,8 @@ const Auth = () => {
           </div>
 
           <div>
-            <Button type="submit" className="w-full">
-              {isLogin ? "Sign in" : "Sign up"}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Processing..." : isLogin ? "Sign in" : "Sign up"}
             </Button>
           </div>
         </form>

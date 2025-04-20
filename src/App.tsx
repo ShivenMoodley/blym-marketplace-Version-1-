@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BuyerProfileSetup from "./components/buyer/BuyerProfileSetup";
+import SellerProfileSetup from "./components/seller/SellerProfileSetup";
+import SellerDashboard from "./components/seller/SellerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/buyer/setup" element={<BuyerProfileSetup />} />
+          <Route path="/seller/setup" element={<SellerProfileSetup />} />
+          <Route path="/seller/dashboard" element={<SellerDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

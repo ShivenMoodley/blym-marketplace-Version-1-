@@ -79,40 +79,26 @@ const RecommendedDeals: React.FC = () => {
         <h2 className="text-xl font-semibold">Recommended Deals</h2>
         
         <div className="flex space-x-2">
-          <TabsList>
-            <TabsTrigger 
-              value="newest" 
-              className={sortBy === "newest" ? "bg-primary text-white" : ""} 
-              onClick={() => setSortBy("newest")}
-            >
-              <Calendar className="h-4 w-4 mr-2" />
-              Newest
-            </TabsTrigger>
-            <TabsTrigger 
-              value="trending" 
-              className={sortBy === "trending" ? "bg-primary text-white" : ""} 
-              onClick={() => setSortBy("trending")}
-            >
-              <TrendingUp className="h-4 w-4 mr-2" />
-              Trending
-            </TabsTrigger>
-            <TabsTrigger 
-              value="valuation" 
-              className={sortBy === "valuation" ? "bg-primary text-white" : ""} 
-              onClick={() => setSortBy("valuation")}
-            >
-              <BarChart className="h-4 w-4 mr-2" />
-              Valuation
-            </TabsTrigger>
-            <TabsTrigger 
-              value="revenue" 
-              className={sortBy === "revenue" ? "bg-primary text-white" : ""} 
-              onClick={() => setSortBy("revenue")}
-            >
-              <Star className="h-4 w-4 mr-2" />
-              Revenue
-            </TabsTrigger>
-          </TabsList>
+          <Tabs defaultValue={sortBy} onValueChange={setSortBy}>
+            <TabsList>
+              <TabsTrigger value="newest">
+                <Calendar className="h-4 w-4 mr-2" />
+                Newest
+              </TabsTrigger>
+              <TabsTrigger value="trending">
+                <TrendingUp className="h-4 w-4 mr-2" />
+                Trending
+              </TabsTrigger>
+              <TabsTrigger value="valuation">
+                <BarChart className="h-4 w-4 mr-2" />
+                Valuation
+              </TabsTrigger>
+              <TabsTrigger value="revenue">
+                <Star className="h-4 w-4 mr-2" />
+                Revenue
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
       </div>
       

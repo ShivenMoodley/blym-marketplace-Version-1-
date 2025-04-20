@@ -119,7 +119,7 @@ const BuyerProfileSetup: React.FC = () => {
           .insert(
             formData.businessModels.map(businessModel => ({
               buyer_id: user.id,
-              business_model: businessModel as BusinessModel
+              business_model: businessModel
             }))
           );
 
@@ -153,13 +153,14 @@ const BuyerProfileSetup: React.FC = () => {
       } else {
         // Ensure type safety for businessModels
         if (field === 'businessModels') {
-          const validBusinessModel = BUSINESS_MODELS.find(model => model === value);
-          if (!validBusinessModel) return prev;
-          
-          return {
-            ...prev,
-            [field]: [...currentValues, validBusinessModel] as BusinessModel[]
-          };
+          // Check if the value is a valid business model
+          if (BUSINESS_MODELS.includes(value as BusinessModel)) {
+            return {
+              ...prev,
+              [field]: [...currentValues, value as BusinessModel]
+            };
+          }
+          return prev; // Return unchanged state if invalid value
         }
         
         return {

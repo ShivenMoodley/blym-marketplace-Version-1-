@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,14 +112,14 @@ const BuyerProfileSetup: React.FC = () => {
         }
       }
 
-      // Add business models - properly typed to match the database enum
+      // Add business models - use type-safe insertion
       if (formData.businessModels.length > 0) {
         const { error: modelsError } = await supabase
           .from('buyer_business_models')
           .insert(
             formData.businessModels.map(businessModel => ({
               buyer_id: user.id,
-              business_model: businessModel
+              business_model: businessModel as BusinessModel
             }))
           );
 
@@ -152,6 +151,17 @@ const BuyerProfileSetup: React.FC = () => {
           [field]: currentValues.filter(v => v !== value)
         };
       } else {
+        // Ensure type safety for businessModels
+        if (field === 'businessModels') {
+          const validBusinessModel = BUSINESS_MODELS.find(model => model === value);
+          if (!validBusinessModel) return prev;
+          
+          return {
+            ...prev,
+            [field]: [...currentValues, validBusinessModel] as BusinessModel[]
+          };
+        }
+        
         return {
           ...prev,
           [field]: [...currentValues, value]

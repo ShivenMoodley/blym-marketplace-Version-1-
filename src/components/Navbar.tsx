@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +23,29 @@ const Navbar: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Check current auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleAuthClick = () => {
+    navigate('/auth');
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   return (
     <nav
@@ -64,12 +92,23 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button
-              className="ml-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Get Started
-            </Button>
+            
+            {user ? (
+              <Button 
+                variant="outline"
+                onClick={handleLogout}
+                className="ml-4"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                className="ml-4 bg-black text-white hover:bg-gray-900 transition-smooth"
+                onClick={handleAuthClick}
+              >
+                Sign In
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -116,7 +155,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-3 pb-3 space-y-1 bg-white animate-fade-in">
+          <div className="md:hidden mt-3 pb-3 space-y-1">
             <a
               href="#sell"
               className="block py-2 text-gray-800 hover:text-black transition-colors"
@@ -145,15 +184,23 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button
-              className="w-full mt-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => {
-                document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              Get Started
-            </Button>
+            
+            {user ? (
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="w-full mt-4"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                className="w-full mt-4 bg-black text-white hover:bg-gray-900 transition-smooth"
+                onClick={handleAuthClick}
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         )}
       </div>

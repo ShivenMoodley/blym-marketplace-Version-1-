@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,21 +147,29 @@ const BuyerProfileSetup: React.FC = () => {
       const exists = currentValues.includes(value);
       
       if (exists) {
+        // For removal, we need to maintain the proper type for businessModels
+        if (field === 'businessModels') {
+          return {
+            ...prev,
+            [field]: currentValues.filter(v => v !== value) as BusinessModel[]
+          };
+        }
         return {
           ...prev,
           [field]: currentValues.filter(v => v !== value)
         };
       } else {
-        // Ensure type safety for businessModels
+        // For addition, we need special handling for businessModels
         if (field === 'businessModels') {
-          // Check if the value is a valid business model
-          if (BUSINESS_MODELS.includes(value as BusinessModel)) {
+          // Type-check: Only add if it's a valid business model
+          const businessModelValue = value as BusinessModel;
+          if (BUSINESS_MODELS.includes(businessModelValue)) {
             return {
               ...prev,
-              [field]: [...currentValues, value as BusinessModel]
+              [field]: [...currentValues, businessModelValue]
             };
           }
-          return prev; // Return unchanged state if invalid value
+          return prev; // If invalid, return unchanged state
         }
         
         return {

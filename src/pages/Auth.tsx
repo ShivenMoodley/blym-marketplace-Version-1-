@@ -55,11 +55,13 @@ const Auth = () => {
         if (signUpError) throw signUpError;
         
         if (data?.user) {
-          // Then explicitly update the profile with the user_type
+          // Create a new profile with the user_type
           const { error: profileError } = await supabase
             .from('profiles')
-            .update({ user_type: userType })
-            .eq('id', data.user.id);
+            .insert({ 
+              id: data.user.id, 
+              user_type: userType 
+            });
             
           if (profileError) throw profileError;
 

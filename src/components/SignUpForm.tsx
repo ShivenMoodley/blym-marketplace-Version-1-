@@ -33,14 +33,14 @@ const SignUpForm: React.FC = () => {
     
     try {
       const { error } = await supabase
-        .from('waitlist')
+        .from("waitlist")
         .insert([
           { 
             name: formState.name,
             email: formState.email,
             interest: formState.interest
           }
-        ]);
+        ] as any); // Temporary type assertion until we update the types
       
       if (error) {
         console.error("Error submitting form:", error);

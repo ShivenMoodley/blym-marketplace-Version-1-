@@ -9,7 +9,109 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      buyer_business_models: {
+        Row: {
+          business_model: Database["public"]["Enums"]["business_model"]
+          buyer_id: string | null
+          id: string
+        }
+        Insert: {
+          business_model: Database["public"]["Enums"]["business_model"]
+          buyer_id?: string | null
+          id?: string
+        }
+        Update: {
+          business_model?: Database["public"]["Enums"]["business_model"]
+          buyer_id?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buyer_business_models_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "buyer_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      buyer_industry_interests: {
+        Row: {
+          buyer_id: string | null
+          id: string
+          industry: string
+        }
+        Insert: {
+          buyer_id?: string | null
+          id?: string
+          industry: string
+        }
+        Update: {
+          buyer_id?: string | null
+          id?: string
+          industry?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buyer_industry_interests_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "buyer_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      buyer_profiles: {
+        Row: {
+          buyer_type: Database["public"]["Enums"]["buyer_type"]
+          company_website: string | null
+          created_at: string
+          id: string
+          is_verified: boolean | null
+          linkedin_url: string | null
+          max_budget: number | null
+          max_revenue: number | null
+          min_budget: number | null
+          min_revenue: number | null
+          preferred_deal_type: string | null
+          preferred_location: string[] | null
+          proof_of_funds_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          buyer_type: Database["public"]["Enums"]["buyer_type"]
+          company_website?: string | null
+          created_at?: string
+          id: string
+          is_verified?: boolean | null
+          linkedin_url?: string | null
+          max_budget?: number | null
+          max_revenue?: number | null
+          min_budget?: number | null
+          min_revenue?: number | null
+          preferred_deal_type?: string | null
+          preferred_location?: string[] | null
+          proof_of_funds_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          buyer_type?: Database["public"]["Enums"]["buyer_type"]
+          company_website?: string | null
+          created_at?: string
+          id?: string
+          is_verified?: boolean | null
+          linkedin_url?: string | null
+          max_budget?: number | null
+          max_revenue?: number | null
+          min_budget?: number | null
+          min_revenue?: number | null
+          preferred_deal_type?: string | null
+          preferred_location?: string[] | null
+          proof_of_funds_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +120,18 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      business_model:
+        | "subscription"
+        | "one_time"
+        | "agency"
+        | "marketplace"
+        | "ecommerce"
+        | "other"
+      buyer_type:
+        | "individual"
+        | "investor"
+        | "private_equity"
+        | "corporate_acquirer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +246,21 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      business_model: [
+        "subscription",
+        "one_time",
+        "agency",
+        "marketplace",
+        "ecommerce",
+        "other",
+      ],
+      buyer_type: [
+        "individual",
+        "investor",
+        "private_equity",
+        "corporate_acquirer",
+      ],
+    },
   },
 } as const

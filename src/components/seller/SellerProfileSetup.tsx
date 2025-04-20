@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -311,7 +310,7 @@ export default function SellerProfileSetup() {
                     <Input
                       value={formData.revenue}
                       onChange={(e) => handleChange("revenue", e.target.value)}
-                      placeholder="$"
+                      placeholder="ZAR"
                       className="w-full"
                     />
                   </div>
@@ -323,7 +322,7 @@ export default function SellerProfileSetup() {
                     <Input
                       value={formData.profit}
                       onChange={(e) => handleChange("profit", e.target.value)}
-                      placeholder="$"
+                      placeholder="ZAR"
                       className="w-full"
                     />
                   </div>
@@ -337,7 +336,7 @@ export default function SellerProfileSetup() {
                     <Input
                       value={formData.mrr}
                       onChange={(e) => handleChange("mrr", e.target.value)}
-                      placeholder="$"
+                      placeholder="ZAR"
                       className="w-full"
                     />
                   </div>
@@ -349,7 +348,7 @@ export default function SellerProfileSetup() {
                     <Input
                       value={formData.arr}
                       onChange={(e) => handleChange("arr", e.target.value)}
-                      placeholder="$"
+                      placeholder="ZAR"
                       className="w-full"
                     />
                   </div>

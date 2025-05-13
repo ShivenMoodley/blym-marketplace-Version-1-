@@ -1,5 +1,5 @@
 
-// Importing from shadcn
+import * as React from "react";
 import { Toast, ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 3;
@@ -10,6 +10,7 @@ type ToasterToast = Toast & {
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
+  variant?: "default" | "destructive"; // Add variant to the type
 };
 
 const actionTypes = {
@@ -137,9 +138,10 @@ function dispatch(action: Action) {
   });
 }
 
-interface Toast extends Omit<ToasterToast, "id"> {}
+// Fixed interface: separated from Toast type to avoid recursive reference
+interface ToastOptions extends Omit<ToasterToast, "id"> {}
 
-function toast({ ...props }: Toast) {
+function toast(props: ToastOptions) {
   const id = genId();
 
   const update = (props: ToasterToast) =>

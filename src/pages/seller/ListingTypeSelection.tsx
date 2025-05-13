@@ -36,7 +36,7 @@ const ListingTypeSelection: React.FC = () => {
         title: "Success!",
         description: type === 'premium' 
           ? "Premium listing selected. Proceeding to payment." 
-          : "Standard listing selected. Proceeding to onboarding.",
+          : "Standard listing selected. Proceeding to onboarding."
       });
 
       // Small delay to show the toast before navigating
@@ -48,7 +48,7 @@ const ListingTypeSelection: React.FC = () => {
           // For standard/free tier, go directly to onboarding
           navigate('/seller/onboarding');
         }
-      }, 1000);
+      }, 1500);
       
     } catch (error: any) {
       toast({

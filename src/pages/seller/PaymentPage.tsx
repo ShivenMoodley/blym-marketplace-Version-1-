@@ -46,7 +46,7 @@ const PaymentPage: React.FC = () => {
 
         toast({
           title: "Payment Successful",
-          description: "Your payment has been processed. You can now continue with the onboarding process.",
+          description: "Your payment has been processed. You can now continue with the onboarding process."
         });
 
         // Navigate to the onboarding form

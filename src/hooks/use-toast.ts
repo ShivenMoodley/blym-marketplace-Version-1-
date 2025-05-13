@@ -1,17 +1,16 @@
-
 import * as React from "react";
-import { Toast, ToastActionElement, ToastProps } from "@/components/ui/toast";
+import { Toast as ToastComponent, ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 3;
 const TOAST_REMOVE_DELAY = 1000000;
 
-type ToasterToast = Toast & {
+type ToasterToast = {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
-  variant?: "default" | "destructive"; // Add variant to the type
-};
+  variant?: "default" | "destructive";
+} & ToastProps;
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -138,7 +137,7 @@ function dispatch(action: Action) {
   });
 }
 
-// Fixed interface: separated from Toast type to avoid recursive reference
+// Define the toast options interface
 interface ToastOptions extends Omit<ToasterToast, "id"> {}
 
 function toast(props: ToastOptions) {

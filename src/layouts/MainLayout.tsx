@@ -1,8 +1,11 @@
 
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
 import Footer from "@/components/Footer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Toaster } from "@/components/ui/toaster";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -10,6 +13,8 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const isDashboard = location.pathname.includes("/dashboard");
 
   useEffect(() => {
     // Fix viewport height issues on mobile browsers
@@ -32,9 +37,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
   return (
     <div className={`flex flex-col min-h-screen-real overflow-x-hidden ${isMobile ? 'mobile-view' : ''}`}>
-      <Navbar />
-      <main className="flex-grow">{children}</main>
+      {isDashboard ? <DashboardNavbar /> : <Navbar />}
+      <main className="flex-grow pt-6">{children}</main>
       <Footer />
+      <Toaster />
     </div>
   );
 };

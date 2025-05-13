@@ -1,14 +1,15 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useNavigate } from "react-router-dom";
+import { supabaseHelper } from "@/utils/supabase-helpers";
+import { toast } from "@/components/ui/use-toast";
 
 const SignUpForm: React.FC = () => {
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -32,32 +33,37 @@ const SignUpForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
-        .from('waitlist')
-        .insert([
-          { 
-            name: formState.name,
-            email: formState.email,
-            interest: formState.interest
-          }
-        ]);
+      // Add to Supabase waitlist table
+      const { error } = await supabaseHelper.from("waitlist").insert({
+        name: formState.name,
+        email: formState.email,
+        interest: formState.interest,
+        created_at: new Date().toISOString()
+      });
       
-      if (error) {
-        console.error("Error submitting form:", error);
-        toast.error(error.message === "duplicate key value violates unique constraint \"waitlist_email_key\"" 
-          ? "This email is already on our waitlist." 
-          : "There was an error submitting your information. Please try again.");
-        setIsSubmitting(false);
-        return;
+      if (error) throw error;
+      
+      console.log("Form submitted successfully to waitlist:", formState);
+      
+      if (formState.interest === 'buying') {
+        // Redirect to buyer profile setup
+        navigate("/buyer/setup");
+      } else {
+        // For now, just show success message
+        setIsSubmitted(true);
+        toast({
+          title: "Joined Waitlist!",
+          description: "We've added you to our waitlist and will be in touch soon.",
+        });
       }
-      
-      console.log("Form submitted successfully:", formState);
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      toast.success("Successfully joined our waitlist!");
     } catch (error) {
       console.error("Exception submitting form:", error);
-      toast.error("An unexpected error occurred. Please try again.");
+      toast({
+        title: "Submission failed",
+        description: "There was an error joining the waitlist. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -71,7 +77,7 @@ const SignUpForm: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 md:mb-10 animate-fade-in">
             <div className="inline-flex items-center py-1 px-3 rounded-full bg-black/5 mb-3 md:mb-4">
-              <span className="text-sm font-medium">Get Started</span>
+              <span className="text-sm font-medium">Waitlist</span>
             </div>
             <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
               Begin Your Business Journey Today
@@ -113,7 +119,7 @@ const SignUpForm: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Get Started with Blym</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Join Our Waitlist</h3>
                 
                 <div className="space-y-4">
                   <div>

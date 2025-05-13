@@ -1,10 +1,13 @@
+
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { useAuthButtons } from "@/hooks/use-auth-buttons";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const authButtons = useAuthButtons();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,12 +67,9 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button
-              className="ml-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Get Started
-            </Button>
+            <div className="flex items-center space-x-4">
+              {authButtons}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -145,15 +145,9 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button
-              className="w-full mt-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => {
-                document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              Get Started
-            </Button>
+            <div className="pt-2">
+              {authButtons}
+            </div>
           </div>
         )}
       </div>

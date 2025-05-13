@@ -33,7 +33,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --vh: 1vh;
   }
 
   .dark {
@@ -76,8 +75,6 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-    -webkit-tap-highlight-color: transparent;
-    overflow-x: hidden;
   }
 }
 
@@ -113,63 +110,8 @@
   }
   
   .section-container {
-    @apply max-w-7xl mx-auto py-10 md:py-16 lg:py-24 px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
   }
-
-  /* Mobile-specific viewport height fix */
-  .min-h-screen-real {
-    min-height: 100vh; /* Fallback */
-    min-height: calc(var(--vh, 1vh) * 100);
-  }
-
-  /* Better touch targets for mobile */
-  .touch-target {
-    @apply p-2 min-h-[44px] min-w-[44px];
-  }
-
-  /* Mobile-friendly padding adjustments */
-  .mobile-friendly-padding {
-    @apply px-4 py-3 md:px-6 md:py-4;
-  }
-  
-  /* Mobile specific flex direction changes */
-  .mobile-view .mobile-col {
-    @apply flex-col;
-  }
-  
-  /* Prevent overflow issues in mobile cards */
-  .mobile-card-fix {
-    @apply relative overflow-hidden;
-  }
-  
-  /* Fix for floating elements on mobile */
-  .mobile-view .mobile-float-fix {
-    @apply relative transform-none !important;
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    margin: 0.5rem 0 !important;
-  }
-  
-  /* Increased spacing for mobile elements */
-  .mobile-view .mobile-spacing {
-    @apply my-2 mx-0;
-  }
-  
-  /* Prevent content overlap */
-  .mobile-view .prevent-overlap {
-    @apply relative z-10 bg-white rounded-lg shadow-sm;
-  }
-}
-
-/* Fix for iOS form elements */
-input,
-textarea,
-button,
-select {
-  @apply appearance-none;
 }
 
 #root {
@@ -177,72 +119,4 @@ select {
   margin: 0 auto;
   padding: 0;
   text-align: center;
-}
-
-/* Media queries for better mobile responsiveness */
-@media (max-width: 640px) {
-  .section-container {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  
-  h1 {
-    font-size: calc(1.5rem + 1vw);
-    line-height: 1.2;
-  }
-  
-  h2 {
-    font-size: calc(1.25rem + 0.5vw);
-    line-height: 1.3;
-  }
-  
-  /* Fix for hero section on mobile */
-  .hero-container {
-    padding-top: 1rem !important;
-    padding-bottom: 2rem !important;
-  }
-  
-  /* Fix for feature cards on mobile */
-  .feature-card {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Fix for floating elements on mobile */
-  .animate-float {
-    animation: none !important;
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    margin: 0.5rem !important;
-  }
-  
-  /* Stacked grid for mobile */
-  .grid {
-    gap: 1.5rem !important;
-  }
-  
-  /* Fix for card content on mobile */
-  .card-content-mobile {
-    max-width: 100%;
-    width: 100%;
-    padding: 1rem;
-    margin: 0.5rem 0;
-    box-sizing: border-box;
-  }
-  
-  /* Fix for card height on mobile */
-  .aspect-square {
-    aspect-ratio: auto !important;
-    height: auto !important;
-  }
-}
-
-/* Fix for mobile devices in landscape */
-@media (max-width: 896px) and (orientation: landscape) {
-  .min-h-screen-real {
-    min-height: 100%;
-  }
 }

@@ -2,7 +2,6 @@
 import React, { useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import AnimatedCard from "./AnimatedCard";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ChecklistItem {
   id: string;
@@ -33,7 +32,6 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
   icon,
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const sectionElement = sectionRef.current;
@@ -65,16 +63,16 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
     <section
       id={id}
       ref={sectionRef}
-      className={cn("py-12 sm:py-16 md:py-20 overflow-hidden", backgroundColor)}
+      className={cn("py-20 overflow-hidden", backgroundColor)}
     >
       <div className="section-container">
         <div
           className={cn(
-            "grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-16 items-center",
+            "grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center",
             reverse ? "lg:flex-row-reverse" : ""
           )}
         >
-          <div className={cn("space-y-4 sm:space-y-6", reverse ? "lg:order-2" : "lg:order-1")}>
+          <div className={cn("space-y-6", reverse ? "lg:order-2" : "lg:order-1")}>
             <div
               className="animate-on-scroll opacity-0 transform translate-y-4 transition-all duration-700"
               style={{ transitionDelay: "100ms" }}
@@ -85,20 +83,20 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
             </div>
 
             <h2
-              className="text-2xl sm:text-3xl md:text-4xl font-bold animate-on-scroll opacity-0 transform translate-y-4 transition-all duration-700"
+              className="text-3xl md:text-4xl font-bold animate-on-scroll opacity-0 transform translate-y-4 transition-all duration-700"
               style={{ transitionDelay: "200ms" }}
             >
               {title}
             </h2>
 
             <p
-              className="text-gray-600 text-base sm:text-lg leading-relaxed animate-on-scroll opacity-0 transform translate-y-4 transition-all duration-700"
+              className="text-gray-600 text-lg leading-relaxed animate-on-scroll opacity-0 transform translate-y-4 transition-all duration-700"
               style={{ transitionDelay: "300ms" }}
             >
               {description}
             </p>
 
-            <div className="pt-2 sm:pt-4 space-y-2 sm:space-y-3">
+            <div className="pt-4 space-y-3">
               {items.map((item, index) => (
                 <div
                   key={item.id}
@@ -129,22 +127,20 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
 
           <div
             className={cn(
-              "relative animate-on-scroll opacity-0 transform translate-y-8 transition-all duration-700 feature-card",
+              "relative animate-on-scroll opacity-0 transform translate-y-8 transition-all duration-700",
               reverse ? "lg:order-1" : "lg:order-2"
             )}
             style={{ transitionDelay: "500ms" }}
           >
             {imageComponent ? (
-              <div className={`mobile-card-fix ${isMobile ? 'card-content-mobile' : ''}`}>
-                {imageComponent}
-              </div>
+              imageComponent
             ) : (
               <AnimatedCard
                 icon={icon}
                 title={title}
                 description={description}
                 isActive={true}
-                className={`${isMobile ? 'w-full' : 'max-w-md'} mx-auto`}
+                className="max-w-md mx-auto"
               />
             )}
           </div>

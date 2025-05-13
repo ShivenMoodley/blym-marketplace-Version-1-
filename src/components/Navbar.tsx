@@ -1,13 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
-import { useAuthButtons } from "@/hooks/use-auth-buttons";
+import { Button } from "@/components/ui/button";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const authButtons = useAuthButtons();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +26,7 @@ const Navbar: React.FC = () => {
         "fixed top-0 w-full z-50 transition-all duration-300",
         isScrolled
           ? "bg-white/90 backdrop-blur-md py-3 shadow-sm"
-          : "bg-white py-4"
+          : "bg-transparent py-5"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,9 +65,12 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <div className="flex items-center space-x-4">
-              {authButtons}
-            </div>
+            <Button
+              className="ml-4 bg-black text-white hover:bg-gray-900 transition-smooth"
+              onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Get Started
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -116,7 +117,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-3 pb-3 space-y-1 bg-white animate-fade-in">
+          <div className="md:hidden mt-3 pb-3 space-y-1 animate-fade-in">
             <a
               href="#sell"
               className="block py-2 text-gray-800 hover:text-black transition-colors"
@@ -145,9 +146,15 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <div className="pt-2">
-              {authButtons}
-            </div>
+            <Button
+              className="w-full mt-4 bg-black text-white hover:bg-gray-900 transition-smooth"
+              onClick={() => {
+                document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Get Started
+            </Button>
           </div>
         )}
       </div>

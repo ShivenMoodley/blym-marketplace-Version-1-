@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from "react";
-import { supabaseHelper } from "@/utils/supabase-helpers";
+import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/use-toast";
 
 interface WaitlistEntry {
   id: string;
@@ -23,17 +24,44 @@ export const WaitlistViewer: React.FC = () => {
     setError(null);
     
     try {
-      const { data, error } = await supabaseHelper.from("waitlist").select("*");
+      const { data, error } = await supabase.from("waitlist").select("*");
       
       if (error) {
         throw error;
       }
       
-      setEntries(data || []);
-      console.log("Waitlist entries:", data);
+      // Check if data is an array and has the expected structure
+      if (Array.isArray(data)) {
+        // Type guard to ensure the data matches our WaitlistEntry interface
+        const validEntries = data.filter((entry): entry is WaitlistEntry => {
+          const isValid = 
+            typeof entry?.id === 'string' &&
+            typeof entry?.name === 'string' &&
+            typeof entry?.email === 'string' &&
+            typeof entry?.interest === 'string' &&
+            typeof entry?.created_at === 'string';
+          
+          if (!isValid) {
+            console.warn("Invalid entry found:", entry);
+          }
+          
+          return isValid;
+        });
+        
+        setEntries(validEntries);
+        console.log("Waitlist entries:", validEntries);
+      } else {
+        console.error("Unexpected data format:", data);
+        setEntries([]);
+      }
     } catch (err: any) {
       console.error("Error fetching waitlist entries:", err);
       setError(err.message || "Failed to fetch waitlist entries");
+      toast({
+        title: "Error",
+        description: `Failed to fetch waitlist entries: ${err.message}`,
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }

@@ -13,8 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { supabaseHelper } from '@/utils/supabase-helpers';
+import { SellerSubmission } from '@/types/app';
 
 type FormStep = 'business-identity' | 'company-snapshot' | 'business-summary' | 'pricing' | 'documents';
+type ListingStatus = 'Draft' | 'Under Review' | 'Approved' | 'Rejected' | 'Published';
 
 const SellerOnboardingForm: React.FC = () => {
   const navigate = useNavigate();
@@ -120,7 +122,10 @@ const SellerOnboardingForm: React.FC = () => {
     if (!user?.id) return;
     
     try {
-      const submission = {
+      // Type-safe listing status
+      const listingStatus: ListingStatus = currentStep === 'documents' ? 'Under Review' : 'Draft';
+      
+      const submission: Partial<SellerSubmission> = {
         user_id: user.id,
         email: user.email,
         form_data: formData,
@@ -130,7 +135,7 @@ const SellerOnboardingForm: React.FC = () => {
         profit: formData.profit,
         asking_price: formData.openToOffers ? 'Open to Offers' : formData.askingPrice,
         summary: formData.businessDescription?.substring(0, 200) + '...',
-        listing_status: currentStep === 'documents' ? 'Under Review' : 'Draft',
+        listing_status: listingStatus, // Use the typed variable
         updated_at: new Date().toISOString(),
       };
       
@@ -218,8 +223,11 @@ const SellerOnboardingForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
+      // Ensure we use the correct type for listing_status
+      const listingStatus: ListingStatus = 'Under Review';
+      
       // Final submission
-      const submission = {
+      const submission: Partial<SellerSubmission> = {
         user_id: user?.id,
         form_data: formData,
         business_name: formData.businessName,
@@ -228,7 +236,7 @@ const SellerOnboardingForm: React.FC = () => {
         profit: formData.profit,
         asking_price: formData.openToOffers ? 'Open to Offers' : formData.askingPrice,
         summary: formData.businessDescription?.substring(0, 200) + '...',
-        listing_status: 'Under Review', // Change status to Under Review
+        listing_status: listingStatus, // Use the typed variable
         updated_at: new Date().toISOString(),
       };
       

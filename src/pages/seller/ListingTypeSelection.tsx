@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
@@ -27,7 +26,7 @@ const ListingTypeSelection: React.FC = () => {
           listing_type: type,
           payment_status: type === 'standard' ? 'Not Required' : 'Pending',
           listing_status: 'Draft',
-        });
+        } as any);
 
       if (error) throw error;
 

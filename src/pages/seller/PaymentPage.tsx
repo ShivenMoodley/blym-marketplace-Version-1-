@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
@@ -40,7 +39,7 @@ const PaymentPage: React.FC = () => {
         // Update the payment status in the database
         const { error } = await supabase
           .from('seller_submissions')
-          .update({ payment_status: 'Paid' })
+          .update({ payment_status: 'Paid' } as any)
           .eq('user_id', user?.id);
 
         if (error) throw error;

@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { ExtendedProfile } from '@/types/app';
 
 type User = {
   id: string;
@@ -49,11 +50,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             .eq('id', userData.user.id)
             .single();
 
+          const extendedProfile = profile as unknown as ExtendedProfile;
+
           setUser({
             id: userData.user.id,
             email: userData.user.email || '',
-            role: profile?.role as 'user' | 'admin' || 'user',
-            userType: profile?.user_type as 'buyer' | 'seller'
+            role: extendedProfile?.role || 'user',
+            userType: extendedProfile?.user_type
           });
         }
       }
@@ -72,11 +75,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           .eq('id', session.user.id)
           .single();
 
+        const extendedProfile = profile as unknown as ExtendedProfile;
+
         setUser({
           id: session.user.id,
           email: session.user.email || '',
-          role: profile?.role as 'user' | 'admin' || 'user',
-          userType: profile?.user_type as 'buyer' | 'seller'
+          role: extendedProfile?.role || 'user',
+          userType: extendedProfile?.user_type
         });
       } else if (event === 'SIGNED_OUT') {
         setUser(null);

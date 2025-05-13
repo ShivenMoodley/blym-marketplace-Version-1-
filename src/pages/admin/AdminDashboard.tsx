@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -31,26 +30,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-
-interface SellerSubmission {
-  id: string;
-  user_id: string;
-  email: string;
-  listing_type: 'standard' | 'premium';
-  payment_status: string;
-  business_name: string;
-  business_category: string;
-  revenue: string;
-  profit: string;
-  asking_price: string;
-  summary: string;
-  uploaded_docs: any[];
-  listing_status: 'Draft' | 'Under Review' | 'Approved' | 'Rejected' | 'Published';
-  assigned_admin: string | null;
-  form_data: any;
-  created_at: string;
-  updated_at: string;
-}
+import { SellerSubmission } from '@/types/app';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -75,7 +55,7 @@ const AdminDashboard: React.FC = () => {
         
       if (error) throw error;
       
-      setSubmissions(data as SellerSubmission[]);
+      setSubmissions(data as unknown as SellerSubmission[]);
     } catch (error: any) {
       toast({
         title: "Error",

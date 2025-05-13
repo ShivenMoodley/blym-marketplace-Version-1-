@@ -41,7 +41,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     // First set up the auth listener to avoid missing auth events
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        // Get user profile data including role
         try {
           const { data: profile } = await supabase
             .from('profiles')
@@ -64,11 +63,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
               title: "Welcome back!",
               description: "You've successfully signed in."
             });
-          }
-          
-          // Redirect based on user type after sign in - do this with a slight delay
-          // to ensure the UI has time to update
-          setTimeout(() => {
+            
+            // Redirect immediately based on user type
             if (extendedProfile?.user_type === 'seller') {
               navigate('/seller/listing-type');
             } else if (extendedProfile?.user_type === 'buyer') {
@@ -76,12 +72,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             } else {
               navigate('/');
             }
-          }, 100);
+          }
         } catch (error) {
           console.error("Error fetching user profile:", error);
+          setLoading(false);
         }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
+        setLoading(false);
       }
     });
 
@@ -139,16 +137,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           
         const extendedProfile = profile as unknown as ExtendedProfile;
         
-        // Note: We don't need the toast here as it will be triggered by onAuthStateChange
-        // We don't need navigation here as it will be handled by onAuthStateChange
+        // Redirection will be handled by onAuthStateChange
       } catch (profileError) {
         console.error("Error fetching user profile during sign in:", profileError);
       }
     } catch (error: any) {
       console.error("Sign in error:", error);
+      setLoading(false); // Make sure to set loading to false on error
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -179,14 +175,18 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             userType: userType
           });
           
-          // Redirect based on user type after a short delay
-          setTimeout(() => {
-            if (userType === 'seller') {
-              navigate('/seller/listing-type');
-            } else {
-              navigate('/buyer/setup');
-            }
-          }, 100);
+          // Show successful signup toast
+          toast({
+            title: "Account created successfully",
+            description: "You can now sign in with your credentials.",
+          });
+          
+          // Redirect based on user type immediately
+          if (userType === 'seller') {
+            navigate('/seller/listing-type');
+          } else {
+            navigate('/buyer/setup');
+          }
         } catch (profileError) {
           console.error("Exception creating profile:", profileError);
           // Continue even if profile creation fails
@@ -194,6 +194,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       }
     } catch (error: any) {
       console.error("Sign up error:", error);
+      setLoading(false); // Make sure to set loading to false on error
       throw error;
     } finally {
       setLoading(false);

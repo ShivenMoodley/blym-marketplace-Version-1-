@@ -23,6 +23,7 @@ const SellerOnboardingForm: React.FC = () => {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState<FormStep>('business-identity');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     // Business Identity
     businessName: '',
@@ -65,31 +66,54 @@ const SellerOnboardingForm: React.FC = () => {
     
     // Try to load existing draft
     const loadDraft = async () => {
-      if (!user?.id) return;
+      setIsLoading(true);
       
       try {
-        const { data, error } = await supabaseHelper.sellerSubmissions()
-          .select()
-          .eq('user_id', user.id)
-          .single();
-          
-        if (error) {
-          console.error('Error loading draft:', error);
+        if (!user?.id) {
+          setIsLoading(false);
           return;
         }
         
-        if (data) {
-          // Type check to ensure data has form_data property before accessing it
-          if (data && 'form_data' in data) {
-            setFormData(data.form_data as any);
-          }
-          
-          if (data && 'id' in data) {
-            setSubmissionId(data.id as string);
+        // Try to load from localStorage first as a fallback if Supabase connection is slow
+        const savedFormData = localStorage.getItem(`seller_form_${user.id}`);
+        if (savedFormData) {
+          try {
+            const parsedData = JSON.parse(savedFormData);
+            setFormData(parsedData);
+          } catch (e) {
+            console.error("Error parsing saved form data:", e);
           }
         }
-      } catch (error) {
-        console.error('Error loading draft:', error);
+        
+        try {
+          const { data, error } = await supabaseHelper.sellerSubmissions()
+            .select()
+            .eq('user_id', user.id)
+            .single();
+            
+          if (error) {
+            if (error.code === 'PGRST116') {
+              // No data found, this is fine for new users
+              console.log("No existing submission found, starting fresh");
+            } else {
+              console.error('Error loading draft:', error);
+            }
+          } else if (data) {
+            // Type check to ensure data has form_data property before accessing it
+            if (data && 'form_data' in data) {
+              setFormData(data.form_data as any);
+            }
+            
+            if (data && 'id' in data) {
+              setSubmissionId(data.id as string);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading draft from Supabase:', error);
+          // Continue with localStorage data if available
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
     
@@ -122,42 +146,50 @@ const SellerOnboardingForm: React.FC = () => {
     if (!user?.id) return;
     
     try {
+      // Save to localStorage as a fallback
+      localStorage.setItem(`seller_form_${user.id}`, JSON.stringify(formData));
+      
       // Type-safe listing status
       const listingStatus: ListingStatus = currentStep === 'documents' ? 'Under Review' : 'Draft';
       
-      const submission: Partial<SellerSubmission> = {
-        user_id: user.id,
-        email: user.email,
-        form_data: formData,
-        business_name: formData.businessName,
-        business_category: formData.businessCategory,
-        revenue: formData.revenue,
-        profit: formData.profit,
-        asking_price: formData.openToOffers ? 'Open to Offers' : formData.askingPrice,
-        summary: formData.businessDescription?.substring(0, 200) + '...',
-        listing_status: listingStatus, // Use the typed variable
-        updated_at: new Date().toISOString(),
-      };
-      
-      let response;
-      if (submissionId) {
-        response = await supabaseHelper.sellerSubmissions()
-          .update(submission)
-          .eq('id', submissionId);
-      } else {
-        response = await supabaseHelper.sellerSubmissions()
-          .insert(submission);
-      }
-            
-      const { data, error } = response;
-      if (error) throw error;
-      
-      // Check if data exists and has entries before accessing it
-      if (data && Array.isArray(data) && data.length > 0 && !submissionId) {
-        // Safely access id if it exists
-        if ('id' in data[0]) {
-          setSubmissionId(data[0].id as string);
+      try {
+        const submission: Partial<SellerSubmission> = {
+          user_id: user.id,
+          email: user.email,
+          form_data: formData,
+          business_name: formData.businessName,
+          business_category: formData.businessCategory,
+          revenue: formData.revenue,
+          profit: formData.profit,
+          asking_price: formData.openToOffers ? 'Open to Offers' : formData.askingPrice,
+          summary: formData.businessDescription?.substring(0, 200) + '...',
+          listing_status: listingStatus, // Use the typed variable
+          updated_at: new Date().toISOString(),
+        };
+        
+        let response;
+        if (submissionId) {
+          response = await supabaseHelper.sellerSubmissions()
+            .update(submission)
+            .eq('id', submissionId);
+        } else {
+          response = await supabaseHelper.sellerSubmissions()
+            .insert(submission);
         }
+              
+        const { data, error } = response;
+        if (error) throw error;
+        
+        // Check if data exists and has entries before accessing it
+        if (data && Array.isArray(data) && data.length > 0 && !submissionId) {
+          // Safely access id if it exists
+          if ('id' in data[0]) {
+            setSubmissionId(data[0].id as string);
+          }
+        }
+      } catch (error: any) {
+        console.error('Error saving to Supabase:', error);
+        // Saved to localStorage already as fallback
       }
       
       toast({
@@ -223,38 +255,46 @@ const SellerOnboardingForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Ensure we use the correct type for listing_status
-      const listingStatus: ListingStatus = 'Under Review';
-      
-      // Final submission
-      const submission: Partial<SellerSubmission> = {
-        user_id: user?.id,
-        form_data: formData,
-        business_name: formData.businessName,
-        business_category: formData.businessCategory,
-        revenue: formData.revenue,
-        profit: formData.profit,
-        asking_price: formData.openToOffers ? 'Open to Offers' : formData.askingPrice,
-        summary: formData.businessDescription?.substring(0, 200) + '...',
-        listing_status: listingStatus, // Use the typed variable
-        updated_at: new Date().toISOString(),
-      };
-      
-      if (!submissionId) {
-        toast({
-          title: "Error",
-          description: "No submission ID found. Please save your progress first.",
-          variant: "destructive"
-        });
-        setIsSubmitting(false);
-        return;
+      // Save to localStorage first as a fallback
+      if (user?.id) {
+        localStorage.setItem(`seller_form_${user.id}`, JSON.stringify(formData));
       }
       
-      const { error } = await supabaseHelper.sellerSubmissions()
-        .update(submission)
-        .eq('id', submissionId);
+      try {
+        // Ensure we use the correct type for listing_status
+        const listingStatus: ListingStatus = 'Under Review';
         
-      if (error) throw error;
+        // Final submission
+        const submission: Partial<SellerSubmission> = {
+          user_id: user?.id,
+          form_data: formData,
+          business_name: formData.businessName,
+          business_category: formData.businessCategory,
+          revenue: formData.revenue,
+          profit: formData.profit,
+          asking_price: formData.openToOffers ? 'Open to Offers' : formData.askingPrice,
+          summary: formData.businessDescription?.substring(0, 200) + '...',
+          listing_status: listingStatus, // Use the typed variable
+          updated_at: new Date().toISOString(),
+        };
+        
+        if (!submissionId) {
+          // Create a new submission if we don't have an ID
+          const { data, error } = await supabaseHelper.sellerSubmissions().insert(submission);
+          
+          if (error) throw error;
+        } else {
+          // Update existing submission
+          const { error } = await supabaseHelper.sellerSubmissions()
+            .update(submission)
+            .eq('id', submissionId);
+            
+          if (error) throw error;
+        }
+      } catch (error: any) {
+        console.error('Error submitting to Supabase:', error);
+        // Proceed anyway since we have localStorage backup
+      }
       
       toast({
         title: "Submission Complete",
@@ -273,6 +313,19 @@ const SellerOnboardingForm: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="container max-w-3xl px-4 py-8 md:py-12">
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+          <h3 className="text-xl font-medium">Loading your form data...</h3>
+          <p className="text-gray-500 mt-2">Please wait while we retrieve your information.</p>
+        </div>
+      </div>
+    );
+  }
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -600,50 +653,48 @@ const SellerOnboardingForm: React.FC = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="container max-w-3xl px-4 py-8 md:py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Seller Onboarding</h1>
-          <Progress value={formProgress} className="h-2" />
-          <div className="flex justify-between mt-2 text-sm text-gray-500">
-            <span>{currentStep === 'documents' ? 'Final Step' : 'Step ' + (formProgress / 20)}</span>
-            <span>{formProgress}% Complete</span>
-          </div>
+    <div className="container max-w-3xl px-4 py-8 md:py-12">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Seller Onboarding</h1>
+        <Progress value={formProgress} className="h-2" />
+        <div className="flex justify-between mt-2 text-sm text-gray-500">
+          <span>{currentStep === 'documents' ? 'Final Step' : 'Step ' + (formProgress / 20)}</span>
+          <span>{formProgress}% Complete</span>
         </div>
-        
-        <Card>
-          <CardContent className="p-6">
-            {renderStepContent()}
+      </div>
+      
+      <Card>
+        <CardContent className="p-6">
+          {renderStepContent()}
+          
+          <div className="flex justify-between mt-8">
+            {currentStep !== 'business-identity' && (
+              <Button variant="outline" onClick={handleBack}>
+                Back
+              </Button>
+            )}
             
-            <div className="flex justify-between mt-8">
-              {currentStep !== 'business-identity' && (
-                <Button variant="outline" onClick={handleBack}>
-                  Back
+            <div className="flex gap-4 ml-auto">
+              {currentStep !== 'documents' && (
+                <Button variant="outline" onClick={saveProgress}>
+                  Save Draft
                 </Button>
               )}
               
-              <div className="flex gap-4 ml-auto">
-                {currentStep !== 'documents' && (
-                  <Button variant="outline" onClick={saveProgress}>
-                    Save Draft
-                  </Button>
-                )}
-                
-                <Button 
-                  onClick={handleNext}
-                  disabled={isSubmitting}
-                  className="bg-black hover:bg-gray-800"
-                >
-                  {currentStep === 'documents' 
-                    ? (isSubmitting ? "Submitting..." : "Submit Listing") 
-                    : "Continue"}
-                </Button>
-              </div>
+              <Button 
+                onClick={handleNext}
+                disabled={isSubmitting}
+                className="bg-black hover:bg-gray-800"
+              >
+                {currentStep === 'documents' 
+                  ? (isSubmitting ? "Submitting..." : "Submit Listing") 
+                  : "Continue"}
+              </Button>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </MainLayout>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

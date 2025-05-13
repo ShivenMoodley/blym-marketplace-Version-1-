@@ -1,13 +1,14 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNavigate } from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
-  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -31,19 +32,32 @@ const SignUpForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Store the form data locally to avoid database error
-      console.log("Form submitted successfully:", formState);
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([
+          { 
+            name: formState.name,
+            email: formState.email,
+            interest: formState.interest
+          }
+        ]);
       
-      if (formState.interest === 'buying') {
-        // Redirect to buyer profile setup
-        navigate("/buyer/setup");
-      } else {
-        // For now, just show success message
-        setIsSubmitted(true);
+      if (error) {
+        console.error("Error submitting form:", error);
+        toast.error(error.message === "duplicate key value violates unique constraint \"waitlist_email_key\"" 
+          ? "This email is already on our waitlist." 
+          : "There was an error submitting your information. Please try again.");
+        setIsSubmitting(false);
+        return;
       }
+      
+      console.log("Form submitted successfully:", formState);
       setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast.success("Successfully joined our waitlist!");
     } catch (error) {
       console.error("Exception submitting form:", error);
+      toast.error("An unexpected error occurred. Please try again.");
       setIsSubmitting(false);
     }
   };

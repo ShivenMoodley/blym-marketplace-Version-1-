@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuthButtons } from "@/hooks/use-auth-buttons";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const authButtons = useAuthButtons();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,12 +68,7 @@ const Navbar: React.FC = () => {
               Valuation
             </a>
             <div className="flex items-center space-x-4">
-              <Button variant="outline" asChild>
-                <Link to="/auth?tab=signin">Sign In</Link>
-              </Button>
-              <Button className="bg-black text-white hover:bg-gray-900" asChild>
-                <Link to="/auth?tab=signup">Sign Up</Link>
-              </Button>
+              {authButtons}
             </div>
           </div>
 
@@ -149,21 +145,9 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button 
-              variant="outline" 
-              className="w-full mb-2" 
-              asChild
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Link to="/auth?tab=signin">Sign In</Link>
-            </Button>
-            <Button 
-              className="w-full bg-black text-white hover:bg-gray-900" 
-              asChild
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Link to="/auth?tab=signup">Sign Up</Link>
-            </Button>
+            <div className="pt-2">
+              {authButtons}
+            </div>
           </div>
         )}
       </div>

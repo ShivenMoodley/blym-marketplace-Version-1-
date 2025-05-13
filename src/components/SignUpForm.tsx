@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,7 +77,7 @@ const SignUpForm: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 md:mb-10 animate-fade-in">
             <div className="inline-flex items-center py-1 px-3 rounded-full bg-black/5 mb-3 md:mb-4">
-              <span className="text-sm font-medium">Get Started</span>
+              <span className="text-sm font-medium">Waitlist</span>
             </div>
             <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
               Begin Your Business Journey Today
@@ -120,7 +119,7 @@ const SignUpForm: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Get Started with Blym</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Join Our Waitlist</h3>
                 
                 <div className="space-y-4">
                   <div>

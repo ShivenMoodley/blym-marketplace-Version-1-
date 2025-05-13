@@ -67,12 +67,6 @@ const Navbar: React.FC = () => {
               Valuation
             </a>
             <div className="flex items-center space-x-4">
-              <Button
-                className="bg-black text-white hover:bg-gray-900 transition-smooth"
-                onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                Get Started
-              </Button>
               <Button variant="outline" asChild>
                 <Link to="/auth?tab=signin">Sign In</Link>
               </Button>
@@ -155,15 +149,6 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button
-              className="w-full mt-4 mb-2 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => {
-                document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              Get Started
-            </Button>
             <Button 
               variant="outline" 
               className="w-full mb-2" 

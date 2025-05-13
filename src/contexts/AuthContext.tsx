@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { mockAuth } from '@/utils/mockAuth';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { ExtendedProfile } from '@/types/app';
@@ -38,73 +38,37 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   // Setup auth subscription on mount
   useEffect(() => {
-    // First set up the auth listener to avoid missing auth events
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        try {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-
-          const extendedProfile = profile as unknown as ExtendedProfile;
-
-          setUser({
-            id: session.user.id,
-            email: session.user.email || '',
-            role: extendedProfile?.role || 'user',
-            userType: extendedProfile?.user_type
-          });
-          
-          // Show success toast for login
-          if (event === 'SIGNED_IN') {
-            toast({
-              title: "Welcome back!",
-              description: "You've successfully signed in."
-            });
-            
-            // Redirect immediately based on user type
-            if (extendedProfile?.user_type === 'seller') {
-              navigate('/seller/listing-type');
-            } else if (extendedProfile?.user_type === 'buyer') {
-              navigate('/buyer/setup');
-            } else {
-              navigate('/');
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching user profile:", error);
-          setLoading(false);
+    // Set up auth listener
+    const { subscription } = mockAuth.onAuthStateChange((user) => {
+      if (user) {
+        setUser(user);
+        
+        // Show success toast for login
+        toast({
+          title: "Welcome back!",
+          description: "You've successfully signed in."
+        });
+        
+        // Redirect based on user type
+        if (user.userType === 'seller') {
+          navigate('/seller/listing-type');
+        } else if (user.userType === 'buyer') {
+          navigate('/buyer/setup');
         }
-      } else if (event === 'SIGNED_OUT') {
+      } else {
         setUser(null);
-        setLoading(false);
       }
+      setLoading(false);
     });
 
-    // Then check for session on mount
+    // Check for existing session
     const checkSession = async () => {
       try {
-        const { data } = await supabase.auth.getSession();
+        const { data } = await mockAuth.getSession();
         if (data.session) {
-          const { data: userData } = await supabase.auth.getUser();
+          const { data: userData } = await mockAuth.getUser();
           if (userData.user) {
-            // Get user profile data including role
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', userData.user.id)
-              .single();
-
-            const extendedProfile = profile as unknown as ExtendedProfile;
-
-            setUser({
-              id: userData.user.id,
-              email: userData.user.email || '',
-              role: extendedProfile?.role || 'user',
-              userType: extendedProfile?.user_type
-            });
+            setUser(userData.user);
           }
         }
       } catch (error) {
@@ -117,33 +81,23 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     checkSession();
 
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, [navigate]);
 
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-
-      // Get user profile data to determine where to redirect
-      try {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', data.user.id)
-          .single();
-          
-        const extendedProfile = profile as unknown as ExtendedProfile;
-        
-        // Redirection will be handled by onAuthStateChange
-      } catch (profileError) {
-        console.error("Error fetching user profile during sign in:", profileError);
-      }
+      await mockAuth.signIn(email, password);
+      // Auth listener will handle the rest
     } catch (error: any) {
       console.error("Sign in error:", error);
-      setLoading(false); // Make sure to set loading to false on error
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      setLoading(false);
       throw error;
     }
   };
@@ -151,50 +105,28 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const signUp = async (email: string, password: string, userType: 'buyer' | 'seller') => {
     try {
       setLoading(true);
-      const { error, data } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-
-      if (data.user) {
-        try {
-          // Create profile with user type
-          const { error: profileError } = await supabase.from('profiles').insert({
-            id: data.user.id,
-            user_type: userType
-          });
-
-          if (profileError) {
-            console.error("Profile creation error:", profileError);
-            throw profileError;
-          }
-          
-          // Set user manually since this isn't a sign-in event
-          setUser({
-            id: data.user.id,
-            email: data.user.email || '',
-            role: 'user',
-            userType: userType
-          });
-          
-          // Show successful signup toast
-          toast({
-            title: "Account created successfully",
-            description: "You can now sign in with your credentials.",
-          });
-          
-          // Redirect based on user type immediately
-          if (userType === 'seller') {
-            navigate('/seller/listing-type');
-          } else {
-            navigate('/buyer/setup');
-          }
-        } catch (profileError) {
-          console.error("Exception creating profile:", profileError);
-          // Continue even if profile creation fails
-        }
+      await mockAuth.signUp(email, password, userType);
+      
+      // Show successful signup toast
+      toast({
+        title: "Account created successfully",
+        description: "You can now sign in with your credentials.",
+      });
+      
+      // Redirect based on user type immediately
+      if (userType === 'seller') {
+        navigate('/seller/listing-type');
+      } else {
+        navigate('/buyer/setup');
       }
     } catch (error: any) {
       console.error("Sign up error:", error);
-      setLoading(false); // Make sure to set loading to false on error
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      setLoading(false);
       throw error;
     } finally {
       setLoading(false);
@@ -204,10 +136,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const signOut = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      await mockAuth.signOut();
       
-      // We don't need to set user to null here as it will be done by onAuthStateChange
       navigate('/');
       toast({
         title: "Signed out",

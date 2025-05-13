@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNavigate } from "react-router-dom";
-import { supabaseHelper } from "@/utils/supabase-helpers";
 import { toast } from "@/components/ui/use-toast";
 
 const SignUpForm: React.FC = () => {
@@ -33,15 +33,18 @@ const SignUpForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Add to Supabase waitlist table
-      const { error } = await supabaseHelper.from("waitlist").insert({
+      // Mock waitlist submission - just store in local storage
+      const waitlistEntries = JSON.parse(localStorage.getItem('waitlist') || '[]');
+      const newEntry = {
+        id: `entry-${Date.now()}`,
         name: formState.name,
         email: formState.email,
         interest: formState.interest,
         created_at: new Date().toISOString()
-      });
+      };
       
-      if (error) throw error;
+      waitlistEntries.push(newEntry);
+      localStorage.setItem('waitlist', JSON.stringify(waitlistEntries));
       
       console.log("Form submitted successfully to waitlist:", formState);
       

@@ -1,6 +1,4 @@
-
 import React, { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,11 +22,11 @@ export const WaitlistViewer: React.FC = () => {
     setError(null);
     
     try {
-      const { data, error } = await supabase.from("waitlist").select("*");
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (error) {
-        throw error;
-      }
+      // Get entries from localStorage
+      const data = JSON.parse(localStorage.getItem('waitlist') || '[]');
       
       // Check if data is an array and has the expected structure
       if (Array.isArray(data)) {

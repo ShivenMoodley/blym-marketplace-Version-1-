@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { mockAuth } from "@/utils/mockAuth";
 
 // Define the business model type to match our database enum
 type BusinessModel = "subscription" | "one_time" | "agency" | "marketplace" | "ecommerce" | "other";
@@ -68,71 +68,57 @@ const BuyerProfileSetup: React.FC = () => {
     e.preventDefault();
     
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      // Mock user ID for now
+      const userId = "mock-user-" + Date.now();
       
-      if (!user) {
-        toast.error("Please sign in to continue");
-        return;
-      }
-
-      const { error: profileError } = await supabase
-        .from('buyer_profiles')
-        .insert([{
-          id: user.id,
-          buyer_type: formData.buyerType,
-          min_revenue: formData.minRevenue ? parseFloat(formData.minRevenue) : null,
-          max_revenue: formData.maxRevenue ? parseFloat(formData.maxRevenue) : null,
-          min_budget: formData.minBudget ? parseFloat(formData.minBudget) : null,
-          max_budget: formData.maxBudget ? parseFloat(formData.maxBudget) : null,
-          preferred_location: formData.preferredLocation,
-          preferred_deal_type: formData.preferredDealType,
-          linkedin_url: formData.linkedinUrl,
-          company_website: formData.companyWebsite,
-        }]);
-
-      if (profileError) {
-        toast.error("Error creating buyer profile");
-        return;
-      }
-
-      // Add industries
+      // Store the profile in localStorage
+      const buyerProfile = {
+        id: userId,
+        buyer_type: formData.buyerType,
+        min_revenue: formData.minRevenue ? parseFloat(formData.minRevenue) : null,
+        max_revenue: formData.maxRevenue ? parseFloat(formData.maxRevenue) : null,
+        min_budget: formData.minBudget ? parseFloat(formData.minBudget) : null,
+        max_budget: formData.maxBudget ? parseFloat(formData.maxBudget) : null,
+        preferred_location: formData.preferredLocation,
+        preferred_deal_type: formData.preferredDealType,
+        linkedin_url: formData.linkedinUrl,
+        company_website: formData.companyWebsite,
+      };
+      
+      localStorage.setItem('buyer_profile', JSON.stringify(buyerProfile));
+      
+      // Store industry interests
       if (formData.industries.length > 0) {
-        const { error: industriesError } = await supabase
-          .from('buyer_industry_interests')
-          .insert(
-            formData.industries.map(industry => ({
-              buyer_id: user.id,
-              industry
-            }))
-          );
-
-        if (industriesError) {
-          toast.error("Error saving industry preferences");
-          return;
-        }
+        const industryInterests = formData.industries.map(industry => ({
+          buyer_id: userId,
+          industry
+        }));
+        
+        localStorage.setItem('buyer_industry_interests', JSON.stringify(industryInterests));
       }
 
-      // Add business models - use type-safe insertion
+      // Store business models
       if (formData.businessModels.length > 0) {
-        const { error: modelsError } = await supabase
-          .from('buyer_business_models')
-          .insert(
-            formData.businessModels.map(businessModel => ({
-              buyer_id: user.id,
-              business_model: businessModel
-            }))
-          );
-
-        if (modelsError) {
-          toast.error("Error saving business model preferences");
-          return;
-        }
+        const businessModels = formData.businessModels.map(businessModel => ({
+          buyer_id: userId,
+          business_model: businessModel
+        }));
+        
+        localStorage.setItem('buyer_business_models', JSON.stringify(businessModels));
       }
 
-      toast.success("Profile created successfully!");
+      toast({
+        title: "Profile created successfully!",
+        description: "Your buyer profile has been saved."
+      });
+      
       navigate("/dashboard");
     } catch (error) {
-      toast.error("An unexpected error occurred");
+      toast({
+        title: "An unexpected error occurred",
+        description: "Could not save your profile information.",
+        variant: "destructive"
+      });
       console.error(error);
     }
   };

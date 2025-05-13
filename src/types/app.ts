@@ -1,9 +1,10 @@
 
 import { Database } from '@/integrations/supabase/types';
 
-// Extend the profile type to include role
+// Extend the profile type to include role and user_type
 export interface ExtendedProfile extends Database['public']['Tables']['profiles']['Row'] {
   role?: 'user' | 'admin';
+  user_type?: 'buyer' | 'seller';
 }
 
 // Define seller submission type

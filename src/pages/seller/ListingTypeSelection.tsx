@@ -1,12 +1,13 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Check } from 'lucide-react';
+import { supabaseHelper } from '@/utils/supabase-helpers';
 
 const ListingTypeSelection: React.FC = () => {
   const navigate = useNavigate();
@@ -18,15 +19,14 @@ const ListingTypeSelection: React.FC = () => {
     
     try {
       // Save the listing type selection to database
-      const { error } = await supabase
-        .from('seller_submissions')
+      const { error } = await supabaseHelper.from('seller_submissions')
         .upsert({
           user_id: user?.id,
           email: user?.email,
           listing_type: type,
           payment_status: type === 'standard' ? 'Not Required' : 'Pending',
           listing_status: 'Draft',
-        } as any);
+        });
 
       if (error) throw error;
 

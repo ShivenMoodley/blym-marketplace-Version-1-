@@ -1,13 +1,14 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { supabaseHelper } from '@/utils/supabase-helpers';
 
 const PaymentPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,9 +38,8 @@ const PaymentPage: React.FC = () => {
     try {
       setTimeout(async () => {
         // Update the payment status in the database
-        const { error } = await supabase
-          .from('seller_submissions')
-          .update({ payment_status: 'Paid' } as any)
+        const { error } = await supabaseHelper.from('seller_submissions')
+          .update({ payment_status: 'Paid' })
           .eq('user_id', user?.id);
 
         if (error) throw error;

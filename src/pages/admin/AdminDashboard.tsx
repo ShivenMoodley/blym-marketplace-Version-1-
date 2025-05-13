@@ -28,9 +28,9 @@ import {
 } from '@/components/ui/sheet';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { SellerSubmission } from '@/types/app';
+import { supabaseHelper } from '@/utils/supabase-helpers';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -48,8 +48,7 @@ const AdminDashboard: React.FC = () => {
   const loadSubmissions = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('seller_submissions')
+      const { data, error } = await supabaseHelper.from('seller_submissions')
         .select('*')
         .order('created_at', { ascending: false });
         
@@ -69,8 +68,7 @@ const AdminDashboard: React.FC = () => {
 
   const updateSubmissionStatus = async (id: string, status: string) => {
     try {
-      const { error } = await supabase
-        .from('seller_submissions')
+      const { error } = await supabaseHelper.from('seller_submissions')
         .update({ listing_status: status, updated_at: new Date().toISOString() })
         .eq('id', id);
         
@@ -102,8 +100,7 @@ const AdminDashboard: React.FC = () => {
     if (!user) return;
     
     try {
-      const { error } = await supabase
-        .from('seller_submissions')
+      const { error } = await supabaseHelper.from('seller_submissions')
         .update({ assigned_admin: user.email, updated_at: new Date().toISOString() })
         .eq('id', id);
         

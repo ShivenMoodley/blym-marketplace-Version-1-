@@ -8,11 +8,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
+import { supabaseHelper } from '@/utils/supabase-helpers';
 
 type FormStep = 'business-identity' | 'company-snapshot' | 'business-summary' | 'pricing' | 'documents';
 
@@ -66,9 +66,8 @@ const SellerOnboardingForm: React.FC = () => {
       if (!user?.id) return;
       
       try {
-        const { data, error } = await supabase
-          .from('seller_submissions')
-          .select('id, form_data')
+        const { data, error } = await supabaseHelper.from('seller_submissions')
+          .select('*')
           .eq('user_id', user.id)
           .single();
           
@@ -77,7 +76,7 @@ const SellerOnboardingForm: React.FC = () => {
           return;
         }
         
-        if (data && data.form_data) {
+        if (data) {
           setFormData(data.form_data as any);
           setSubmissionId(data.id);
         }
@@ -129,18 +128,20 @@ const SellerOnboardingForm: React.FC = () => {
         updated_at: new Date().toISOString(),
       };
       
-      const { data, error } = submissionId
-        ? await supabase
-            .from('seller_submissions')
-            .update(submission)
-            .eq('id', submissionId)
-            .select()
-        : await supabase
-            .from('seller_submissions')
-            .upsert(submission)
-            .eq('user_id', user.id)
-            .select();
+      let response;
+      if (submissionId) {
+        response = await supabaseHelper.from('seller_submissions')
+          .update(submission)
+          .eq('id', submissionId)
+          .select();
+      } else {
+        response = await supabaseHelper.from('seller_submissions')
+          .upsert(submission)
+          .eq('user_id', user.id)
+          .select();
+      }
             
+      const { data, error } = response;
       if (error) throw error;
       
       if (data && data.length > 0 && !submissionId) {
@@ -224,8 +225,7 @@ const SellerOnboardingForm: React.FC = () => {
         updated_at: new Date().toISOString(),
       };
       
-      const { error } = await supabase
-        .from('seller_submissions')
+      const { error } = await supabaseHelper.from('seller_submissions')
         .update(submission)
         .eq('id', submissionId);
         

@@ -50,8 +50,8 @@ const ListingTypeSelection: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="container max-w-6xl px-4 py-12">
-        <div className="text-center mb-10">
+      <div className="container max-w-6xl px-4 py-6 md:py-12">
+        <div className="text-center mb-8 mt-4">
           <h1 className="text-3xl font-bold mb-3">Choose Your Listing Package</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Select the listing package that best fits your needs. 

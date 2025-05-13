@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
 import Footer from "@/components/Footer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Toaster } from "@/components/ui/toaster";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -37,8 +38,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className={`flex flex-col min-h-screen-real overflow-x-hidden ${isMobile ? 'mobile-view' : ''}`}>
       {isDashboard ? <DashboardNavbar /> : <Navbar />}
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow pt-6">{children}</main>
       <Footer />
+      <Toaster />
     </div>
   );
 };

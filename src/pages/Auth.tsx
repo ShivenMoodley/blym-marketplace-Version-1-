@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -9,8 +9,12 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from '@/components/ui/use-toast';
+import { useSearchParams } from 'react-router-dom';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const Auth: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
   const [formData, setFormData] = useState({
@@ -18,14 +22,41 @@ const Auth: React.FC = () => {
     password: '',
     userType: 'seller' as 'buyer' | 'seller',
   });
+  const [errors, setErrors] = useState({
+    password: '',
+  });
   const { signIn, signUp } = useAuth();
   const isMobile = useIsMobile();
 
+  // Set initial tab based on URL parameter if provided
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'signup' || tab === 'signin') {
+      setAuthMode(tab);
+    }
+  }, [searchParams]);
+
+  const validatePassword = (password: string): boolean => {
+    if (password.length < 6) {
+      setErrors(prev => ({ ...prev, password: 'Password must be at least 6 characters' }));
+      return false;
+    }
+    setErrors(prev => ({ ...prev, password: '' }));
+    return true;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Clear error when user starts typing
+    if (name === 'password') {
+      setErrors(prev => ({ ...prev, password: '' }));
+    }
   };
 
   const handleUserTypeChange = (value: string) => {
@@ -37,6 +68,12 @@ const Auth: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate password for signup
+    if (authMode === 'signup' && !validatePassword(formData.password)) {
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
@@ -45,8 +82,13 @@ const Auth: React.FC = () => {
       } else {
         await signUp(formData.email, formData.password, formData.userType);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Authentication error:', error);
+      toast({
+        title: authMode === 'signin' ? "Sign in failed" : "Sign up failed",
+        description: error.message || "An error occurred during authentication",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
@@ -93,6 +135,9 @@ const Auth: React.FC = () => {
                       onChange={handleChange}
                       required
                     />
+                    {errors.password && (
+                      <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+                    )}
                   </div>
 
                   {authMode === 'signup' && (

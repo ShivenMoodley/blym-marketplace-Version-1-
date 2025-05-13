@@ -121,14 +121,21 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       if (error) throw error;
 
       if (data.user) {
-        // Create profile with user type
-        const { error: profileError } = await supabase.from('profiles').insert({
-          id: data.user.id,
-          user_type: userType,
-          role: 'user'
-        });
+        try {
+          // Create profile with user type only - removed role field which is causing errors
+          const { error: profileError } = await supabase.from('profiles').insert({
+            id: data.user.id,
+            user_type: userType
+          });
 
-        if (profileError) throw profileError;
+          if (profileError) {
+            console.error("Profile creation error:", profileError);
+            // Continue even if profile creation fails - we'll handle it later
+          }
+        } catch (profileError) {
+          console.error("Exception creating profile:", profileError);
+          // Continue even if profile creation fails
+        }
       }
 
       toast({

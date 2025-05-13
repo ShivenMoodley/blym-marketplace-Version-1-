@@ -49,5 +49,24 @@ export const supabaseHelper = {
         return supabase.from('seller_submissions' as any).upsert(data);
       }
     };
+  },
+
+  /**
+   * Profiles table helper
+   */
+  profiles: () => {
+    return {
+      select: () => {
+        return supabase.from('profiles' as any).select('*');
+      },
+      
+      insert: (data: any) => {
+        return supabase.from('profiles' as any).insert(data);
+      },
+      
+      update: (data: any) => {
+        return supabase.from('profiles' as any).update(data);
+      }
+    };
   }
 };

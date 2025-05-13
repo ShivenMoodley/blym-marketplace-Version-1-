@@ -83,6 +83,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           role: extendedProfile?.role || 'user',
           userType: extendedProfile?.user_type
         });
+        
+        // Redirect based on user type after sign in
+        if (extendedProfile?.user_type === 'seller') {
+          navigate('/seller/listing-type');
+        } else if (extendedProfile?.user_type === 'buyer') {
+          navigate('/buyer/setup');
+        } else {
+          navigate('/');
+        }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
       }
@@ -91,17 +100,36 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      
+      // Get user profile to determine where to redirect
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+        
+      const extendedProfile = profile as unknown as ExtendedProfile;
+      
       toast({
         title: "Welcome back!",
         description: "You've successfully signed in.",
       });
+      
+      // Redirect based on user type
+      if (extendedProfile?.user_type === 'seller') {
+        navigate('/seller/listing-type');
+      } else if (extendedProfile?.user_type === 'buyer') {
+        navigate('/buyer/setup');
+      } else {
+        navigate('/');
+      }
     } catch (error: any) {
       toast({
         title: "Sign in failed",

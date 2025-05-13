@@ -12,6 +12,7 @@ import ListingTypeSelection from './pages/seller/ListingTypeSelection';
 import SellerOnboardingForm from './pages/seller/SellerOnboardingForm';
 import PaymentPage from './pages/seller/PaymentPage';
 import BuyerSetup from './pages/buyer/BuyerSetup';
+import BuyerDashboard from './pages/buyer/BuyerDashboard';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -51,6 +52,13 @@ function App() {
             <ProtectedRoute>
               <MainLayout>
                 <BuyerSetup />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/buyer/dashboard" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <BuyerDashboard />
               </MainLayout>
             </ProtectedRoute>
           } />

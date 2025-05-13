@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -64,12 +66,20 @@ const Navbar: React.FC = () => {
             >
               Valuation
             </a>
-            <Button
-              className="ml-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Get Started
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Button
+                className="bg-black text-white hover:bg-gray-900 transition-smooth"
+                onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Get Started
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/auth?tab=signin">Sign In</Link>
+              </Button>
+              <Button className="bg-black text-white hover:bg-gray-900" asChild>
+                <Link to="/auth?tab=signup">Sign Up</Link>
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -146,13 +156,28 @@ const Navbar: React.FC = () => {
               Valuation
             </a>
             <Button
-              className="w-full mt-4 bg-black text-white hover:bg-gray-900 transition-smooth"
+              className="w-full mt-4 mb-2 bg-black text-white hover:bg-gray-900 transition-smooth"
               onClick={() => {
                 document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
                 setIsMobileMenuOpen(false);
               }}
             >
               Get Started
+            </Button>
+            <Button 
+              variant="outline" 
+              className="w-full mb-2" 
+              asChild
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Link to="/auth?tab=signin">Sign In</Link>
+            </Button>
+            <Button 
+              className="w-full bg-black text-white hover:bg-gray-900" 
+              asChild
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Link to="/auth?tab=signup">Sign Up</Link>
             </Button>
           </div>
         )}

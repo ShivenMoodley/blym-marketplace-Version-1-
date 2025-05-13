@@ -1,11 +1,8 @@
-
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, ArrowUp, CheckCircle } from "lucide-react";
-import { Link } from "react-router-dom";
-import AuthButtons from "@/components/AuthButtons";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -78,16 +75,6 @@ const Hero: React.FC = () => {
                 onClick={() => document.getElementById("sell")?.scrollIntoView({ behavior: "smooth" })}
               >
                 Learn More
-              </Button>
-            </div>
-            
-            {/* Added authentication buttons */}
-            <div className="flex gap-2 pt-2">
-              <Button variant="outline" asChild>
-                <Link to="/auth?tab=signin">Sign In</Link>
-              </Button>
-              <Button variant="default" className="bg-black hover:bg-gray-800" asChild>
-                <Link to="/auth?tab=signup">Sign Up</Link>
               </Button>
             </div>
           </div>

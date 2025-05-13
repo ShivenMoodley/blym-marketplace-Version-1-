@@ -52,8 +52,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           setUser({
             id: userData.user.id,
             email: userData.user.email || '',
-            role: profile?.role || 'user',
-            userType: profile?.user_type
+            role: profile?.role as 'user' | 'admin' || 'user',
+            userType: profile?.user_type as 'buyer' | 'seller'
           });
         }
       }
@@ -75,8 +75,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setUser({
           id: session.user.id,
           email: session.user.email || '',
-          role: profile?.role || 'user',
-          userType: profile?.user_type
+          role: profile?.role as 'user' | 'admin' || 'user',
+          userType: profile?.user_type as 'buyer' | 'seller'
         });
       } else if (event === 'SIGNED_OUT') {
         setUser(null);

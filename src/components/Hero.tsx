@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
                 className="bg-black hover:bg-gray-900 text-white transition-smooth touch-target"
                 onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Waitlist
+                Get Started
               </Button>
               <Button 
                 variant="outline" 

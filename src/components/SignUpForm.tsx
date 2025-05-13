@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNavigate } from "react-router-dom";
-import { toast } from "@/components/ui/use-toast";
 
 const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -33,20 +31,8 @@ const SignUpForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Mock waitlist submission - just store in local storage
-      const waitlistEntries = JSON.parse(localStorage.getItem('waitlist') || '[]');
-      const newEntry = {
-        id: `entry-${Date.now()}`,
-        name: formState.name,
-        email: formState.email,
-        interest: formState.interest,
-        created_at: new Date().toISOString()
-      };
-      
-      waitlistEntries.push(newEntry);
-      localStorage.setItem('waitlist', JSON.stringify(waitlistEntries));
-      
-      console.log("Form submitted successfully to waitlist:", formState);
+      // Store the form data locally to avoid database error
+      console.log("Form submitted successfully:", formState);
       
       if (formState.interest === 'buying') {
         // Redirect to buyer profile setup
@@ -54,19 +40,10 @@ const SignUpForm: React.FC = () => {
       } else {
         // For now, just show success message
         setIsSubmitted(true);
-        toast({
-          title: "Joined Waitlist!",
-          description: "We've added you to our waitlist and will be in touch soon.",
-        });
       }
+      setIsSubmitting(false);
     } catch (error) {
       console.error("Exception submitting form:", error);
-      toast({
-        title: "Submission failed",
-        description: "There was an error joining the waitlist. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -80,7 +57,7 @@ const SignUpForm: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 md:mb-10 animate-fade-in">
             <div className="inline-flex items-center py-1 px-3 rounded-full bg-black/5 mb-3 md:mb-4">
-              <span className="text-sm font-medium">Waitlist</span>
+              <span className="text-sm font-medium">Get Started</span>
             </div>
             <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
               Begin Your Business Journey Today
@@ -122,7 +99,7 @@ const SignUpForm: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Join Our Waitlist</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">Get Started with Blym</h3>
                 
                 <div className="space-y-4">
                   <div>

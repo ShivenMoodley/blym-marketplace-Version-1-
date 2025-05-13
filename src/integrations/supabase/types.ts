@@ -133,39 +133,12 @@ export type Database = {
         }
         Relationships: []
       }
-      waitlist: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          interest: string
-          name: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          interest: string
-          name: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          interest?: string
-          name?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      create_profile_for_user: {
-        Args: { user_id: string; user_type: string }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       business_model:

@@ -36,66 +36,87 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Setup auth subscription on mount
   useEffect(() => {
-    // Check for session on mount
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        const { data: userData } = await supabase.auth.getUser();
-        if (userData.user) {
-          // Get user profile data including role
+    // First set up the auth listener to avoid missing auth events
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        // Get user profile data including role
+        try {
           const { data: profile } = await supabase
             .from('profiles')
             .select('*')
-            .eq('id', userData.user.id)
+            .eq('id', session.user.id)
             .single();
 
           const extendedProfile = profile as unknown as ExtendedProfile;
 
           setUser({
-            id: userData.user.id,
-            email: userData.user.email || '',
+            id: session.user.id,
+            email: session.user.email || '',
             role: extendedProfile?.role || 'user',
             userType: extendedProfile?.user_type
           });
-        }
-      }
-      setLoading(false);
-    };
-
-    checkSession();
-
-    // Subscribe to auth changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session && event === 'SIGNED_IN') {
-        // Get user profile data including role
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        const extendedProfile = profile as unknown as ExtendedProfile;
-
-        setUser({
-          id: session.user.id,
-          email: session.user.email || '',
-          role: extendedProfile?.role || 'user',
-          userType: extendedProfile?.user_type
-        });
-        
-        // Redirect based on user type after sign in
-        if (extendedProfile?.user_type === 'seller') {
-          navigate('/seller/listing-type');
-        } else if (extendedProfile?.user_type === 'buyer') {
-          navigate('/buyer/setup');
-        } else {
-          navigate('/');
+          
+          // Show success toast for login
+          if (event === 'SIGNED_IN') {
+            toast({
+              title: "Welcome back!",
+              description: "You've successfully signed in."
+            });
+          }
+          
+          // Redirect based on user type after sign in - do this with a slight delay
+          // to ensure the UI has time to update
+          setTimeout(() => {
+            if (extendedProfile?.user_type === 'seller') {
+              navigate('/seller/listing-type');
+            } else if (extendedProfile?.user_type === 'buyer') {
+              navigate('/buyer/setup');
+            } else {
+              navigate('/');
+            }
+          }, 100);
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
         }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
       }
     });
+
+    // Then check for session on mount
+    const checkSession = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+          const { data: userData } = await supabase.auth.getUser();
+          if (userData.user) {
+            // Get user profile data including role
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', userData.user.id)
+              .single();
+
+            const extendedProfile = profile as unknown as ExtendedProfile;
+
+            setUser({
+              id: userData.user.id,
+              email: userData.user.email || '',
+              role: extendedProfile?.role || 'user',
+              userType: extendedProfile?.user_type
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error checking session:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
 
     return () => {
       authListener.subscription.unsubscribe();
@@ -107,35 +128,24 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       setLoading(true);
       const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      
-      // Get user profile to determine where to redirect
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', data.user.id)
-        .single();
+
+      // Get user profile data to determine where to redirect
+      try {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+          
+        const extendedProfile = profile as unknown as ExtendedProfile;
         
-      const extendedProfile = profile as unknown as ExtendedProfile;
-      
-      toast({
-        title: "Welcome back!",
-        description: "You've successfully signed in.",
-      });
-      
-      // Redirect based on user type
-      if (extendedProfile?.user_type === 'seller') {
-        navigate('/seller/listing-type');
-      } else if (extendedProfile?.user_type === 'buyer') {
-        navigate('/buyer/setup');
-      } else {
-        navigate('/');
+        // Note: We don't need the toast here as it will be triggered by onAuthStateChange
+        // We don't need navigation here as it will be handled by onAuthStateChange
+      } catch (profileError) {
+        console.error("Error fetching user profile during sign in:", profileError);
       }
     } catch (error: any) {
-      toast({
-        title: "Sign in failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      console.error("Sign in error:", error);
       throw error;
     } finally {
       setLoading(false);
@@ -150,7 +160,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
       if (data.user) {
         try {
-          // Create profile with user type only - removed role field which is causing errors
+          // Create profile with user type
           const { error: profileError } = await supabase.from('profiles').insert({
             id: data.user.id,
             user_type: userType
@@ -158,31 +168,32 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
           if (profileError) {
             console.error("Profile creation error:", profileError);
-            // Continue even if profile creation fails - we'll handle it later
+            throw profileError;
           }
+          
+          // Set user manually since this isn't a sign-in event
+          setUser({
+            id: data.user.id,
+            email: data.user.email || '',
+            role: 'user',
+            userType: userType
+          });
+          
+          // Redirect based on user type after a short delay
+          setTimeout(() => {
+            if (userType === 'seller') {
+              navigate('/seller/listing-type');
+            } else {
+              navigate('/buyer/setup');
+            }
+          }, 100);
         } catch (profileError) {
           console.error("Exception creating profile:", profileError);
           // Continue even if profile creation fails
         }
       }
-
-      toast({
-        title: "Account created",
-        description: "Your account has been created successfully.",
-      });
-
-      // Redirect based on user type
-      if (userType === 'seller') {
-        navigate('/seller/listing-type');
-      } else {
-        navigate('/buyer/setup');
-      }
     } catch (error: any) {
-      toast({
-        title: "Sign up failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      console.error("Sign up error:", error);
       throw error;
     } finally {
       setLoading(false);
@@ -194,7 +205,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      setUser(null);
+      
+      // We don't need to set user to null here as it will be done by onAuthStateChange
       navigate('/');
       toast({
         title: "Signed out",

@@ -23,7 +23,9 @@ const Auth: React.FC = () => {
     userType: 'seller' as 'buyer' | 'seller',
   });
   const [errors, setErrors] = useState({
+    email: '',
     password: '',
+    general: '',
   });
   const { signIn, signUp } = useAuth();
   const isMobile = useIsMobile();
@@ -36,13 +38,28 @@ const Auth: React.FC = () => {
     }
   }, [searchParams]);
 
-  const validatePassword = (password: string): boolean => {
-    if (password.length < 6) {
-      setErrors(prev => ({ ...prev, password: 'Password must be at least 6 characters' }));
-      return false;
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { email: '', password: '', general: '' };
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+      isValid = false;
     }
-    setErrors(prev => ({ ...prev, password: '' }));
-    return true;
+    
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      isValid = false;
+    } else if (authMode === 'signup' && formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+    
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,8 +71,8 @@ const Auth: React.FC = () => {
     });
 
     // Clear error when user starts typing
-    if (name === 'password') {
-      setErrors(prev => ({ ...prev, password: '' }));
+    if (name === 'email' || name === 'password') {
+      setErrors(prev => ({ ...prev, [name]: '', general: '' }));
     }
   };
 
@@ -69,26 +86,59 @@ const Auth: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate password for signup
-    if (authMode === 'signup' && !validatePassword(formData.password)) {
+    // Validate form first
+    if (!validateForm()) {
       return;
     }
     
     setIsLoading(true);
+    setErrors({ email: '', password: '', general: '' });
 
     try {
       if (authMode === 'signin') {
         await signIn(formData.email, formData.password);
+        // Toast will be shown in AuthContext after successful login
       } else {
         await signUp(formData.email, formData.password, formData.userType);
+        toast({
+          title: "Account created successfully",
+          description: "You can now sign in with your credentials.",
+        });
       }
     } catch (error: any) {
       console.error('Authentication error:', error);
-      toast({
-        title: authMode === 'signin' ? "Sign in failed" : "Sign up failed",
-        description: error.message || "An error occurred during authentication",
-        variant: "destructive"
-      });
+      
+      // Handle specific error cases
+      if (error.message.includes('already')) {
+        setErrors(prev => ({ 
+          ...prev, 
+          email: 'This email is already in use. Please try signing in instead.',
+          general: ''
+        }));
+      } else if (error.message.includes('password')) {
+        setErrors(prev => ({ 
+          ...prev, 
+          password: 'Incorrect password. Please try again.',
+          general: ''
+        }));
+      } else if (error.message.includes('not found') || error.message.includes('user')) {
+        setErrors(prev => ({ 
+          ...prev, 
+          email: 'No account found with this email.',
+          general: ''
+        }));
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          general: error.message || "An error occurred during authentication"
+        }));
+        
+        toast({
+          title: authMode === 'signin' ? "Sign in failed" : "Sign up failed",
+          description: error.message || "An error occurred. Please try again.",
+          variant: "destructive"
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -110,6 +160,12 @@ const Auth: React.FC = () => {
 
             <CardContent className="mt-6">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {errors.general && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertDescription>{errors.general}</AlertDescription>
+                  </Alert>
+                )}
+                
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="email">Email</Label>
@@ -121,7 +177,11 @@ const Auth: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      className={errors.email ? "border-red-500" : ""}
                     />
+                    {errors.email && (
+                      <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                    )}
                   </div>
 
                   <div>
@@ -134,6 +194,7 @@ const Auth: React.FC = () => {
                       value={formData.password}
                       onChange={handleChange}
                       required
+                      className={errors.password ? "border-red-500" : ""}
                     />
                     {errors.password && (
                       <p className="text-sm text-red-500 mt-1">{errors.password}</p>

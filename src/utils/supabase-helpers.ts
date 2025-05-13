@@ -31,21 +31,23 @@ export const supabaseHelper = {
   /**
    * Specifically typed helper for seller_submissions table
    */
-  sellerSubmissions: {
-    select: () => {
-      return supabase.from('seller_submissions' as any).select('*');
-    },
-    
-    insert: (data: Partial<SellerSubmission>) => {
-      return supabase.from('seller_submissions' as any).insert(data);
-    },
-    
-    update: (data: Partial<SellerSubmission>) => {
-      return supabase.from('seller_submissions' as any).update(data);
-    },
-    
-    upsert: (data: Partial<SellerSubmission>) => {
-      return supabase.from('seller_submissions' as any).upsert(data);
-    }
+  sellerSubmissions: () => {
+    return {
+      select: () => {
+        return supabase.from('seller_submissions' as any).select('*');
+      },
+      
+      insert: (data: Partial<SellerSubmission>) => {
+        return supabase.from('seller_submissions' as any).insert(data);
+      },
+      
+      update: (data: Partial<SellerSubmission>) => {
+        return supabase.from('seller_submissions' as any).update(data);
+      },
+      
+      upsert: (data: Partial<SellerSubmission>) => {
+        return supabase.from('seller_submissions' as any).upsert(data);
+      }
+    };
   }
 };

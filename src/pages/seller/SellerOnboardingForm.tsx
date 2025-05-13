@@ -66,8 +66,8 @@ const SellerOnboardingForm: React.FC = () => {
       if (!user?.id) return;
       
       try {
-        const { data, error } = await supabaseHelper.from('seller_submissions')
-          .select('*')
+        const { data, error } = await supabaseHelper.sellerSubmissions()
+          .select()
           .eq('user_id', user.id)
           .single();
           
@@ -77,8 +77,14 @@ const SellerOnboardingForm: React.FC = () => {
         }
         
         if (data) {
-          setFormData(data.form_data as any);
-          setSubmissionId(data.id);
+          // Type check to ensure data has form_data property before accessing it
+          if (data && 'form_data' in data) {
+            setFormData(data.form_data as any);
+          }
+          
+          if (data && 'id' in data) {
+            setSubmissionId(data.id as string);
+          }
         }
       } catch (error) {
         console.error('Error loading draft:', error);
@@ -130,22 +136,23 @@ const SellerOnboardingForm: React.FC = () => {
       
       let response;
       if (submissionId) {
-        response = await supabaseHelper.from('seller_submissions')
+        response = await supabaseHelper.sellerSubmissions()
           .update(submission)
-          .eq('id', submissionId)
-          .select();
+          .eq('id', submissionId);
       } else {
-        response = await supabaseHelper.from('seller_submissions')
-          .upsert(submission)
-          .eq('user_id', user.id)
-          .select();
+        response = await supabaseHelper.sellerSubmissions()
+          .insert(submission);
       }
             
       const { data, error } = response;
       if (error) throw error;
       
-      if (data && data.length > 0 && !submissionId) {
-        setSubmissionId(data[0].id);
+      // Check if data exists and has entries before accessing it
+      if (data && Array.isArray(data) && data.length > 0 && !submissionId) {
+        // Safely access id if it exists
+        if ('id' in data[0]) {
+          setSubmissionId(data[0].id as string);
+        }
       }
       
       toast({
@@ -225,7 +232,17 @@ const SellerOnboardingForm: React.FC = () => {
         updated_at: new Date().toISOString(),
       };
       
-      const { error } = await supabaseHelper.from('seller_submissions')
+      if (!submissionId) {
+        toast({
+          title: "Error",
+          description: "No submission ID found. Please save your progress first.",
+          variant: "destructive"
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const { error } = await supabaseHelper.sellerSubmissions()
         .update(submission)
         .eq('id', submissionId);
         

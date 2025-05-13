@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNavigate } from "react-router-dom";
+import { supabaseHelper } from "@/utils/supabase-helpers";
+import { toast } from "@/components/ui/use-toast";
 
 const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -31,8 +34,17 @@ const SignUpForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Store the form data locally to avoid database error
-      console.log("Form submitted successfully:", formState);
+      // Add to Supabase waitlist table
+      const { error } = await supabaseHelper.from("waitlist").insert({
+        name: formState.name,
+        email: formState.email,
+        interest: formState.interest,
+        created_at: new Date().toISOString()
+      });
+      
+      if (error) throw error;
+      
+      console.log("Form submitted successfully to waitlist:", formState);
       
       if (formState.interest === 'buying') {
         // Redirect to buyer profile setup
@@ -40,10 +52,19 @@ const SignUpForm: React.FC = () => {
       } else {
         // For now, just show success message
         setIsSubmitted(true);
+        toast({
+          title: "Joined Waitlist!",
+          description: "We've added you to our waitlist and will be in touch soon.",
+        });
       }
-      setIsSubmitting(false);
     } catch (error) {
       console.error("Exception submitting form:", error);
+      toast({
+        title: "Submission failed",
+        description: "There was an error joining the waitlist. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
     }
   };

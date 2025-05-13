@@ -3,3 +3,6 @@ project_id = "dlkttjfiumuabkddrhme"
 
 [db.tables.seller_submissions]
 enable_rls = false
+
+[db.tables.waitlist]
+enable_rls = false

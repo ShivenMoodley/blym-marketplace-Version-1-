@@ -13,8 +13,10 @@ const ListingTypeSelection: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [activeType, setActiveType] = React.useState<'standard' | 'premium' | null>(null);
 
   const handleSelectListingType = async (type: 'standard' | 'premium') => {
+    setActiveType(type);
     setIsLoading(true);
     
     try {
@@ -30,21 +32,32 @@ const ListingTypeSelection: React.FC = () => {
 
       if (error) throw error;
 
-      // Navigate to the appropriate next step
-      if (type === 'premium') {
-        navigate('/seller/payment');
-      } else {
-        // For standard/free tier, go directly to onboarding
-        navigate('/seller/onboarding');
-      }
+      toast({
+        title: "Success!",
+        description: type === 'premium' 
+          ? "Premium listing selected. Proceeding to payment." 
+          : "Standard listing selected. Proceeding to onboarding.",
+      });
+
+      // Small delay to show the toast before navigating
+      setTimeout(() => {
+        // Navigate to the appropriate next step
+        if (type === 'premium') {
+          navigate('/seller/payment');
+        } else {
+          // For standard/free tier, go directly to onboarding
+          navigate('/seller/onboarding');
+        }
+      }, 1000);
+      
     } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Failed to select listing type",
         variant: "destructive"
       });
-    } finally {
       setIsLoading(false);
+      setActiveType(null);
     }
   };
 
@@ -93,7 +106,7 @@ const ListingTypeSelection: React.FC = () => {
                 onClick={() => handleSelectListingType('standard')}
                 disabled={isLoading}
               >
-                {isLoading ? "Processing..." : "Select Standard"}
+                {isLoading && activeType === 'standard' ? "Processing..." : "Select Standard"}
               </Button>
             </CardFooter>
           </Card>
@@ -141,7 +154,7 @@ const ListingTypeSelection: React.FC = () => {
                 onClick={() => handleSelectListingType('premium')}
                 disabled={isLoading}
               >
-                {isLoading ? "Processing..." : "Select Premium"}
+                {isLoading && activeType === 'premium' ? "Processing..." : "Select Premium"}
               </Button>
             </CardFooter>
           </Card>

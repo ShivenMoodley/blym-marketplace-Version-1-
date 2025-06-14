@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -198,7 +197,7 @@ const AdminDashboard: React.FC = () => {
                             <div className="font-medium flex items-center gap-2">
                               {submission.sellerName}
                               {submission.missingDocs && (
-                                <AlertTriangle className="w-4 h-4 text-orange-500" title="Missing documents" />
+                                <AlertTriangle className="w-4 h-4 text-orange-500" />
                               )}
                             </div>
                             <div className="text-sm text-gray-500">{submission.email}</div>

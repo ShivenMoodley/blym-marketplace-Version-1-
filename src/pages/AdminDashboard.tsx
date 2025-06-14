@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Eye, FileText, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Eye, FileText, CheckCircle, XCircle, AlertTriangle, Edit, Save, X } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
   // Mock data for demonstration
@@ -66,6 +68,14 @@ const AdminDashboard: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
+  // Editing states
+  const [editingFinancials, setEditingFinancials] = useState<number | null>(null);
+  const [editValues, setEditValues] = useState({
+    revenue: "",
+    profit: "",
+    askingPrice: ""
+  });
+
   // Filter submissions based on selected filters
   const filteredSubmissions = submissions.filter(submission => {
     return (
@@ -81,6 +91,37 @@ const AdminDashboard: React.FC = () => {
         sub.id === submissionId ? { ...sub, status: newStatus } : sub
       )
     );
+  };
+
+  const startEditingFinancials = (submission: any) => {
+    setEditingFinancials(submission.id);
+    setEditValues({
+      revenue: submission.revenue,
+      profit: submission.profit,
+      askingPrice: submission.askingPrice
+    });
+  };
+
+  const saveFinancialChanges = (submissionId: number) => {
+    setSubmissions(prev => 
+      prev.map(sub => 
+        sub.id === submissionId 
+          ? { 
+              ...sub, 
+              revenue: editValues.revenue,
+              profit: editValues.profit,
+              askingPrice: editValues.askingPrice
+            } 
+          : sub
+      )
+    );
+    setEditingFinancials(null);
+    setEditValues({ revenue: "", profit: "", askingPrice: "" });
+  };
+
+  const cancelEditingFinancials = () => {
+    setEditingFinancials(null);
+    setEditValues({ revenue: "", profit: "", askingPrice: "" });
   };
 
   const getStatusBadgeColor = (status: string) => {
@@ -216,11 +257,65 @@ const AdminDashboard: React.FC = () => {
                         </TableCell>
                         
                         <TableCell>
-                          <div className="space-y-1">
-                            <div className="text-sm">Revenue: {submission.revenue}</div>
-                            <div className="text-sm">Profit: {submission.profit}</div>
-                            <div className="font-medium text-green-600">{submission.askingPrice}</div>
-                          </div>
+                          {editingFinancials === submission.id ? (
+                            <div className="space-y-2 min-w-[150px]">
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-gray-500 w-12">Rev:</span>
+                                <Input
+                                  value={editValues.revenue}
+                                  onChange={(e) => setEditValues(prev => ({ ...prev, revenue: e.target.value }))}
+                                  className="h-6 text-xs"
+                                />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-gray-500 w-12">Profit:</span>
+                                <Input
+                                  value={editValues.profit}
+                                  onChange={(e) => setEditValues(prev => ({ ...prev, profit: e.target.value }))}
+                                  className="h-6 text-xs"
+                                />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-gray-500 w-12">Price:</span>
+                                <Input
+                                  value={editValues.askingPrice}
+                                  onChange={(e) => setEditValues(prev => ({ ...prev, askingPrice: e.target.value }))}
+                                  className="h-6 text-xs"
+                                />
+                              </div>
+                              <div className="flex gap-1">
+                                <Button 
+                                  size="sm" 
+                                  onClick={() => saveFinancialChanges(submission.id)}
+                                  className="h-6 w-6 p-0 bg-green-600 hover:bg-green-700"
+                                >
+                                  <Save className="w-3 h-3" />
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  variant="outline"
+                                  onClick={cancelEditingFinancials}
+                                  className="h-6 w-6 p-0"
+                                >
+                                  <X className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="space-y-1">
+                              <div className="text-sm">Revenue: {submission.revenue}</div>
+                              <div className="text-sm">Profit: {submission.profit}</div>
+                              <div className="font-medium text-green-600">{submission.askingPrice}</div>
+                              <Button 
+                                size="sm" 
+                                variant="ghost" 
+                                onClick={() => startEditingFinancials(submission)}
+                                className="h-6 w-6 p-0 mt-1"
+                              >
+                                <Edit className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          )}
                         </TableCell>
                         
                         <TableCell>

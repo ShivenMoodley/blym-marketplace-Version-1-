@@ -1,0 +1,155 @@
+
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import MainLayout from "@/layouts/MainLayout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+const BuyerSignUp: React.FC = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log("Buyer sign up attempt:", formData);
+    setIsLoading(false);
+    
+    // Redirect to buyer profile setup
+    navigate("/buyer-profile-setup");
+  };
+
+  return (
+    <MainLayout>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 pb-16">
+        <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+          <Card className="border-2">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-bold">Join as a Buyer</CardTitle>
+              <CardDescription>
+                Create your account to start discovering businesses for sale
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      placeholder="John"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      placeholder="Smith"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="john@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-smooth"
+                >
+                  {isLoading ? "Creating Account..." : "Create Buyer Account"}
+                </Button>
+              </form>
+              
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-600">
+                  Already have an account?{" "}
+                  <Link to="/login" className="text-blue-600 font-medium hover:underline">
+                    Sign in here
+                  </Link>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default BuyerSignUp;

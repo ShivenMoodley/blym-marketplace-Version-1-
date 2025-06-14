@@ -14,6 +14,9 @@ import Payment from "./pages/Payment";
 import SellerOnboarding from "./pages/SellerOnboarding";
 import SellerDashboard from "./pages/SellerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import BuyerSignUp from "./pages/BuyerSignUp";
+import BuyerProfileSetup from "./pages/BuyerProfileSetup";
+import BuyerDashboard from "./pages/BuyerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +36,9 @@ const App = () => (
           <Route path="/seller-onboarding" element={<SellerOnboarding />} />
           <Route path="/seller-dashboard" element={<SellerDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/buyer-signup" element={<BuyerSignUp />} />
+          <Route path="/buyer-profile-setup" element={<BuyerProfileSetup />} />
+          <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

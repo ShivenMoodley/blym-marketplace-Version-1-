@@ -60,38 +60,40 @@ const ChooseRole: React.FC = () => {
             </Card>
 
             {/* Buy a Business */}
-            <Card className="relative overflow-hidden border-2 hover:border-gray-400 transition-colors cursor-pointer group opacity-60">
+            <Card className="relative overflow-hidden border-2 hover:border-blue-500 transition-colors cursor-pointer group">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-gray-400 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors">
                   <ShoppingCart className="w-8 h-8" />
                 </div>
-                <CardTitle className="text-2xl font-bold text-gray-600">Buy a Business</CardTitle>
-                <CardDescription className="text-gray-500">
+                <CardTitle className="text-2xl font-bold">Buy a Business</CardTitle>
+                <CardDescription className="text-gray-600">
                   Discover and acquire businesses that match your criteria
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <ul className="text-left space-y-2 mb-6 text-gray-500">
+                <ul className="text-left space-y-2 mb-6 text-gray-600">
                   <li className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                     Curated business listings
                   </li>
                   <li className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                     Financial analysis tools
                   </li>
                   <li className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                     Due diligence support
                   </li>
                   <li className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                     Financing assistance
                   </li>
                 </ul>
-                <Button disabled className="w-full bg-gray-400 text-white cursor-not-allowed">
-                  Coming Soon
-                </Button>
+                <Link to="/buyer-signup">
+                  <Button className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-smooth">
+                    Find Businesses
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>

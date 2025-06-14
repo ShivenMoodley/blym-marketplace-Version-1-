@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import BuyerSignUp from "./pages/BuyerSignUp";
 import BuyerProfileSetup from "./pages/BuyerProfileSetup";
 import BuyerDashboard from "./pages/BuyerDashboard";
+import ConfidentialAccessRequest from "./pages/ConfidentialAccessRequest";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/buyer-signup" element={<BuyerSignUp />} />
           <Route path="/buyer-profile-setup" element={<BuyerProfileSetup />} />
           <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
+          <Route path="/confidential-access/:listingId" element={<ConfidentialAccessRequest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

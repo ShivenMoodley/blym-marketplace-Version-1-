@@ -1,5 +1,5 @@
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { Search, Filter, Heart, Eye, DollarSign, MapPin, Users, TrendingUp } fro
 
 const BuyerDashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   // Mock data for business listings
   const businessListings = [
@@ -59,6 +60,10 @@ const BuyerDashboard: React.FC = () => {
     { name: "Food & Beverage Local", count: 8 },
     { name: "Professional Services", count: 15 },
   ];
+
+  const handleRequestAccess = (businessId: number) => {
+    navigate(`/confidential-access/${businessId}`);
+  };
 
   return (
     <MainLayout>
@@ -211,8 +216,11 @@ const BuyerDashboard: React.FC = () => {
                           </div>
 
                           <div className="flex gap-3">
-                            <Button className="flex-1 bg-blue-600 text-white hover:bg-blue-700">
-                              Request Information
+                            <Button 
+                              className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
+                              onClick={() => handleRequestAccess(business.id)}
+                            >
+                              Request Access
                             </Button>
                             <Button variant="outline" className="flex items-center gap-2">
                               <Eye className="h-4 w-4" />

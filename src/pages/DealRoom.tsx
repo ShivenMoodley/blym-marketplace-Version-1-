@@ -355,7 +355,7 @@ const DealRoom: React.FC = () => {
                   <Button
                     variant="outline"
                     className="w-full"
-                    onClick={handleSubmitLOI}
+                    onClick={() => onSubmitLOI}
                   >
                     Submit Letter of Intent
                   </Button>

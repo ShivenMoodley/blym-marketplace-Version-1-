@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
@@ -8,8 +7,21 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Download, MessageCircle, FileText, TrendingUp, DollarSign, Users, Target } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ArrowLeft, Download, MessageCircle, FileText, TrendingUp, DollarSign, Users, Target, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const loiFormSchema = z.object({
+  proposedValuation: z.string().min(1, "Proposed valuation is required"),
+  dealStructure: z.string().min(1, "Deal structure is required"),
+  notesToSeller: z.string().min(10, "Please provide at least 10 characters in notes"),
+});
+
+type LOIFormValues = z.infer<typeof loiFormSchema>;
 
 const DealRoom: React.FC = () => {
   const { listingId } = useParams<{ listingId: string }>();
@@ -17,6 +29,15 @@ const DealRoom: React.FC = () => {
   const { toast } = useToast();
   const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false);
   const [message, setMessage] = useState("");
+
+  const form = useForm<LOIFormValues>({
+    resolver: zodResolver(loiFormSchema),
+    defaultValues: {
+      proposedValuation: "",
+      dealStructure: "",
+      notesToSeller: "",
+    },
+  });
 
   // Mock data - in a real app, this would be fetched based on listingId and buyer access verification
   const listing = {
@@ -92,11 +113,29 @@ const DealRoom: React.FC = () => {
     });
   };
 
-  const handleSubmitLOI = () => {
+  const onSubmitLOI = (values: LOIFormValues) => {
+    // Mock API call to save LOI
+    console.log(`LOI submitted for listing ${listingId}:`, values);
+    
+    // In a real app, this would save to LOI_Submissions table
+    const loiData = {
+      listingId,
+      buyerId: "mock-buyer-id", // Would come from auth context
+      proposedValuation: values.proposedValuation,
+      dealStructure: values.dealStructure,
+      notesToSeller: values.notesToSeller,
+      submittedAt: new Date().toISOString(),
+    };
+    
+    console.log("Saving LOI to database:", loiData);
+    
     toast({
-      title: "Feature Coming Soon",
-      description: "Letter of Intent submission will be available soon.",
+      title: "LOI Submitted",
+      description: "Your Letter of Intent has been sent to the seller.",
     });
+    
+    // Reset form
+    form.reset();
   };
 
   if (!hasNDAAccess) {
@@ -320,6 +359,90 @@ const DealRoom: React.FC = () => {
                   >
                     Submit Letter of Intent
                   </Button>
+                </CardContent>
+              </Card>
+
+              {/* LOI Submission */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Send className="h-5 w-5" />
+                    Submit Letter of Intent
+                  </CardTitle>
+                  <CardDescription>
+                    Submit a formal offer for this business
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmitLOI)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="proposedValuation"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Proposed Valuation ($)</FormLabel>
+                            <FormControl>
+                              <input
+                                type="number"
+                                placeholder="Enter proposed valuation"
+                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="dealStructure"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Deal Structure</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select deal structure" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="all-cash">All-Cash</SelectItem>
+                                <SelectItem value="earn-out">Earn-Out</SelectItem>
+                                <SelectItem value="equity-rollover">Equity Rollover</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="notesToSeller"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Notes to Seller</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Share your thoughts, questions, or additional details about your offer..."
+                                rows={4}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
+                        <Send className="h-4 w-4 mr-2" />
+                        Submit LOI
+                      </Button>
+                    </form>
+                  </Form>
                 </CardContent>
               </Card>
             </div>

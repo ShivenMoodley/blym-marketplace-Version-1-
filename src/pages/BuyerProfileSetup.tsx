@@ -8,32 +8,41 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
+import { useToast } from "@/hooks/use-toast";
+
+interface FormData {
+  fullName: string;
+  buyerType: string;
+  industriesOfInterest: string[];
+  preferredBusinessModels: string[];
+  revenueRange: string;
+  budgetMin: number;
+  budgetMax: number;
+  geographicPreference: string;
+  dealType: string;
+  linkedinProfile: string;
+  proofOfFunds: File | null;
+}
 
 const BuyerProfileSetup: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    // Personal Information
-    phone: "",
-    location: "",
-    
-    // Investment Preferences
-    investmentRange: "",
-    preferredIndustries: [] as string[],
-    businessSize: "",
-    
-    // Experience & Background
-    businessExperience: "",
-    previousAcquisitions: "",
-    financingNeeds: "",
-    
-    // Investment Criteria
-    timeframe: "",
-    geography: "",
-    additionalNotes: "",
+  const [formData, setFormData] = useState<FormData>({
+    fullName: "",
+    buyerType: "",
+    industriesOfInterest: [],
+    preferredBusinessModels: [],
+    revenueRange: "",
+    budgetMin: 50000,
+    budgetMax: 1000000,
+    geographicPreference: "",
+    dealType: "",
+    linkedinProfile: "",
+    proofOfFunds: null,
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -44,242 +53,293 @@ const BuyerProfileSetup: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleNext = () => {
-    setCurrentStep(prev => prev + 1);
+  const handleMultiSelectChange = (name: keyof FormData, value: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked 
+        ? [...(prev[name] as string[]), value]
+        : (prev[name] as string[]).filter(item => item !== value)
+    }));
   };
 
-  const handlePrevious = () => {
-    setCurrentStep(prev => prev - 1);
+  const handleBudgetChange = (values: number[]) => {
+    setFormData(prev => ({
+      ...prev,
+      budgetMin: values[0],
+      budgetMax: values[1]
+    }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setFormData(prev => ({ ...prev, proofOfFunds: file }));
+  };
+
+  const validateForm = (): boolean => {
+    const requiredFields = ['fullName', 'buyerType', 'revenueRange', 'dealType'];
+    for (const field of requiredFields) {
+      if (!formData[field as keyof FormData]) {
+        toast({
+          title: "Validation Error",
+          description: `Please fill in all required fields.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+    }
+    
+    if (formData.industriesOfInterest.length === 0) {
+      toast({
+        title: "Validation Error",
+        description: "Please select at least one industry of interest.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (formData.preferredBusinessModels.length === 0) {
+      toast({
+        title: "Validation Error",
+        description: "Please select at least one preferred business model.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log("Buyer profile setup:", formData);
-    setIsLoading(false);
-    
-    // Redirect to buyer dashboard
-    navigate("/buyer-dashboard");
+    try {
+      // Simulate API call to store buyer profile
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      console.log("Buyer profile data:", formData);
+      
+      toast({
+        title: "Profile Created Successfully",
+        description: "Your buyer profile has been set up. Welcome to the platform!",
+      });
+      
+      // Redirect to buyer dashboard
+      navigate("/buyer-dashboard");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const industries = [
-    "Technology", "Healthcare", "Retail", "Manufacturing", "Food & Beverage",
-    "Professional Services", "Real Estate", "Construction", "Transportation",
-    "Education", "Entertainment", "Agriculture", "Other"
+    "SaaS", "eCommerce", "Services", "Brick & Mortar", "Healthcare", 
+    "Education", "Manufacturing", "Real Estate", "Other"
+  ];
+
+  const businessModels = [
+    "Subscription", "One-Time", "Agency", "Marketplace", "SaaS", 
+    "E-commerce", "Consulting", "Franchise", "Other"
   ];
 
   return (
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 pb-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Progress Steps */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              {[1, 2, 3].map((step) => (
-                <div key={step} className="flex items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                      step <= currentStep
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-600"
-                    }`}
-                  >
-                    {step < currentStep ? <CheckCircle className="w-5 h-5" /> : step}
-                  </div>
-                  {step < 3 && (
-                    <div
-                      className={`w-24 h-1 mx-2 ${
-                        step < currentStep ? "bg-blue-600" : "bg-gray-200"
-                      }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between mt-2 text-sm text-gray-600">
-              <span>Personal Info</span>
-              <span>Investment Preferences</span>
-              <span>Experience & Criteria</span>
-            </div>
-          </div>
-
           <Card className="border-2">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold">Complete Your Buyer Profile</CardTitle>
+              <CardTitle className="text-2xl font-bold">Buyer Profile Setup</CardTitle>
               <CardDescription>
-                Help us match you with the perfect business opportunities
+                Complete your profile to help us match you with the perfect business opportunities
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit}>
-                {currentStep === 1 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
-                    
-                    <div>
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="+1 (555) 123-4567"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="location">Location</Label>
-                      <Input
-                        id="location"
-                        name="location"
-                        type="text"
-                        placeholder="City, State"
-                        value={formData.location}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {currentStep === 2 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold mb-4">Investment Preferences</h3>
-                    
-                    <div>
-                      <Label htmlFor="investmentRange">Investment Range</Label>
-                      <Select onValueChange={(value) => handleSelectChange("investmentRange", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select your investment range" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="under-100k">Under $100K</SelectItem>
-                          <SelectItem value="100k-500k">$100K - $500K</SelectItem>
-                          <SelectItem value="500k-1m">$500K - $1M</SelectItem>
-                          <SelectItem value="1m-5m">$1M - $5M</SelectItem>
-                          <SelectItem value="5m-10m">$5M - $10M</SelectItem>
-                          <SelectItem value="over-10m">Over $10M</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="businessSize">Preferred Business Size</Label>
-                      <Select onValueChange={(value) => handleSelectChange("businessSize", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select business size preference" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="small">Small (1-10 employees)</SelectItem>
-                          <SelectItem value="medium">Medium (11-50 employees)</SelectItem>
-                          <SelectItem value="large">Large (50+ employees)</SelectItem>
-                          <SelectItem value="no-preference">No Preference</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                )}
-
-                {currentStep === 3 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold mb-4">Experience & Investment Criteria</h3>
-                    
-                    <div>
-                      <Label htmlFor="businessExperience">Business Experience</Label>
-                      <Select onValueChange={(value) => handleSelectChange("businessExperience", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select your experience level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="first-time">First-time buyer</SelectItem>
-                          <SelectItem value="some-experience">Some business experience</SelectItem>
-                          <SelectItem value="experienced">Experienced entrepreneur</SelectItem>
-                          <SelectItem value="serial-acquirer">Serial acquirer</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="timeframe">Investment Timeframe</Label>
-                      <Select onValueChange={(value) => handleSelectChange("timeframe", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="When are you looking to invest?" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="immediate">Immediately</SelectItem>
-                          <SelectItem value="3-months">Within 3 months</SelectItem>
-                          <SelectItem value="6-months">Within 6 months</SelectItem>
-                          <SelectItem value="1-year">Within 1 year</SelectItem>
-                          <SelectItem value="exploring">Just exploring</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="geography">Geographic Preference</Label>
-                      <Input
-                        id="geography"
-                        name="geography"
-                        type="text"
-                        placeholder="e.g., Local, Regional, National, No Preference"
-                        value={formData.geography}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="additionalNotes">Additional Notes</Label>
-                      <Textarea
-                        id="additionalNotes"
-                        name="additionalNotes"
-                        placeholder="Tell us more about what you're looking for in a business..."
-                        value={formData.additionalNotes}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                        rows={4}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex justify-between mt-8">
-                  {currentStep > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handlePrevious}
-                    >
-                      Previous
-                    </Button>
-                  )}
-                  
-                  {currentStep < 3 ? (
-                    <Button
-                      type="button"
-                      onClick={handleNext}
-                      className="ml-auto bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                      Next
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="ml-auto bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                      {isLoading ? "Setting up profile..." : "Complete Setup"}
-                    </Button>
-                  )}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Full Name */}
+                <div>
+                  <Label htmlFor="fullName">Full Name *</Label>
+                  <Input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    placeholder="John Smith"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    required
+                    className="mt-1"
+                  />
                 </div>
+
+                {/* Buyer Type */}
+                <div>
+                  <Label htmlFor="buyerType">Role / Buyer Type *</Label>
+                  <Select onValueChange={(value) => handleSelectChange("buyerType", value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select your buyer type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="individual">Individual</SelectItem>
+                      <SelectItem value="investor">Investor</SelectItem>
+                      <SelectItem value="private-equity">Private Equity</SelectItem>
+                      <SelectItem value="corporate-acquirer">Corporate Acquirer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Industries of Interest */}
+                <div>
+                  <Label className="text-base font-medium">Industries of Interest *</Label>
+                  <div className="grid grid-cols-2 gap-3 mt-2">
+                    {industries.map((industry) => (
+                      <div key={industry} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`industry-${industry}`}
+                          checked={formData.industriesOfInterest.includes(industry)}
+                          onCheckedChange={(checked) => 
+                            handleMultiSelectChange("industriesOfInterest", industry, checked as boolean)
+                          }
+                        />
+                        <Label htmlFor={`industry-${industry}`} className="text-sm">
+                          {industry}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Preferred Business Models */}
+                <div>
+                  <Label className="text-base font-medium">Preferred Business Models *</Label>
+                  <div className="grid grid-cols-2 gap-3 mt-2">
+                    {businessModels.map((model) => (
+                      <div key={model} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`model-${model}`}
+                          checked={formData.preferredBusinessModels.includes(model)}
+                          onCheckedChange={(checked) => 
+                            handleMultiSelectChange("preferredBusinessModels", model, checked as boolean)
+                          }
+                        />
+                        <Label htmlFor={`model-${model}`} className="text-sm">
+                          {model}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Revenue Range */}
+                <div>
+                  <Label htmlFor="revenueRange">Revenue Range of Target Businesses *</Label>
+                  <Select onValueChange={(value) => handleSelectChange("revenueRange", value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select revenue range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="R20K-R100K">R20K – R100K</SelectItem>
+                      <SelectItem value="R100K-R500K">R100K – R500K</SelectItem>
+                      <SelectItem value="R500K-R1M">R500K – R1M</SelectItem>
+                      <SelectItem value="R1M-R5M">R1M – R5M</SelectItem>
+                      <SelectItem value="R5M+">R5M+</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Budget / Investment Size */}
+                <div>
+                  <Label className="text-base font-medium">Budget / Investment Size</Label>
+                  <div className="mt-2 px-3">
+                    <Slider
+                      min={10000}
+                      max={5000000}
+                      step={10000}
+                      value={[formData.budgetMin, formData.budgetMax]}
+                      onValueChange={handleBudgetChange}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-sm text-gray-600 mt-2">
+                      <span>R{formData.budgetMin.toLocaleString()}</span>
+                      <span>R{formData.budgetMax.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Geographic Preference */}
+                <div>
+                  <Label htmlFor="geographicPreference">Geographic Preference</Label>
+                  <Input
+                    id="geographicPreference"
+                    name="geographicPreference"
+                    type="text"
+                    placeholder="e.g., Cape Town, Johannesburg, National, International"
+                    value={formData.geographicPreference}
+                    onChange={handleInputChange}
+                    className="mt-1"
+                  />
+                </div>
+
+                {/* Deal Type */}
+                <div>
+                  <Label htmlFor="dealType">Deal Type *</Label>
+                  <Select onValueChange={(value) => handleSelectChange("dealType", value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select deal type preference" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="asset-sale">Asset Sale</SelectItem>
+                      <SelectItem value="equity-sale">Equity Sale</SelectItem>
+                      <SelectItem value="both">Both</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* LinkedIn Profile */}
+                <div>
+                  <Label htmlFor="linkedinProfile">LinkedIn Profile or Website (Optional)</Label>
+                  <Input
+                    id="linkedinProfile"
+                    name="linkedinProfile"
+                    type="url"
+                    placeholder="https://linkedin.com/in/yourprofile"
+                    value={formData.linkedinProfile}
+                    onChange={handleInputChange}
+                    className="mt-1"
+                  />
+                </div>
+
+                {/* Proof of Funds Upload */}
+                <div>
+                  <Label htmlFor="proofOfFunds">Upload Proof of Funds (Optional)</Label>
+                  <Input
+                    id="proofOfFunds"
+                    name="proofOfFunds"
+                    type="file"
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    onChange={handleFileChange}
+                    className="mt-1"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)
+                  </p>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-smooth"
+                >
+                  {isLoading ? "Setting up profile..." : "Complete Profile Setup"}
+                </Button>
               </form>
             </CardContent>
           </Card>

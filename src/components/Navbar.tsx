@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,45 +34,36 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <a href="/" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">
                 Blym
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a
-              href="#sell"
-              className="text-sm font-medium text-gray-800 hover:text-black transition-colors"
-            >
-              Sell
-            </a>
-            <a
-              href="#buy"
-              className="text-sm font-medium text-gray-800 hover:text-black transition-colors"
-            >
-              Buy
-            </a>
-            <a
-              href="#financing"
-              className="text-sm font-medium text-gray-800 hover:text-black transition-colors"
-            >
-              Financing
-            </a>
-            <a
-              href="#valuation"
-              className="text-sm font-medium text-gray-800 hover:text-black transition-colors"
-            >
-              Valuation
-            </a>
-            <Button
-              className="ml-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Get Started
-            </Button>
+          <div className="hidden md:flex items-center space-x-4">
+            <Link to="/login">
+              <Button
+                variant="ghost"
+                className="text-sm font-medium text-gray-800 hover:text-black transition-colors"
+              >
+                Login
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button
+                variant="outline"
+                className="text-sm font-medium border-gray-300 text-gray-800 hover:bg-gray-50 transition-colors"
+              >
+                Sign Up
+              </Button>
+            </Link>
+            <Link to="/choose-role">
+              <Button className="bg-black text-white hover:bg-gray-900 transition-smooth">
+                Get Started
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -117,44 +110,26 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-3 pb-3 space-y-1 animate-fade-in">
-            <a
-              href="#sell"
+          <div className="md:hidden mt-3 pb-3 space-y-2 animate-fade-in">
+            <Link
+              to="/login"
               className="block py-2 text-gray-800 hover:text-black transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Sell
-            </a>
-            <a
-              href="#buy"
+              Login
+            </Link>
+            <Link
+              to="/signup"
               className="block py-2 text-gray-800 hover:text-black transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Buy
-            </a>
-            <a
-              href="#financing"
-              className="block py-2 text-gray-800 hover:text-black transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Financing
-            </a>
-            <a
-              href="#valuation"
-              className="block py-2 text-gray-800 hover:text-black transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Valuation
-            </a>
-            <Button
-              className="w-full mt-4 bg-black text-white hover:bg-gray-900 transition-smooth"
-              onClick={() => {
-                document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              Get Started
-            </Button>
+              Sign Up
+            </Link>
+            <Link to="/choose-role" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button className="w-full mt-2 bg-black text-white hover:bg-gray-900 transition-smooth">
+                Get Started
+              </Button>
+            </Link>
           </div>
         )}
       </div>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Eye, MessageCircle, Heart, Settings, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { WalletConnect } from "@/components/WalletConnect";
 
 const SellerDashboard: React.FC = () => {
   // Mock data for demonstration
@@ -50,15 +51,18 @@ const SellerDashboard: React.FC = () => {
                 Seller Dashboard
               </h1>
               <p className="text-lg text-gray-600">
-                Manage your business listings and track buyer interest
+                Manage your DApp listings and track buyer interest
               </p>
             </div>
-            <Link to="/seller-onboarding">
-              <Button className="bg-black text-white hover:bg-gray-900 transition-smooth">
-                <Plus className="w-4 h-4 mr-2" />
-                New Listing
-              </Button>
-            </Link>
+            <div className="flex gap-3">
+              <WalletConnect />
+              <Link to="/seller-onboarding">
+                <Button className="bg-black text-white hover:bg-gray-900 transition-smooth">
+                  <Plus className="w-4 h-4 mr-2" />
+                  New Listing
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Stats Overview */}
@@ -109,21 +113,21 @@ const SellerDashboard: React.FC = () => {
               <CardHeader>
                 <CardTitle className="text-xl font-bold">Active Listings</CardTitle>
                 <CardDescription>
-                  Your currently published business listings
+                  Your currently published DApp listings
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="p-4 border rounded-lg">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold">Downtown Coffee Shop</h3>
-                      <Badge className="bg-yellow-500 text-black">Premium</Badge>
+                      <h3 className="font-semibold">DeFi Lending Protocol</h3>
+                      <Badge className="bg-yellow-500 text-black">Verified</Badge>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">Food & Beverage • Established 2018</p>
-                    <p className="text-lg font-bold text-green-600 mb-3">$325,000</p>
+                    <p className="text-sm text-gray-600 mb-2">DeFi • Base, Ethereum</p>
+                    <p className="text-lg font-bold text-green-600 mb-3">$900,000 USDC</p>
                     <div className="flex justify-between text-sm text-gray-500">
                       <span>Listed 15 days ago</span>
-                      <span>Expires in 75 days</span>
+                      <span>TVL: $2.5M</span>
                     </div>
                     <div className="flex gap-2 mt-3">
                       <Button size="sm" variant="outline">

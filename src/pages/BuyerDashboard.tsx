@@ -7,62 +7,63 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Heart, Eye, DollarSign, MapPin, Users, TrendingUp } from "lucide-react";
+import { WalletConnect } from "@/components/WalletConnect";
 
 const BuyerDashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  // Mock data for business listings
-  const businessListings = [
+  // Mock data for DApp listings
+  const dappListings = [
     {
       id: 1,
-      name: "Digital Marketing Agency",
-      category: "Professional Services",
-      location: "Austin, TX",
-      revenue: "$750K",
-      profit: "$180K",
+      name: "DeFi Lending Protocol",
+      category: "DeFi",
+      chains: ["Base", "Ethereum"],
+      tvl: "$2.5M",
+      users: "1.2K",
       askingPrice: "$900K",
-      employees: 8,
-      description: "Well-established digital marketing agency with recurring clients",
+      contributors: 5,
+      description: "Decentralized lending protocol with proven smart contracts",
       isFavorited: false,
       isVerified: true,
     },
     {
       id: 2,
-      name: "Local Coffee Shop Chain",
-      category: "Food & Beverage",
-      location: "Portland, OR",
-      revenue: "$1.2M",
-      profit: "$220K",
+      name: "NFT Marketplace",
+      category: "NFT",
+      chains: ["Base", "Polygon"],
+      tvl: "$850K",
+      users: "3.4K",
       askingPrice: "$1.5M",
-      employees: 15,
-      description: "3-location coffee shop chain with loyal customer base",
+      contributors: 8,
+      description: "Multi-chain NFT marketplace with active community",
       isFavorited: true,
       isVerified: true,
     },
     {
       id: 3,
-      name: "E-commerce Clothing Brand",
-      category: "Retail",
-      location: "Remote",
-      revenue: "$2.1M",
-      profit: "$420K",
-      askingPrice: "$3.2M",
-      employees: 12,
-      description: "Growing online fashion brand with strong social presence",
+      name: "DAO Governance Platform",
+      category: "Infrastructure",
+      chains: ["Base"],
+      tvl: "$1.2M",
+      users: "890",
+      askingPrice: "$750K",
+      contributors: 4,
+      description: "Complete governance solution for DAOs with voting and treasury",
       isFavorited: false,
       isVerified: true,
     },
   ];
 
   const savedSearches = [
-    { name: "Tech Startups $500K-$1M", count: 12 },
-    { name: "Food & Beverage Local", count: 8 },
-    { name: "Professional Services", count: 15 },
+    { name: "DeFi Protocols $500K-$1M", count: 12 },
+    { name: "NFT Marketplaces", count: 8 },
+    { name: "Base Chain DApps", count: 15 },
   ];
 
-  const handleRequestAccess = (businessId: number) => {
-    navigate(`/confidential-access/${businessId}`);
+  const handleRequestAccess = (dappId: number) => {
+    navigate(`/confidential-access/${dappId}`);
   };
 
   return (
@@ -70,9 +71,12 @@ const BuyerDashboard: React.FC = () => {
       <div className="min-h-screen bg-gray-50 pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Buyer Dashboard</h1>
-            <p className="text-gray-600">Discover businesses that match your investment criteria</p>
+          <div className="mb-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Buyer Dashboard</h1>
+              <p className="text-gray-600">Discover DApps that match your investment criteria</p>
+            </div>
+            <WalletConnect />
           </div>
 
           {/* Search and Filters */}
@@ -81,7 +85,7 @@ const BuyerDashboard: React.FC = () => {
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
-                  placeholder="Search businesses by name, industry, or location..."
+                  placeholder="Search DApps by name, category, or blockchain..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -95,8 +99,8 @@ const BuyerDashboard: React.FC = () => {
             
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">$500K - $1M</Badge>
-              <Badge variant="secondary">Technology</Badge>
-              <Badge variant="secondary">Local</Badge>
+              <Badge variant="secondary">DeFi</Badge>
+              <Badge variant="secondary">Base Chain</Badge>
               <Button variant="ghost" size="sm" className="text-xs">
                 Clear all
               </Button>
@@ -113,7 +117,7 @@ const BuyerDashboard: React.FC = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Saved Businesses</span>
+                    <span className="text-sm text-gray-600">Saved DApps</span>
                     <span className="font-semibold">12</span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -149,45 +153,44 @@ const BuyerDashboard: React.FC = () => {
             <div className="lg:col-span-3">
               <Tabs defaultValue="browse" className="space-y-6">
                 <TabsList>
-                  <TabsTrigger value="browse">Browse Businesses</TabsTrigger>
+                  <TabsTrigger value="browse">Browse DApps</TabsTrigger>
                   <TabsTrigger value="favorites">Favorites</TabsTrigger>
                   <TabsTrigger value="inquiries">My Inquiries</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="browse" className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Available Businesses</h2>
-                    <span className="text-sm text-gray-600">{businessListings.length} results found</span>
+                    <h2 className="text-xl font-semibold">Available DApps</h2>
+                    <span className="text-sm text-gray-600">{dappListings.length} results found</span>
                   </div>
 
                   <div className="space-y-6">
-                    {businessListings.map((business) => (
-                      <Card key={business.id} className="hover:shadow-md transition-shadow">
+                    {dappListings.map((dapp) => (
+                      <Card key={dapp.id} className="hover:shadow-md transition-shadow">
                         <CardContent className="p-6">
                           <div className="flex items-start justify-between mb-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
-                                <h3 className="text-xl font-semibold">{business.name}</h3>
-                                {business.isVerified && (
+                                <h3 className="text-xl font-semibold">{dapp.name}</h3>
+                                {dapp.isVerified && (
                                   <Badge variant="outline" className="text-green-600 border-green-600">
                                     Verified
                                   </Badge>
                                 )}
                               </div>
-                              <p className="text-gray-600 mb-2">{business.description}</p>
+                              <p className="text-gray-600 mb-2">{dapp.description}</p>
                               <div className="flex items-center gap-4 text-sm text-gray-500">
                                 <span className="flex items-center gap-1">
-                                  <MapPin className="h-4 w-4" />
-                                  {business.location}
+                                  Chains: {dapp.chains.join(", ")}
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <Users className="h-4 w-4" />
-                                  {business.employees} employees
+                                  {dapp.contributors} contributors
                                 </span>
                               </div>
                             </div>
                             <Button variant="ghost" size="sm">
-                              <Heart className={`h-4 w-4 ${business.isFavorited ? 'fill-red-500 text-red-500' : ''}`} />
+                              <Heart className={`h-4 w-4 ${dapp.isFavorited ? 'fill-red-500 text-red-500' : ''}`} />
                             </Button>
                           </div>
 
@@ -196,29 +199,29 @@ const BuyerDashboard: React.FC = () => {
                               <div className="flex items-center justify-center mb-1">
                                 <TrendingUp className="h-4 w-4 text-green-600" />
                               </div>
-                              <div className="text-sm font-semibold">{business.revenue}</div>
-                              <div className="text-xs text-gray-600">Revenue</div>
+                              <div className="text-sm font-semibold">{dapp.tvl}</div>
+                              <div className="text-xs text-gray-600">TVL</div>
                             </div>
                             <div className="text-center p-3 bg-gray-50 rounded">
                               <div className="flex items-center justify-center mb-1">
-                                <DollarSign className="h-4 w-4 text-blue-600" />
+                                <Users className="h-4 w-4 text-blue-600" />
                               </div>
-                              <div className="text-sm font-semibold">{business.profit}</div>
-                              <div className="text-xs text-gray-600">Profit</div>
+                              <div className="text-sm font-semibold">{dapp.users}</div>
+                              <div className="text-xs text-gray-600">Users</div>
                             </div>
                             <div className="text-center p-3 bg-blue-50 rounded">
-                              <div className="text-sm font-semibold text-blue-600">{business.askingPrice}</div>
+                              <div className="text-sm font-semibold text-blue-600">{dapp.askingPrice}</div>
                               <div className="text-xs text-gray-600">Asking Price</div>
                             </div>
                             <div className="text-center p-3 bg-gray-50 rounded">
-                              <Badge variant="secondary">{business.category}</Badge>
+                              <Badge variant="secondary">{dapp.category}</Badge>
                             </div>
                           </div>
 
                           <div className="flex gap-3">
                             <Button 
                               className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
-                              onClick={() => handleRequestAccess(business.id)}
+                              onClick={() => handleRequestAccess(dapp.id)}
                             >
                               Request Access
                             </Button>
@@ -237,7 +240,7 @@ const BuyerDashboard: React.FC = () => {
                   <div className="text-center py-12">
                     <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-semibold mb-2">No favorites yet</h3>
-                    <p className="text-gray-600">Save businesses you're interested in to view them here</p>
+                    <p className="text-gray-600">Save DApps you're interested in to view them here</p>
                   </div>
                 </TabsContent>
 

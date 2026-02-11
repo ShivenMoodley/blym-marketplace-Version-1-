@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-3 pb-3 space-y-2 animate-fade-in">
+          <div className="md:hidden mt-3 pb-3 space-y-3 animate-fade-in bg-white rounded-lg p-4 shadow-lg">
             <Link
               to="/login"
               className="block py-2 text-gray-800 hover:text-black transition-colors"

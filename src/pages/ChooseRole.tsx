@@ -16,7 +16,7 @@ const ChooseRole: React.FC = () => {
               What brings you to Blym?
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose your path to get started with the right tools and resources for your business journey.
+              Choose your path to get started with the right tools for your Web3 M&A journey.
             </p>
           </div>
 
@@ -27,33 +27,33 @@ const ChooseRole: React.FC = () => {
                 <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-gray-900 transition-colors">
                   <Building2 className="w-8 h-8" />
                 </div>
-                <CardTitle className="text-2xl font-bold">Sell a Business</CardTitle>
+                <CardTitle className="text-2xl font-bold">Sell a dApp / Protocol</CardTitle>
                 <CardDescription className="text-gray-600">
-                  List your business for sale and connect with qualified buyers
+                  List your dApp, protocol, or digital IP and connect with qualified buyers
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <ul className="text-left space-y-2 mb-6 text-gray-600">
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                    Professional business valuation
+                    On-chain valuation & analytics
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                    Verified buyer network
+                    Verified buyer & investor network
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                    End-to-end transaction support
+                    Crypto-native escrow & settlement
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                    Confidential listing process
+                    Confidential deal rooms
                   </li>
                 </ul>
                 <Link to="/choose-listing-type">
                   <Button className="w-full bg-black text-white hover:bg-gray-900 transition-smooth">
-                    List My Business
+                    List My dApp
                   </Button>
                 </Link>
               </CardContent>
@@ -65,33 +65,33 @@ const ChooseRole: React.FC = () => {
                 <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors">
                   <ShoppingCart className="w-8 h-8" />
                 </div>
-                <CardTitle className="text-2xl font-bold">Buy a Business</CardTitle>
+                <CardTitle className="text-2xl font-bold">Acquire a dApp / Protocol</CardTitle>
                 <CardDescription className="text-gray-600">
-                  Discover and acquire businesses that match your criteria
+                  Discover and acquire Web3 projects that match your criteria
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <ul className="text-left space-y-2 mb-6 text-gray-600">
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                    Curated business listings
+                    Curated dApp & protocol listings
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                    Financial analysis tools
+                    On-chain due diligence tools
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                    Due diligence support
+                    Smart contract risk analysis
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                    Financing assistance
+                    Stablecoin-based settlement
                   </li>
                 </ul>
                 <Link to="/buyer-signup">
                   <Button className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-smooth">
-                    Find Businesses
+                    Browse dApps
                   </Button>
                 </Link>
               </CardContent>

@@ -1,5 +1,4 @@
 import React from "react";
-import { cn } from "@/lib/utils";
 
 const Footer: React.FC = () => {
   return (
@@ -13,91 +12,37 @@ const Footer: React.FC = () => {
               </span>
             </a>
             <p className="mt-4 text-gray-600 text-sm max-w-xs">
-              The modern platform for buying, selling, and financing businesses of all sizes.
+              The Web3-native M&A marketplace for dApps, protocols, tokenized projects, and on-chain IP.
             </p>
           </div>
           
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-              Platform
-            </h3>
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Platform</h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <a href="#sell" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Sell Your Business
-                </a>
-              </li>
-              <li>
-                <a href="#buy" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Buy a Business
-                </a>
-              </li>
-              <li>
-                <a href="#financing" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Rescue Financing
-                </a>
-              </li>
-              <li>
-                <a href="#valuation" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Business Valuation
-                </a>
-              </li>
+              <li><a href="#marketplace" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Web3 Marketplace</a></li>
+              <li><a href="#due-diligence" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">On-Chain Due Diligence</a></li>
+              <li><a href="#escrow" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Crypto Escrow</a></li>
+              <li><a href="#dealroom" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Deal Rooms</a></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-              Resources
-            </h3>
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Resources</h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Resource Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Market Reports
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Due Diligence Checklist
-                </a>
-              </li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Documentation</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Blog</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Market Reports</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Due Diligence Checklist</a></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-              Company
-            </h3>
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Company</h3>
             <ul className="mt-4 space-y-2">
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">
-                  Terms of Service
-                </a>
-              </li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">About Us</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Contact</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Privacy Policy</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Terms of Service</a></li>
             </ul>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -20,9 +21,7 @@ const Hero: React.FC = () => {
       });
     };
 
-    // Initial check
     setTimeout(animateOnScroll, 100);
-
     window.addEventListener("scroll", animateOnScroll);
     return () => window.removeEventListener("scroll", animateOnScroll);
   }, []);
@@ -40,34 +39,35 @@ const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <div className="text-left space-y-6 animate-fade-in">
             <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/5 mb-4">
-              <span className="text-sm font-medium text-gray-900">Business Marketplace</span>
+              <span className="text-sm font-medium text-gray-900">Web3-Native M&A Marketplace</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
-              The Modern Way to <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Buy & Sell Businesses</span>
+              Where Web3 Businesses <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Change Hands</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-xl">
-              Connecting buyers, sellers, and investors with AI-powered tools and expert guidance for successful business transactions.
+              Buy or sell dApps, DeFi protocols, tokenized projects, and on-chain IP with crypto-native escrow, on-chain due diligence, and programmable settlement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button 
-                size="lg" 
-                className="bg-black hover:bg-gray-900 text-white transition-smooth"
-                onClick={() => document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                Get Started
-              </Button>
+              <Link to="/choose-role">
+                <Button 
+                  size="lg" 
+                  className="bg-black hover:bg-gray-900 text-white transition-smooth"
+                >
+                  Get Started
+                </Button>
+              </Link>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="border-gray-300 hover:bg-gray-100 transition-smooth"
-                onClick={() => document.getElementById("sell")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => document.getElementById("marketplace")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Learn More
+                Explore Features
               </Button>
             </div>
           </div>
           
-          {/* Hero graphic and animations */}
+          {/* Hero graphic — on-chain deal card */}
           <div className="relative animate-fade-in-up">
             <div className="relative w-full aspect-[4/3] bg-white rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-blym-soft-pink/10 via-white to-blym-light-blue/10"></div>
@@ -75,22 +75,11 @@ const Hero: React.FC = () => {
                 <div className="w-4/5 h-4/5 glass rounded-xl flex items-center justify-center bg-white/50">
                   <div className="space-y-6 px-6 py-8 text-center">
                     <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center mx-auto">
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-8 w-8 text-gray-800" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={1.5} 
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold">AI Valuation Report</h3>
+                    <h3 className="text-xl font-semibold">On-Chain Valuation</h3>
                     <div className="space-y-2">
                       <div className="h-3 w-full bg-gray-100 rounded-full"></div>
                       <div className="h-3 w-5/6 bg-gray-100 rounded-full"></div>
@@ -99,23 +88,12 @@ const Hero: React.FC = () => {
                     <div className="pt-4">
                       <div className="flex items-center justify-between">
                         <div className="text-left">
-                          <p className="text-sm text-gray-500">Estimated Value</p>
-                          <p className="text-xl font-semibold">R1.2M - R1.5M</p>
+                          <p className="text-sm text-gray-500">Protocol TVL</p>
+                          <p className="text-xl font-semibold">$1.2M USDC</p>
                         </div>
                         <div className="h-8 w-8 bg-green-50 rounded-full flex items-center justify-center">
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            className="h-4 w-4 text-green-600" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M5 10l7-7m0 0l7 7m-7-7v18" 
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
                           </svg>
                         </div>
                       </div>
@@ -129,8 +107,8 @@ const Hero: React.FC = () => {
             <div className="absolute -top-6 -right-6 w-32 h-32 animate-float delay-100">
               <div className="w-full h-full glass rounded-lg bg-white/70 shadow-lg flex items-center justify-center p-4">
                 <div className="text-center">
-                  <div className="text-xs text-gray-500">Annual Revenue</div>
-                  <div className="text-lg font-semibold">R4.2M</div>
+                  <div className="text-xs text-gray-500">Monthly Revenue</div>
+                  <div className="text-lg font-semibold">42K USDC</div>
                 </div>
               </div>
             </div>
@@ -139,22 +117,11 @@ const Hero: React.FC = () => {
               <div className="glass rounded-lg bg-white/70 shadow-lg p-3">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className="h-4 w-4 text-green-600" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <div className="text-sm font-medium">Verified Seller</div>
+                  <div className="text-sm font-medium">Verified On-Chain</div>
                 </div>
               </div>
             </div>

@@ -2,6 +2,7 @@ import React from "react";
 import MainLayout from "@/layouts/MainLayout";
 import Hero from "@/components/Hero";
 import FeatureSection from "@/components/FeatureSection";
+import PersonasSection from "@/components/PersonasSection";
 import SignUpForm from "@/components/SignUpForm";
 
 const Index: React.FC = () => {
@@ -275,6 +276,7 @@ const Index: React.FC = () => {
       <FeatureSection {...dueDiligenceFeature} />
       <FeatureSection {...escrowFeature} />
       <FeatureSection {...dealRoomFeature} />
+      <PersonasSection />
       <SignUpForm />
     </MainLayout>
   );

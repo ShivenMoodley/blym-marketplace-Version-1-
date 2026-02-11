@@ -5,32 +5,20 @@ import FeatureSection from "@/components/FeatureSection";
 import SignUpForm from "@/components/SignUpForm";
 
 const Index: React.FC = () => {
-  // Feature section data
-  const sellFeature = {
-    id: "sell",
-    title: "Sell Your Business with Confidence",
-    subtitle: "For Sellers",
-    description: "List your business for sale and connect with qualified buyers and investors. Our AI-powered valuation tool ensures you get a fair price for your business.",
+  const marketplaceFeature = {
+    id: "marketplace",
+    title: "Web3 Business Marketplace",
+    subtitle: "For Founders & Investors",
+    description: "List or discover DeFi protocols, NFT ecosystems, Web3 SaaS, tokenized communities, smart contract infrastructure, and on-chain revenue businesses.",
     items: [
-      { id: "sell-1", text: "List your business in minutes." },
-      { id: "sell-2", text: "AI-powered valuation tool for fair pricing." },
-      { id: "sell-3", text: "Connect with verified buyers & investors." },
+      { id: "m-1", text: "List your dApp, protocol, or digital IP for sale." },
+      { id: "m-2", text: "Discover verified Web3 acquisition opportunities." },
+      { id: "m-3", text: "Access global buyers and strategic investors." },
     ],
     backgroundColor: "bg-blym-soft-pink/10",
     icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 text-gray-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     ),
     imageComponent: (
@@ -39,71 +27,44 @@ const Index: React.FC = () => {
         <div className="relative h-full flex items-center justify-center p-8">
           <div className="bg-white/80 rounded-xl p-6 shadow-lg backdrop-blur-sm w-full max-w-xs mx-auto">
             <div className="space-y-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-10 h-10 rounded-full bg-blym-soft-pink/30 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-800"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">Retail Business</h3>
-                      <p className="text-xs text-gray-500">Listed 2 days ago</p>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-green-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-10 h-10 rounded-full bg-blym-soft-pink/30 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
+                  <div>
+                    <h3 className="font-semibold">DeFi Lending Protocol</h3>
+                    <p className="text-xs text-gray-500">Listed 2 days ago</p>
+                  </div>
+                </div>
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
               </div>
-              
               <div className="space-y-4">
                 <div>
                   <p className="text-xs text-gray-500">Asking Price</p>
-                  <p className="text-xl font-semibold">R750,000</p>
+                  <p className="text-xl font-semibold">750K USDC</p>
                 </div>
-                
                 <div className="flex justify-between text-sm">
                   <div>
-                    <p className="text-gray-500">Revenue</p>
-                    <p className="font-medium">R1.2M</p>
+                    <p className="text-gray-500">TVL</p>
+                    <p className="font-medium">$2.4M</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Profit</p>
-                    <p className="font-medium">R280K</p>
+                    <p className="text-gray-500">MAU</p>
+                    <p className="font-medium">12K</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Multiple</p>
-                    <p className="font-medium">2.7x</p>
+                    <p className="text-gray-500">Chain</p>
+                    <p className="font-medium">Base</p>
                   </div>
                 </div>
               </div>
-              
               <div className="pt-2">
                 <div className="h-10 bg-black/5 rounded-lg animate-pulse-slow"></div>
               </div>
@@ -114,112 +75,64 @@ const Index: React.FC = () => {
     ),
   };
 
-  const buyFeature = {
-    id: "buy",
-    title: "Find the Right Business to Buy",
-    subtitle: "For Buyers",
-    description: "Browse businesses of all sizes and industries. Get access to financing options and expert advisory services to make the right purchase.",
+  const dueDiligenceFeature = {
+    id: "due-diligence",
+    title: "On-Chain Due Diligence",
+    subtitle: "Verified Analytics",
+    description: "Reduce reliance on unverifiable pitch decks. Blym integrates on-chain analytics to verify revenue, wallet growth, user activity, and smart contract risk.",
     items: [
-      { id: "buy-1", text: "Browse businesses of all sizes." },
-      { id: "buy-2", text: "Get private debt & bank financing options." },
-      { id: "buy-3", text: "Access professional M&A advisory services." },
+      { id: "dd-1", text: "Revenue verification via on-chain data." },
+      { id: "dd-2", text: "Wallet growth & user activity trend analysis." },
+      { id: "dd-3", text: "Smart contract risk indicators & treasury transparency." },
     ],
     backgroundColor: "bg-blym-warm-yellow/10",
     reverse: true,
     icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 text-gray-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
       </svg>
     ),
     imageComponent: (
       <div className="relative w-full aspect-square max-w-md mx-auto">
         <div className="absolute inset-0 bg-gradient-to-br from-blym-warm-yellow/30 to-white rounded-2xl"></div>
         <div className="relative h-full flex items-center justify-center p-8">
-          <div className="w-full max-w-xs">
-            <div className="space-y-4">
-              <div className="bg-white/80 rounded-xl p-4 shadow-md backdrop-blur-sm">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-blym-warm-yellow/30 flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-gray-800"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-sm">Software Company</h3>
-                    <p className="text-xs text-gray-500">SaaS • 15 Employees</p>
-                  </div>
+          <div className="w-full max-w-xs space-y-4">
+            <div className="bg-white/80 rounded-xl p-4 shadow-md backdrop-blur-sm">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-blym-warm-yellow/30 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm">Revenue Verified</h3>
+                  <p className="text-xs text-gray-500">$42K/mo on-chain</p>
                 </div>
               </div>
-              
-              <div className="bg-white/80 rounded-xl p-4 shadow-md backdrop-blur-sm">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-blym-warm-yellow/30 flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-gray-800"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-sm">E-commerce Store</h3>
-                    <p className="text-xs text-gray-500">Retail • Established</p>
-                  </div>
+            </div>
+            <div className="bg-white/80 rounded-xl p-4 shadow-md backdrop-blur-sm">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-blym-warm-yellow/30 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm">Wallet Growth</h3>
+                  <p className="text-xs text-gray-500">+34% MoM active wallets</p>
                 </div>
               </div>
-              
-              <div className="bg-white/80 rounded-xl p-4 shadow-md backdrop-blur-sm">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-blym-warm-yellow/30 flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-gray-800"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-sm">Bakery Chain</h3>
-                    <p className="text-xs text-gray-500">Food • 3 Locations</p>
-                  </div>
+            </div>
+            <div className="bg-white/80 rounded-xl p-4 shadow-md backdrop-blur-sm">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-blym-warm-yellow/30 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm">Contract Audited</h3>
+                  <p className="text-xs text-gray-500">CertiK • Low risk</p>
                 </div>
               </div>
             </div>
@@ -229,31 +142,20 @@ const Index: React.FC = () => {
     ),
   };
 
-  const financingFeature = {
-    id: "financing",
-    title: "Rescue Financing for Struggling Businesses",
-    subtitle: "For Businesses in Need",
-    description: "Secure the funding you need to turn your business around. Connect with private investors and access expert guidance to navigate business recovery.",
+  const escrowFeature = {
+    id: "escrow",
+    title: "Crypto-Native Escrow & Settlement",
+    subtitle: "Programmable Deals",
+    description: "Execute transactions with stablecoin-based escrow, smart contract settlement, milestone-based releases, and full on-chain auditability.",
     items: [
-      { id: "financing-1", text: "Equity leverage partnerships & crowdfunding." },
-      { id: "financing-2", text: "Secure private investors & turnaround funding." },
-      { id: "financing-3", text: "Expert legal & financial guidance to navigate business recovery." },
+      { id: "e-1", text: "Stablecoin-based transactions (USDC)." },
+      { id: "e-2", text: "Smart contract escrow with milestone releases." },
+      { id: "e-3", text: "Cross-border capital efficiency & on-chain auditability." },
     ],
     backgroundColor: "bg-blym-lavender/10",
     icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 text-gray-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
       </svg>
     ),
     imageComponent: (
@@ -264,47 +166,33 @@ const Index: React.FC = () => {
             <div className="space-y-6">
               <div className="space-y-2 text-center">
                 <div className="w-12 h-12 rounded-full bg-blym-lavender/30 flex items-center justify-center mx-auto">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-800"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <h3 className="font-semibold">Financing Options</h3>
+                <h3 className="font-semibold">Smart Escrow</h3>
               </div>
-              
               <div className="space-y-3">
                 <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
                   <div className="flex justify-between items-center">
-                    <p className="font-medium text-sm">Bridge Loan</p>
-                    <div className="chip bg-green-100 text-green-800">Fast</div>
+                    <p className="font-medium text-sm">Milestone 1</p>
+                    <div className="chip bg-green-100 text-green-800">Released</div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Short-term financing up to $500K</p>
+                  <p className="text-xs text-gray-500 mt-1">Code transfer — 250K USDC</p>
                 </div>
-                
                 <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
                   <div className="flex justify-between items-center">
-                    <p className="font-medium text-sm">Private Equity</p>
-                    <div className="chip bg-blue-100 text-blue-800">Growth</div>
+                    <p className="font-medium text-sm">Milestone 2</p>
+                    <div className="chip bg-blue-100 text-blue-800">Pending</div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">For established businesses seeking expansion</p>
+                  <p className="text-xs text-gray-500 mt-1">Admin key handover — 250K USDC</p>
                 </div>
-                
                 <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
                   <div className="flex justify-between items-center">
-                    <p className="font-medium text-sm">Turnaround Fund</p>
-                    <div className="chip bg-purple-100 text-purple-800">Rescue</div>
+                    <p className="font-medium text-sm">Milestone 3</p>
+                    <div className="chip bg-gray-100 text-gray-600">Locked</div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Specialized financing for business recovery</p>
+                  <p className="text-xs text-gray-500 mt-1">30-day support period — 250K USDC</p>
                 </div>
               </div>
             </div>
@@ -314,32 +202,21 @@ const Index: React.FC = () => {
     ),
   };
 
-  const valuationFeature = {
-    id: "valuation",
-    title: "AI-Powered Valuations & Due Diligence",
-    subtitle: "Smart Analytics",
-    description: "Get an instant AI-driven valuation of your business. Our smart analytics assess growth potential and provide insights for informed decision-making.",
+  const dealRoomFeature = {
+    id: "dealroom",
+    title: "Structured Deal Workflows",
+    subtitle: "End-to-End",
+    description: "From listing to closing — confidential deal rooms, document management, buyer verification, offer management, and structured closing workflows built for digital-native transactions.",
     items: [
-      { id: "valuation-1", text: "Instant AI-driven business valuation." },
-      { id: "valuation-2", text: "Smart analytics to assess growth potential." },
-      { id: "valuation-3", text: "Access legal & financing solutions in one place." },
+      { id: "d-1", text: "Confidential deal rooms with document management." },
+      { id: "d-2", text: "Buyer verification & offer management." },
+      { id: "d-3", text: "Token and equity structuring support." },
     ],
     backgroundColor: "bg-white",
     reverse: true,
     icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 text-gray-800"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
       </svg>
     ),
     imageComponent: (
@@ -348,68 +225,40 @@ const Index: React.FC = () => {
         <div className="relative h-full flex items-center justify-center p-8">
           <div className="bg-white/80 rounded-xl p-6 shadow-lg backdrop-blur-sm w-full max-w-xs mx-auto">
             <div className="space-y-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold">Business Valuation</h3>
-                  <div className="h-8 w-8 bg-blym-light-blue/30 rounded-full flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-gray-800"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                      />
-                    </svg>
-                  </div>
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold">Deal Room</h3>
+                <div className="h-8 w-8 bg-blym-light-blue/30 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
                 </div>
-                <p className="text-xs text-gray-500">Based on market data and AI analysis</p>
               </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between">
-                    <p className="text-xs text-gray-500">Valuation Range</p>
-                    <p className="text-xs text-green-600 font-medium">High Confidence</p>
+              <p className="text-xs text-gray-500">Confidential • Encrypted</p>
+              <div className="space-y-2">
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
+                    <p className="text-xs text-gray-500">Documents</p>
+                    <p className="text-sm font-medium">14</p>
                   </div>
-                  <p className="text-xl font-semibold">R1.2M - R1.5M</p>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
-                      <p className="text-xs text-gray-500">Revenue</p>
-                      <p className="text-sm font-medium">R3.2M</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
-                      <p className="text-xs text-gray-500">EBITDA</p>
-                      <p className="text-sm font-medium">R780K</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
-                      <p className="text-xs text-gray-500">Multiple</p>
-                      <p className="text-sm font-medium">1.8x</p>
-                    </div>
+                  <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
+                    <p className="text-xs text-gray-500">Offers</p>
+                    <p className="text-sm font-medium">3</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-2 shadow-sm border border-gray-100">
+                    <p className="text-xs text-gray-500">Status</p>
+                    <p className="text-sm font-medium text-green-600">Active</p>
                   </div>
                 </div>
-                
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-500">Growth Trend</p>
-                  <div className="h-8 bg-gray-100 rounded-lg overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-lg"
-                      style={{ width: '65%' }}
-                    ></div>
-                  </div>
-                  <div className="flex justify-between text-xs text-gray-500">
-                    <span>1 Year</span>
-                    <span>3 Years</span>
-                    <span>5 Years</span>
-                  </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-gray-500">Deal Progress</p>
+                <div className="h-8 bg-gray-100 rounded-lg overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-lg" style={{ width: '65%' }}></div>
+                </div>
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Listed</span>
+                  <span>Due Diligence</span>
+                  <span>Closing</span>
                 </div>
               </div>
             </div>
@@ -422,10 +271,10 @@ const Index: React.FC = () => {
   return (
     <MainLayout>
       <Hero />
-      <FeatureSection {...sellFeature} />
-      <FeatureSection {...buyFeature} />
-      <FeatureSection {...financingFeature} />
-      <FeatureSection {...valuationFeature} />
+      <FeatureSection {...marketplaceFeature} />
+      <FeatureSection {...dueDiligenceFeature} />
+      <FeatureSection {...escrowFeature} />
+      <FeatureSection {...dealRoomFeature} />
       <SignUpForm />
     </MainLayout>
   );

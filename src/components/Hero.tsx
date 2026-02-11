@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
   return (
     <div
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-12 px-2"
     >
       {/* Background circles */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blym-soft-pink/20 blur-3xl"></div>
@@ -39,12 +39,12 @@ const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <div className="text-left space-y-6 animate-fade-in">
             <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/5 mb-4">
-              <span className="text-sm font-medium text-gray-900">Web3-Native M&A Marketplace</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-900">Web3-Native M&A Marketplace</span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
               Where Web3 Businesses <span className="text-balance bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">Change Hands</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-xl">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl">
               Buy or sell dApps, DeFi protocols, tokenized projects, and on-chain IP with crypto-native escrow, on-chain due diligence, and programmable settlement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">

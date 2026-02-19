@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThirdwebProvider } from "thirdweb/react";
 import { WalletProvider } from "@/contexts/WalletContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ChooseRole from "./pages/ChooseRole";
@@ -27,30 +29,52 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThirdwebProvider>
       <WalletProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/choose-role" element={<ChooseRole />} />
-              <Route path="/choose-listing-type" element={<ChooseListingType />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/seller-onboarding" element={<SellerOnboarding />} />
-              <Route path="/seller-dashboard" element={<SellerDashboard />} />
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/buyer-signup" element={<BuyerSignUp />} />
-              <Route path="/buyer-profile-setup" element={<BuyerProfileSetup />} />
-              <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-              <Route path="/confidential-access/:listingId" element={<ConfidentialAccessRequest />} />
-              <Route path="/deal-room/:listingId" element={<DealRoom />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/choose-role" element={<ChooseRole />} />
+                <Route path="/choose-listing-type" element={<ChooseListingType />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/seller-onboarding" element={<SellerOnboarding />} />
+                <Route path="/seller-dashboard" element={
+                  <ProtectedRoute requiredRole="seller">
+                    <SellerDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin-dashboard" element={
+                  <ProtectedRoute requiredRole="admin">
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/buyer-signup" element={<BuyerSignUp />} />
+                <Route path="/buyer-profile-setup" element={<BuyerProfileSetup />} />
+                <Route path="/buyer-dashboard" element={
+                  <ProtectedRoute requiredRole="buyer">
+                    <BuyerDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/confidential-access/:listingId" element={
+                  <ProtectedRoute>
+                    <ConfidentialAccessRequest />
+                  </ProtectedRoute>
+                } />
+                <Route path="/deal-room/:listingId" element={
+                  <ProtectedRoute>
+                    <DealRoom />
+                  </ProtectedRoute>
+                } />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </AuthProvider>
       </WalletProvider>
     </ThirdwebProvider>
   </QueryClientProvider>

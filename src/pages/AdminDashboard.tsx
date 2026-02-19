@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Eye, FileText, CheckCircle, XCircle, AlertTriangle, Edit, Save, X } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
-  // Mock data for demonstration
   const [submissions, setSubmissions] = useState([
     {
       id: 1,
@@ -19,64 +17,56 @@ const AdminDashboard: React.FC = () => {
       email: "john@example.com",
       listingType: "Premium",
       paymentStatus: "Paid",
-      businessName: "Downtown Coffee Shop",
-      category: "Hospitality",
-      revenue: "R45,000",
-      profit: "R12,000",
-      askingPrice: "R325,000",
+      protocolName: "LendFlow Protocol",
+      category: "DeFi",
+      protocolRevenue: "$85,000 USDC/mo",
+      tvl: "$2.5M",
+      askingPrice: "950,000 USDC",
       status: "Under Review",
-      uploadedDocs: ["revenue_proof.pdf", "lease_agreement.pdf"],
+      uploadedDocs: ["certik_audit.pdf", "tokenomics.pdf"],
       assignedAdmin: "Sarah Johnson",
       missingDocs: false
     },
     {
       id: 2,
       sellerName: "Maria Garcia",
-      email: "maria@techstartup.co.za",
+      email: "maria@nftmarket.xyz",
       listingType: "Standard",
       paymentStatus: "Free",
-      businessName: "TechFlow Solutions",
-      category: "Technology",
-      revenue: "R85,000",
-      profit: "R28,000",
-      askingPrice: "R650,000",
+      protocolName: "ArtVault NFT",
+      category: "NFT",
+      protocolRevenue: "$12,000 USDC/mo",
+      tvl: "$850K",
+      askingPrice: "1,500,000 USDC",
       status: "Draft",
-      uploadedDocs: ["cipc_certificate.pdf"],
+      uploadedDocs: ["smart_contract_source.zip"],
       assignedAdmin: null,
       missingDocs: true
     },
     {
       id: 3,
       sellerName: "David Wilson",
-      email: "david@retail.co.za",
+      email: "david@govdao.io",
       listingType: "Premium",
       paymentStatus: "Paid",
-      businessName: "Wilson's Pharmacy",
-      category: "Medical",
-      revenue: "R120,000",
-      profit: "R35,000",
-      askingPrice: "R950,000",
+      protocolName: "GovDAO Platform",
+      category: "Infrastructure",
+      protocolRevenue: "$45,000 USDC/mo",
+      tvl: "$1.2M",
+      askingPrice: "750,000 USDC",
       status: "Live",
-      uploadedDocs: ["revenue_proof.pdf", "cipc_certificate.pdf", "lease_agreement.pdf"],
+      uploadedDocs: ["trail_of_bits_audit.pdf", "governance_framework.pdf", "treasury_overview.pdf"],
       assignedAdmin: "Mike Chen",
       missingDocs: false
     }
   ]);
 
-  // Filter states
   const [listingTypeFilter, setListingTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
-
-  // Editing states
   const [editingFinancials, setEditingFinancials] = useState<number | null>(null);
-  const [editValues, setEditValues] = useState({
-    revenue: "",
-    profit: "",
-    askingPrice: ""
-  });
+  const [editValues, setEditValues] = useState({ protocolRevenue: "", tvl: "", askingPrice: "" });
 
-  // Filter submissions based on selected filters
   const filteredSubmissions = submissions.filter(submission => {
     return (
       (listingTypeFilter === "all" || submission.listingType === listingTypeFilter) &&
@@ -86,42 +76,23 @@ const AdminDashboard: React.FC = () => {
   });
 
   const handleStatusChange = (submissionId: number, newStatus: string) => {
-    setSubmissions(prev => 
-      prev.map(sub => 
-        sub.id === submissionId ? { ...sub, status: newStatus } : sub
-      )
-    );
+    setSubmissions(prev => prev.map(sub => sub.id === submissionId ? { ...sub, status: newStatus } : sub));
   };
 
   const startEditingFinancials = (submission: any) => {
     setEditingFinancials(submission.id);
-    setEditValues({
-      revenue: submission.revenue,
-      profit: submission.profit,
-      askingPrice: submission.askingPrice
-    });
+    setEditValues({ protocolRevenue: submission.protocolRevenue, tvl: submission.tvl, askingPrice: submission.askingPrice });
   };
 
   const saveFinancialChanges = (submissionId: number) => {
-    setSubmissions(prev => 
-      prev.map(sub => 
-        sub.id === submissionId 
-          ? { 
-              ...sub, 
-              revenue: editValues.revenue,
-              profit: editValues.profit,
-              askingPrice: editValues.askingPrice
-            } 
-          : sub
-      )
-    );
+    setSubmissions(prev => prev.map(sub =>
+      sub.id === submissionId ? { ...sub, protocolRevenue: editValues.protocolRevenue, tvl: editValues.tvl, askingPrice: editValues.askingPrice } : sub
+    ));
     setEditingFinancials(null);
-    setEditValues({ revenue: "", profit: "", askingPrice: "" });
   };
 
   const cancelEditingFinancials = () => {
     setEditingFinancials(null);
-    setEditValues({ revenue: "", profit: "", askingPrice: "" });
   };
 
   const getStatusBadgeColor = (status: string) => {
@@ -135,20 +106,15 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const categories = ["Franchise", "Retail", "Medical", "Wellness", "Logistics", "Technology", "Manufacturing", "Hospitality", "Education", "Consulting", "Other"];
+  const categories = ["DeFi", "NFT", "Infrastructure", "Gaming", "Social", "DAO", "Identity", "Other"];
 
   return (
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-              Admin Dashboard
-            </h1>
-            <p className="text-lg text-gray-600">
-              Manage and review all seller submissions
-            </p>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+            <p className="text-lg text-gray-600">Manage and review all dApp & protocol submissions</p>
           </div>
 
           {/* Filters */}
@@ -162,9 +128,7 @@ const AdminDashboard: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium mb-2">Listing Type</label>
                   <Select value={listingTypeFilter} onValueChange={setListingTypeFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="All Types" />
-                    </SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="All Types" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Types</SelectItem>
                       <SelectItem value="Standard">Standard</SelectItem>
@@ -172,13 +136,10 @@ const AdminDashboard: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium mb-2">Status</label>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="All Statuses" />
-                    </SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="All Statuses" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Statuses</SelectItem>
                       <SelectItem value="Draft">Draft</SelectItem>
@@ -189,13 +150,10 @@ const AdminDashboard: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium mb-2">Category</label>
                   <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="All Categories" />
-                    </SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="All Categories" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Categories</SelectItem>
                       {categories.map(category => (
@@ -211,10 +169,8 @@ const AdminDashboard: React.FC = () => {
           {/* Submissions Table */}
           <Card>
             <CardHeader>
-              <CardTitle>Seller Submissions Table</CardTitle>
-              <CardDescription>
-                {filteredSubmissions.length} submission(s) found
-              </CardDescription>
+              <CardTitle>Protocol Submissions</CardTitle>
+              <CardDescription>{filteredSubmissions.length} submission(s) found</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
@@ -222,8 +178,8 @@ const AdminDashboard: React.FC = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Seller Info</TableHead>
-                      <TableHead>Business Details</TableHead>
-                      <TableHead>Financials</TableHead>
+                      <TableHead>Protocol Details</TableHead>
+                      <TableHead>On-Chain Metrics</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Documents</TableHead>
                       <TableHead>Admin</TableHead>
@@ -237,177 +193,109 @@ const AdminDashboard: React.FC = () => {
                           <div className="space-y-1">
                             <div className="font-medium flex items-center gap-2">
                               {submission.sellerName}
-                              {submission.missingDocs && (
-                                <AlertTriangle className="w-4 h-4 text-orange-500" />
-                              )}
+                              {submission.missingDocs && <AlertTriangle className="w-4 h-4 text-orange-500" />}
                             </div>
                             <div className="text-sm text-gray-500">{submission.email}</div>
-                            <Badge variant={submission.listingType === "Premium" ? "default" : "secondary"}>
-                              {submission.listingType}
-                            </Badge>
+                            <Badge variant={submission.listingType === "Premium" ? "default" : "secondary"}>{submission.listingType}</Badge>
                             <div className="text-xs text-gray-500">{submission.paymentStatus}</div>
                           </div>
                         </TableCell>
-                        
                         <TableCell>
                           <div className="space-y-1">
-                            <div className="font-medium">{submission.businessName}</div>
+                            <div className="font-medium">{submission.protocolName}</div>
                             <div className="text-sm text-gray-500">{submission.category}</div>
                           </div>
                         </TableCell>
-                        
                         <TableCell>
                           {editingFinancials === submission.id ? (
                             <div className="space-y-2 min-w-[150px]">
                               <div className="flex items-center gap-1">
                                 <span className="text-xs text-gray-500 w-12">Rev:</span>
-                                <Input
-                                  value={editValues.revenue}
-                                  onChange={(e) => setEditValues(prev => ({ ...prev, revenue: e.target.value }))}
-                                  className="h-6 text-xs"
-                                />
+                                <Input value={editValues.protocolRevenue} onChange={(e) => setEditValues(prev => ({ ...prev, protocolRevenue: e.target.value }))} className="h-6 text-xs" />
                               </div>
                               <div className="flex items-center gap-1">
-                                <span className="text-xs text-gray-500 w-12">Profit:</span>
-                                <Input
-                                  value={editValues.profit}
-                                  onChange={(e) => setEditValues(prev => ({ ...prev, profit: e.target.value }))}
-                                  className="h-6 text-xs"
-                                />
+                                <span className="text-xs text-gray-500 w-12">TVL:</span>
+                                <Input value={editValues.tvl} onChange={(e) => setEditValues(prev => ({ ...prev, tvl: e.target.value }))} className="h-6 text-xs" />
                               </div>
                               <div className="flex items-center gap-1">
                                 <span className="text-xs text-gray-500 w-12">Price:</span>
-                                <Input
-                                  value={editValues.askingPrice}
-                                  onChange={(e) => setEditValues(prev => ({ ...prev, askingPrice: e.target.value }))}
-                                  className="h-6 text-xs"
-                                />
+                                <Input value={editValues.askingPrice} onChange={(e) => setEditValues(prev => ({ ...prev, askingPrice: e.target.value }))} className="h-6 text-xs" />
                               </div>
                               <div className="flex gap-1">
-                                <Button 
-                                  size="sm" 
-                                  onClick={() => saveFinancialChanges(submission.id)}
-                                  className="h-6 w-6 p-0 bg-green-600 hover:bg-green-700"
-                                >
+                                <Button size="sm" onClick={() => saveFinancialChanges(submission.id)} className="h-6 w-6 p-0 bg-green-600 hover:bg-green-700">
                                   <Save className="w-3 h-3" />
                                 </Button>
-                                <Button 
-                                  size="sm" 
-                                  variant="outline"
-                                  onClick={cancelEditingFinancials}
-                                  className="h-6 w-6 p-0"
-                                >
+                                <Button size="sm" variant="outline" onClick={cancelEditingFinancials} className="h-6 w-6 p-0">
                                   <X className="w-3 h-3" />
                                 </Button>
                               </div>
                             </div>
                           ) : (
                             <div className="space-y-1">
-                              <div className="text-sm">Revenue: {submission.revenue}</div>
-                              <div className="text-sm">Profit: {submission.profit}</div>
+                              <div className="text-sm">Revenue: {submission.protocolRevenue}</div>
+                              <div className="text-sm">TVL: {submission.tvl}</div>
                               <div className="font-medium text-green-600">{submission.askingPrice}</div>
-                              <Button 
-                                size="sm" 
-                                variant="ghost" 
-                                onClick={() => startEditingFinancials(submission)}
-                                className="h-6 w-6 p-0 mt-1"
-                              >
+                              <Button size="sm" variant="ghost" onClick={() => startEditingFinancials(submission)} className="h-6 w-6 p-0 mt-1">
                                 <Edit className="w-3 h-3" />
                               </Button>
                             </div>
                           )}
                         </TableCell>
-                        
                         <TableCell>
-                          <Badge className={`${getStatusBadgeColor(submission.status)} text-white`}>
-                            {submission.status}
-                          </Badge>
+                          <Badge className={`${getStatusBadgeColor(submission.status)} text-white`}>{submission.status}</Badge>
                         </TableCell>
-                        
                         <TableCell>
                           <div className="space-y-1">
                             {submission.uploadedDocs.map((doc, index) => (
                               <div key={index} className="flex items-center gap-1">
                                 <FileText className="w-3 h-3" />
-                                <button className="text-xs text-blue-600 hover:underline">
-                                  {doc}
-                                </button>
+                                <button className="text-xs text-blue-600 hover:underline">{doc}</button>
                               </div>
                             ))}
-                            {submission.uploadedDocs.length === 0 && (
-                              <span className="text-xs text-gray-400">No documents</span>
-                            )}
                           </div>
                         </TableCell>
-                        
                         <TableCell>
-                          <div className="text-sm">
-                            {submission.assignedAdmin || (
-                              <span className="text-gray-400">Unassigned</span>
-                            )}
-                          </div>
+                          <div className="text-sm">{submission.assignedAdmin || <span className="text-gray-400">Unassigned</span>}</div>
                         </TableCell>
-                        
                         <TableCell>
                           <div className="flex gap-1">
-                            <Button size="sm" variant="outline">
-                              <Eye className="w-3 h-3" />
-                            </Button>
-                            
+                            <Button size="sm" variant="outline"><Eye className="w-3 h-3" /></Button>
                             {submission.status === "Under Review" && (
                               <>
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <Button size="sm" variant="outline" className="text-green-600">
-                                      <CheckCircle className="w-3 h-3" />
-                                    </Button>
+                                    <Button size="sm" variant="outline" className="text-green-600"><CheckCircle className="w-3 h-3" /></Button>
                                   </AlertDialogTrigger>
                                   <AlertDialogContent>
                                     <AlertDialogHeader>
                                       <AlertDialogTitle>Approve Submission</AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        Are you sure you want to approve this business listing?
-                                      </AlertDialogDescription>
+                                      <AlertDialogDescription>Are you sure you want to approve this dApp listing?</AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                      <AlertDialogAction onClick={() => handleStatusChange(submission.id, "Approved")}>
-                                        Approve
-                                      </AlertDialogAction>
+                                      <AlertDialogAction onClick={() => handleStatusChange(submission.id, "Approved")}>Approve</AlertDialogAction>
                                     </AlertDialogFooter>
                                   </AlertDialogContent>
                                 </AlertDialog>
-
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <Button size="sm" variant="outline" className="text-red-600">
-                                      <XCircle className="w-3 h-3" />
-                                    </Button>
+                                    <Button size="sm" variant="outline" className="text-red-600"><XCircle className="w-3 h-3" /></Button>
                                   </AlertDialogTrigger>
                                   <AlertDialogContent>
                                     <AlertDialogHeader>
                                       <AlertDialogTitle>Reject Submission</AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        Are you sure you want to reject this business listing?
-                                      </AlertDialogDescription>
+                                      <AlertDialogDescription>Are you sure you want to reject this dApp listing?</AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                      <AlertDialogAction onClick={() => handleStatusChange(submission.id, "Rejected")}>
-                                        Reject
-                                      </AlertDialogAction>
+                                      <AlertDialogAction onClick={() => handleStatusChange(submission.id, "Rejected")}>Reject</AlertDialogAction>
                                     </AlertDialogFooter>
                                   </AlertDialogContent>
                                 </AlertDialog>
                               </>
                             )}
-                            
                             {submission.status === "Approved" && (
-                              <Button 
-                                size="sm" 
-                                className="bg-blue-600 text-white hover:bg-blue-700"
-                                onClick={() => handleStatusChange(submission.id, "Live")}
-                              >
+                              <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700" onClick={() => handleStatusChange(submission.id, "Live")}>
                                 Make Live
                               </Button>
                             )}
@@ -421,11 +309,8 @@ const AdminDashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Footer Note */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500">
-              Admin Dashboard • Manage submissions and review business listings
-            </p>
+            <p className="text-sm text-gray-500">Admin Dashboard • Manage dApp & protocol submissions</p>
           </div>
         </div>
       </div>

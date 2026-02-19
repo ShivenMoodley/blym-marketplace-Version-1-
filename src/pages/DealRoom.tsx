@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { ArrowLeft, Download, MessageCircle, FileText, TrendingUp, DollarSign, Users, Target, Send } from "lucide-react";
+import { ArrowLeft, Download, MessageCircle, FileText, TrendingUp, DollarSign, Users, Target, Send, Shield, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -39,43 +39,52 @@ const DealRoom: React.FC = () => {
     },
   });
 
-  // Mock data - in a real app, this would be fetched based on listingId and buyer access verification
+  // Mock Web3 protocol data
   const listing = {
     id: listingId || "1",
-    businessName: "TechFlow Marketing Agency",
-    category: "Professional Services",
-    monthlyRevenue: "$85,000",
-    monthlyProfit: "$22,000",
-    mrr: "$85,000",
-    askingPrice: "$950,000",
-    teamSize: 8,
-    location: "Austin, TX",
-    tags: ["SaaS Tools", "B2B Marketing", "Growing Revenue"],
-    about: "TechFlow is a full-service digital marketing agency specializing in B2B SaaS companies. We've built a reputation for driving consistent growth through data-driven marketing strategies, content creation, and lead generation campaigns. Our team of experts has helped over 150+ companies scale their marketing efforts.",
+    protocolName: "LendFlow Protocol",
+    category: "DeFi",
+    protocolRevenue: "$85,000 USDC/mo",
+    tvl: "$2.5M",
+    dau: "1,200",
+    mau: "8,500",
+    askingPrice: "950,000 USDC",
+    contributors: 8,
+    chains: ["Base", "Ethereum"],
+    tags: ["DeFi", "Lending", "Audited"],
+    about: "LendFlow is a decentralized lending protocol built on Base and Ethereum, enabling permissionless borrowing and lending of crypto assets. The protocol has been live for 18 months with audited smart contracts, a growing TVL, and consistent protocol revenue from origination fees.",
     sellingPoints: [
-      "Recurring revenue model with 95% client retention rate",
-      "Proprietary marketing automation tools and processes",
-      "Strong team with minimal owner dependency",
-      "Proven track record with measurable ROI for clients",
-      "Scalable business model ready for expansion"
+      "Recurring protocol revenue with 95% user retention rate",
+      "Audited smart contracts (CertiK & Trail of Bits)",
+      "Immutable governance with on-chain voting",
+      "Minimal admin key dependency — fully decentralized",
+      "Scalable to additional EVM chains"
     ],
-    reasonForSelling: "The founder is looking to pursue a larger venture and wants to ensure TechFlow continues to thrive under new ownership. This is a strategic exit, not a distressed sale.",
-    growthPotential: "Strong opportunity to expand into new markets, add complementary services, and scale the team. The marketing automation tools could be productized for additional revenue streams.",
-    buyerCriteria: "Looking for an experienced marketer or business operator who understands the SaaS ecosystem and can maintain the company culture while driving growth.",
+    reasonForSelling: "The founding team is pivoting to a new L2 infrastructure project and wants to ensure LendFlow continues to grow under aligned new ownership.",
+    growthPotential: "Strong opportunity to expand to Arbitrum and Optimism, add new lending markets, and launch a governance token for additional revenue streams.",
+    buyerCriteria: "Looking for experienced DeFi operators or funds who understand lending protocols and can maintain the protocol's security standards.",
     documents: [
-      { name: "Business Overview & Pitch Deck", type: "PDF", size: "2.1 MB" },
-      { name: "Financial Statements (12 months)", type: "PDF", size: "1.8 MB" },
-      { name: "Customer Analysis & Breakdown", type: "Excel", size: "890 KB" },
-      { name: "Marketing Metrics & KPIs", type: "PDF", size: "1.2 MB" },
-      { name: "Team Structure & Contracts", type: "PDF", size: "950 KB" },
-      { name: "Operational Processes", type: "PDF", size: "1.5 MB" }
-    ]
+      { name: "Smart Contract Audit Report (CertiK)", type: "PDF", size: "3.2 MB" },
+      { name: "Tokenomics & Vesting Schedule", type: "PDF", size: "1.1 MB" },
+      { name: "Protocol Revenue Dashboard", type: "PDF", size: "890 KB" },
+      { name: "On-Chain Analytics Summary", type: "PDF", size: "1.5 MB" },
+      { name: "Treasury & Multisig Wallet Overview", type: "PDF", size: "720 KB" },
+      { name: "Governance Framework", type: "PDF", size: "950 KB" }
+    ],
+    escrow: {
+      status: "Active",
+      squadsWallet: "0x7a3d...f92e",
+      depositedAmount: "50,000 USDC",
+      milestones: [
+        { name: "Due Diligence Deposit", amount: "50,000 USDC", status: "Completed" },
+        { name: "Smart Contract Transfer", amount: "450,000 USDC", status: "Pending" },
+        { name: "Final Settlement", amount: "450,000 USDC", status: "Pending" },
+      ]
+    }
   };
 
-  // Mock function to check if buyer has NDA access - in real app, this would be an API call
-  const hasNDAAccess = true; // Mock - buyer has accepted NDA
+  const hasNDAAccess = true;
 
-  // Redirect if no NDA access
   React.useEffect(() => {
     if (!hasNDAAccess) {
       navigate(`/confidential-access/${listingId}`);
@@ -84,63 +93,27 @@ const DealRoom: React.FC = () => {
 
   const handleSendMessage = () => {
     if (!message.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a message before sending.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Please enter a message before sending.", variant: "destructive" });
       return;
     }
-
-    // Mock API call to send message
     console.log(`Message sent to seller for listing ${listingId}:`, message);
-    
-    toast({
-      title: "Message Sent",
-      description: "Your message has been sent to the seller.",
-    });
-    
+    toast({ title: "Message Sent", description: "Your message has been sent to the seller." });
     setMessage("");
     setIsMessageDialogOpen(false);
   };
 
   const handleDownload = (documentName: string) => {
-    // Mock download functionality
     console.log(`Downloading: ${documentName}`);
-    toast({
-      title: "Download Started",
-      description: `Downloading ${documentName}...`,
-    });
+    toast({ title: "Download Started", description: `Downloading ${documentName}...` });
   };
 
   const onSubmitLOI = (values: LOIFormValues) => {
-    // Mock API call to save LOI
     console.log(`LOI submitted for listing ${listingId}:`, values);
-    
-    // In a real app, this would save to LOI_Submissions table
-    const loiData = {
-      listingId,
-      buyerId: "mock-buyer-id", // Would come from auth context
-      proposedValuation: values.proposedValuation,
-      dealStructure: values.dealStructure,
-      notesToSeller: values.notesToSeller,
-      submittedAt: new Date().toISOString(),
-    };
-    
-    console.log("Saving LOI to database:", loiData);
-    
-    toast({
-      title: "LOI Submitted",
-      description: "Your Letter of Intent has been sent to the seller.",
-    });
-    
-    // Reset form
+    toast({ title: "LOI Submitted", description: "Your Letter of Intent has been sent to the seller." });
     form.reset();
   };
 
-  if (!hasNDAAccess) {
-    return null; // Will redirect in useEffect
-  }
+  if (!hasNDAAccess) return null;
 
   return (
     <MainLayout>
@@ -148,32 +121,21 @@ const DealRoom: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/buyer-dashboard")}
-              className="mb-4 flex items-center gap-2"
-            >
+            <Button variant="ghost" onClick={() => navigate("/buyer-dashboard")} className="mb-4 flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
             </Button>
-            
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-gray-900">
-                {listing.businessName}
-              </h1>
-              <Badge variant="secondary" className="text-sm">
-                {listing.category}
-              </Badge>
+              <h1 className="text-3xl font-bold text-gray-900">{listing.protocolName}</h1>
+              <Badge variant="secondary" className="text-sm">{listing.category}</Badge>
             </div>
-            <p className="text-gray-600">
-              Complete business details and documentation
-            </p>
+            <p className="text-gray-600">Complete protocol details, on-chain metrics, and documentation</p>
           </div>
 
           {/* Overview Card */}
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle className="text-xl">Business Overview</CardTitle>
+              <CardTitle className="text-xl">Protocol Overview</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -181,15 +143,15 @@ const DealRoom: React.FC = () => {
                   <div className="flex items-center justify-center mb-2">
                     <TrendingUp className="h-5 w-5 text-green-600" />
                   </div>
-                  <div className="text-lg font-semibold">{listing.monthlyRevenue}</div>
-                  <div className="text-sm text-gray-600">Monthly Revenue</div>
+                  <div className="text-lg font-semibold">{listing.protocolRevenue}</div>
+                  <div className="text-sm text-gray-600">Protocol Revenue</div>
                 </div>
                 <div className="text-center">
                   <div className="flex items-center justify-center mb-2">
                     <DollarSign className="h-5 w-5 text-blue-600" />
                   </div>
-                  <div className="text-lg font-semibold">{listing.monthlyProfit}</div>
-                  <div className="text-sm text-gray-600">Monthly Profit</div>
+                  <div className="text-lg font-semibold">{listing.tvl}</div>
+                  <div className="text-sm text-gray-600">Total Value Locked</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-semibold text-purple-600">{listing.askingPrice}</div>
@@ -199,22 +161,20 @@ const DealRoom: React.FC = () => {
                   <div className="flex items-center justify-center mb-2">
                     <Users className="h-5 w-5 text-orange-600" />
                   </div>
-                  <div className="text-lg font-semibold">{listing.teamSize}</div>
-                  <div className="text-sm text-gray-600">Team Size</div>
+                  <div className="text-lg font-semibold">{listing.dau} / {listing.mau}</div>
+                  <div className="text-sm text-gray-600">DAU / MAU</div>
                 </div>
               </div>
-              
+
               <Separator className="my-4" />
-              
-              <div>
-                <h4 className="font-semibold mb-2">Industry Tags</h4>
-                <div className="flex flex-wrap gap-2">
-                  {listing.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
+
+              <div className="flex flex-wrap gap-2">
+                {listing.tags.map((tag, index) => (
+                  <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">{tag}</Badge>
+                ))}
+                {listing.chains.map((chain, index) => (
+                  <Badge key={`chain-${index}`} variant="secondary">{chain}</Badge>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -222,21 +182,15 @@ const DealRoom: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
-              {/* About the Business */}
               <Card>
-                <CardHeader>
-                  <CardTitle>About the Business</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>About the Protocol</CardTitle></CardHeader>
                 <CardContent>
                   <p className="text-gray-700 leading-relaxed">{listing.about}</p>
                 </CardContent>
               </Card>
 
-              {/* Unique Selling Points */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Unique Selling Points</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>Key Selling Points</CardTitle></CardHeader>
                 <CardContent>
                   <ul className="space-y-3">
                     {listing.sellingPoints.map((point, index) => (
@@ -249,33 +203,55 @@ const DealRoom: React.FC = () => {
                 </CardContent>
               </Card>
 
-              {/* Reason for Selling */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Reason for Selling</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>Reason for Selling</CardTitle></CardHeader>
                 <CardContent>
                   <p className="text-gray-700 leading-relaxed">{listing.reasonForSelling}</p>
                 </CardContent>
               </Card>
 
-              {/* Growth Potential */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Growth Potential</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>Growth Potential</CardTitle></CardHeader>
                 <CardContent>
                   <p className="text-gray-700 leading-relaxed">{listing.growthPotential}</p>
                 </CardContent>
               </Card>
 
-              {/* Preferred Buyer Criteria */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Preferred Buyer Criteria</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>Preferred Buyer Criteria</CardTitle></CardHeader>
                 <CardContent>
                   <p className="text-gray-700 leading-relaxed">{listing.buyerCriteria}</p>
+                </CardContent>
+              </Card>
+
+              {/* Escrow Status */}
+              <Card className="border-2 border-blue-200">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-blue-600" />
+                    Escrow Status (Squads Multisig)
+                  </CardTitle>
+                  <CardDescription>Funds held in admin-controlled Squads wallet</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2 mb-4 p-3 bg-blue-50 rounded-lg">
+                    <Wallet className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm font-mono">{listing.escrow.squadsWallet}</span>
+                    <Badge variant="secondary" className="ml-auto">{listing.escrow.status}</Badge>
+                  </div>
+                  <div className="space-y-3">
+                    {listing.escrow.milestones.map((milestone, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-medium text-sm">{milestone.name}</div>
+                          <div className="text-xs text-gray-500">{milestone.amount}</div>
+                        </div>
+                        <Badge variant={milestone.status === 'Completed' ? 'default' : 'secondary'}>
+                          {milestone.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -289,9 +265,7 @@ const DealRoom: React.FC = () => {
                     <FileText className="h-5 w-5" />
                     Documents
                   </CardTitle>
-                  <CardDescription>
-                    Download confidential business documents
-                  </CardDescription>
+                  <CardDescription>Download confidential protocol documents</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {listing.documents.map((doc, index) => (
@@ -300,12 +274,7 @@ const DealRoom: React.FC = () => {
                         <div className="font-medium text-sm">{doc.name}</div>
                         <div className="text-xs text-gray-500">{doc.type} • {doc.size}</div>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDownload(doc.name)}
-                        className="ml-2"
-                      >
+                      <Button size="sm" variant="outline" onClick={() => handleDownload(doc.name)} className="ml-2">
                         <Download className="h-4 w-4" />
                       </Button>
                     </div>
@@ -315,9 +284,7 @@ const DealRoom: React.FC = () => {
 
               {/* Actions */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Actions</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>Actions</CardTitle></CardHeader>
                 <CardContent className="space-y-3">
                   <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
                     <DialogTrigger asChild>
@@ -329,36 +296,17 @@ const DealRoom: React.FC = () => {
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Send Message to Seller</DialogTitle>
-                        <DialogDescription>
-                          Send a secure message to the business owner
-                        </DialogDescription>
+                        <DialogDescription>Send a secure message to the protocol owner</DialogDescription>
                       </DialogHeader>
                       <div className="space-y-4">
-                        <Textarea
-                          placeholder="Type your message here..."
-                          value={message}
-                          onChange={(e) => setMessage(e.target.value)}
-                          rows={4}
-                        />
+                        <Textarea placeholder="Type your message here..." value={message} onChange={(e) => setMessage(e.target.value)} rows={4} />
                         <div className="flex gap-2">
-                          <Button onClick={handleSendMessage} className="flex-1">
-                            Send Message
-                          </Button>
-                          <Button variant="outline" onClick={() => setIsMessageDialogOpen(false)}>
-                            Cancel
-                          </Button>
+                          <Button onClick={handleSendMessage} className="flex-1">Send Message</Button>
+                          <Button variant="outline" onClick={() => setIsMessageDialogOpen(false)}>Cancel</Button>
                         </div>
                       </div>
                     </DialogContent>
                   </Dialog>
-
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => onSubmitLOI}
-                  >
-                    Submit Letter of Intent
-                  </Button>
                 </CardContent>
               </Card>
 
@@ -369,9 +317,7 @@ const DealRoom: React.FC = () => {
                     <Send className="h-5 w-5" />
                     Submit Letter of Intent
                   </CardTitle>
-                  <CardDescription>
-                    Submit a formal offer for this business
-                  </CardDescription>
+                  <CardDescription>Submit a formal offer for this protocol</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Form {...form}>
@@ -381,11 +327,11 @@ const DealRoom: React.FC = () => {
                         name="proposedValuation"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Proposed Valuation ($)</FormLabel>
+                            <FormLabel>Proposed Valuation (USDC)</FormLabel>
                             <FormControl>
                               <input
                                 type="number"
-                                placeholder="Enter proposed valuation"
+                                placeholder="Enter proposed valuation in USDC"
                                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                 {...field}
                               />
@@ -394,7 +340,6 @@ const DealRoom: React.FC = () => {
                           </FormItem>
                         )}
                       />
-
                       <FormField
                         control={form.control}
                         name="dealStructure"
@@ -408,9 +353,10 @@ const DealRoom: React.FC = () => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="all-cash">All-Cash</SelectItem>
+                                <SelectItem value="stablecoin">Stablecoin (Full USDC)</SelectItem>
+                                <SelectItem value="token-swap">Token Swap</SelectItem>
+                                <SelectItem value="milestone-escrow">Milestone Escrow</SelectItem>
                                 <SelectItem value="earn-out">Earn-Out</SelectItem>
-                                <SelectItem value="equity-rollover">Equity Rollover</SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                               </SelectContent>
                             </Select>
@@ -418,7 +364,6 @@ const DealRoom: React.FC = () => {
                           </FormItem>
                         )}
                       />
-
                       <FormField
                         control={form.control}
                         name="notesToSeller"
@@ -426,17 +371,12 @@ const DealRoom: React.FC = () => {
                           <FormItem>
                             <FormLabel>Notes to Seller</FormLabel>
                             <FormControl>
-                              <Textarea
-                                placeholder="Share your thoughts, questions, or additional details about your offer..."
-                                rows={4}
-                                {...field}
-                              />
+                              <Textarea placeholder="Share your thoughts, questions, or additional details about your offer..." rows={4} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-
                       <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
                         <Send className="h-4 w-4 mr-2" />
                         Submit LOI

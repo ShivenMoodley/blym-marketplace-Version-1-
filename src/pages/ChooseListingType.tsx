@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
@@ -14,10 +13,10 @@ const ChooseListingType: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Choose Your Listing Plan
+              Choose Your dApp Listing Plan
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Select the plan that best fits your business sale goals. Both options include our core listing features with premium upgrades available.
+              Select the plan that best fits your dApp or protocol sale goals. Both options include our core listing features with premium upgrades available.
             </p>
           </div>
 
@@ -41,11 +40,11 @@ const ChooseListingType: React.FC = () => {
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-gray-700">Basic business listing</span>
+                    <span className="text-gray-700">Basic dApp listing</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-gray-700">Contact form for inquiries</span>
+                    <span className="text-gray-700">Inquiry form for buyers</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
@@ -80,12 +79,12 @@ const ChooseListingType: React.FC = () => {
                 <div className="w-12 h-12 bg-yellow-500 text-black rounded-full flex items-center justify-center mx-auto mb-4">
                   <Zap className="w-6 h-6" />
                 </div>
-                <CardTitle className="text-2xl font-bold text-white">Premium Listing</CardTitle>
+                <CardTitle className="text-2xl font-bold text-white">Premium dApp Listing</CardTitle>
                 <CardDescription className="text-gray-300 mb-4">
-                  Maximum exposure and priority support for serious sellers
+                  Maximum exposure and on-chain analytics for serious sellers
                 </CardDescription>
                 <div className="text-3xl font-bold text-white">
-                  $299
+                  $299 USDC
                   <span className="text-base font-normal text-gray-300 ml-2">one-time</span>
                 </div>
               </CardHeader>
@@ -93,7 +92,7 @@ const ChooseListingType: React.FC = () => {
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                    <span className="text-gray-100">Featured business listing</span>
+                    <span className="text-gray-100">Featured dApp listing</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
@@ -101,7 +100,7 @@ const ChooseListingType: React.FC = () => {
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
-                    <span className="text-gray-100">Enhanced listing with photos</span>
+                    <span className="text-gray-100">On-chain analytics dashboard</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0" />
@@ -118,7 +117,7 @@ const ChooseListingType: React.FC = () => {
                 </ul>
                 <Link to="/payment?plan=premium">
                   <Button className="w-full bg-yellow-500 text-black hover:bg-yellow-400 transition-smooth font-semibold">
-                    Get Premium Listing
+                    Get Premium dApp Listing
                   </Button>
                 </Link>
               </CardContent>
@@ -127,7 +126,7 @@ const ChooseListingType: React.FC = () => {
 
           <div className="text-center mt-12">
             <p className="text-gray-600">
-              Questions about our plans? 
+              Questions about our plans?
               <Link to="/" className="text-black font-medium hover:underline ml-1">
                 Contact our team
               </Link>

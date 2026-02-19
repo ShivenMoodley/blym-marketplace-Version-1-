@@ -1,20 +1,19 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, CreditCard, Lock } from "lucide-react";
+import { Check, CreditCard, Lock, Wallet } from "lucide-react";
 
 const Payment: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'basepay'>('stripe');
   const plan = searchParams.get("plan") || "premium";
 
   useEffect(() => {
-    // Redirect if not premium plan
     if (plan !== "premium") {
       navigate("/choose-listing-type");
     }
@@ -22,14 +21,9 @@ const Payment: React.FC = () => {
 
   const handlePayment = async () => {
     setIsProcessing(true);
-    
-    // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    console.log("Payment processed for premium plan");
+    console.log(`Payment processed via ${paymentMethod} for premium plan`);
     setIsProcessing(false);
-    
-    // Redirect to onboarding after successful payment
     navigate("/seller-onboarding?plan=premium&paid=true");
   };
 
@@ -39,13 +33,13 @@ const Payment: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <Badge className="bg-yellow-500 text-black font-semibold mb-4">
-              Premium Listing
+              Premium dApp Listing
             </Badge>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Complete Your Premium Listing
+              Complete Your Premium dApp Listing
             </h1>
             <p className="text-lg text-gray-600">
-              Secure payment processing powered by industry-leading encryption
+              Secure payment processing — pay with card or on-chain via Base Pay
             </p>
           </div>
 
@@ -54,27 +48,25 @@ const Payment: React.FC = () => {
             <Card className="border-2">
               <CardHeader>
                 <CardTitle className="text-xl font-bold">Order Summary</CardTitle>
-                <CardDescription>
-                  Review your premium listing details
-                </CardDescription>
+                <CardDescription>Review your premium dApp listing details</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-2 border-b">
-                    <span className="font-medium">Premium Business Listing</span>
-                    <span className="font-bold">$299.00</span>
+                    <span className="font-medium">Premium dApp Listing</span>
+                    <span className="font-bold">$299.00 USDC</span>
                   </div>
-                  
+
                   <div className="space-y-2 text-sm text-gray-600">
                     <h4 className="font-medium text-gray-900">Includes:</h4>
                     <ul className="space-y-1">
                       <li className="flex items-center">
                         <Check className="w-4 h-4 text-green-500 mr-2" />
-                        Featured listing placement
+                        Featured dApp listing placement
                       </li>
                       <li className="flex items-center">
                         <Check className="w-4 h-4 text-green-500 mr-2" />
-                        Enhanced photos & media
+                        On-chain analytics dashboard
                       </li>
                       <li className="flex items-center">
                         <Check className="w-4 h-4 text-green-500 mr-2" />
@@ -90,10 +82,10 @@ const Payment: React.FC = () => {
                       </li>
                     </ul>
                   </div>
-                  
+
                   <div className="flex justify-between items-center py-2 border-t font-bold text-lg">
                     <span>Total</span>
-                    <span>$299.00</span>
+                    <span>$299.00 USDC</span>
                   </div>
                 </div>
               </CardContent>
@@ -104,27 +96,41 @@ const Payment: React.FC = () => {
               <CardHeader>
                 <CardTitle className="text-xl font-bold flex items-center">
                   <CreditCard className="w-5 h-5 mr-2" />
-                  Payment Information
+                  Payment Method
                 </CardTitle>
                 <CardDescription>
-                  Your payment information is secure and encrypted
+                  Choose your preferred payment method
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {/* Payment Method Selection */}
-                  <div className="p-4 border rounded-lg bg-gray-50">
+                  <div
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${paymentMethod === 'stripe' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
+                    onClick={() => setPaymentMethod('stripe')}
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <CreditCard className="w-5 h-5 mr-2" />
-                        <span className="font-medium">Credit/Debit Card</span>
+                        <span className="font-medium">Credit/Debit Card (Stripe)</span>
                       </div>
-                      <div className="flex space-x-2">
-                        <img src="/placeholder.svg" alt="Visa" className="w-8 h-5" />
-                        <img src="/placeholder.svg" alt="Mastercard" className="w-8 h-5" />
-                        <img src="/placeholder.svg" alt="American Express" className="w-8 h-5" />
-                      </div>
+                      <div className={`w-4 h-4 rounded-full border-2 ${paymentMethod === 'stripe' ? 'bg-black border-black' : 'border-gray-300'}`} />
                     </div>
+                    <p className="text-sm text-gray-500 mt-1">Pay with Visa, Mastercard, or Amex</p>
+                  </div>
+
+                  <div
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${paymentMethod === 'basepay' ? 'border-blue-600 bg-blue-50' : 'border-gray-200'}`}
+                    onClick={() => setPaymentMethod('basepay')}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Wallet className="w-5 h-5 mr-2 text-blue-600" />
+                        <span className="font-medium">Base Pay (On-Chain USDC)</span>
+                      </div>
+                      <div className={`w-4 h-4 rounded-full border-2 ${paymentMethod === 'basepay' ? 'bg-blue-600 border-blue-600' : 'border-gray-300'}`} />
+                    </div>
+                    <p className="text-sm text-gray-500 mt-1">Pay directly with USDC on Base network</p>
                   </div>
 
                   {/* Security Notice */}
@@ -133,7 +139,9 @@ const Payment: React.FC = () => {
                     <div className="text-sm">
                       <p className="font-medium text-green-800">Secure Payment</p>
                       <p className="text-green-700">
-                        Your payment is processed securely through Stripe. We never store your payment information.
+                        {paymentMethod === 'stripe'
+                          ? 'Your payment is processed securely through Stripe. We never store your payment information.'
+                          : 'On-chain payments are verified on Base. Transaction is confirmed via smart contract.'}
                       </p>
                     </div>
                   </div>
@@ -142,15 +150,17 @@ const Payment: React.FC = () => {
                   <Button
                     onClick={handlePayment}
                     disabled={isProcessing}
-                    className="w-full bg-black text-white hover:bg-gray-900 transition-smooth py-3"
+                    className={`w-full py-3 transition-smooth ${paymentMethod === 'basepay' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-black text-white hover:bg-gray-900'}`}
                   >
                     {isProcessing ? (
                       <div className="flex items-center">
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         Processing Payment...
                       </div>
+                    ) : paymentMethod === 'basepay' ? (
+                      `Pay 299 USDC via Base Pay`
                     ) : (
-                      `Pay $299.00 - Complete Purchase`
+                      `Pay $299.00 — Complete Purchase`
                     )}
                   </Button>
 

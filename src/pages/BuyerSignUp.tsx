@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
@@ -6,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const BuyerSignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ const BuyerSignUp: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,22 +28,40 @@ const BuyerSignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match");
+      toast({
+        title: "Error",
+        description: "Passwords don't match",
+        variant: "destructive",
+      });
       return;
     }
-    
+
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log("Buyer sign up attempt:", formData);
-    setIsLoading(false);
-    
-    // Redirect to buyer profile setup
+
+    const { error } = await signUp(formData.email, formData.password, {
+      full_name: `${formData.firstName} ${formData.lastName}`,
+      user_type: 'buyer',
+    });
+
+    if (error) {
+      toast({
+        title: "Sign Up Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    toast({
+      title: "Account Created",
+      description: "Please check your email to verify your account.",
+    });
+
     navigate("/buyer-profile-setup");
+    setIsLoading(false);
   };
 
   return (
@@ -51,7 +72,7 @@ const BuyerSignUp: React.FC = () => {
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold">Join as a Buyer</CardTitle>
               <CardDescription>
-                Create your account to start discovering businesses for sale
+                Create your account to start discovering dApps & protocols for acquisition
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -84,7 +105,7 @@ const BuyerSignUp: React.FC = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -98,7 +119,7 @@ const BuyerSignUp: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -112,7 +133,7 @@ const BuyerSignUp: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
                   <Input
@@ -126,7 +147,7 @@ const BuyerSignUp: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -135,7 +156,7 @@ const BuyerSignUp: React.FC = () => {
                   {isLoading ? "Creating Account..." : "Create Buyer Account"}
                 </Button>
               </form>
-              
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}

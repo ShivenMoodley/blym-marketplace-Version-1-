@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
@@ -6,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const Login: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signIn } = useAuth();
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,15 +26,31 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log("Login attempt:", formData);
+
+    const { error, userType } = await signIn(formData.email, formData.password);
+
+    if (error) {
+      toast({
+        title: "Login Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    toast({ title: "Welcome back!", description: "Signed in successfully." });
+
+    // Role-based redirect
+    if (userType === 'seller') {
+      navigate("/seller-dashboard");
+    } else if (userType === 'buyer') {
+      navigate("/buyer-dashboard");
+    } else {
+      navigate("/choose-role");
+    }
+
     setIsLoading(false);
-    
-    // For demo purposes, redirect to seller dashboard
-    navigate("/seller-dashboard");
   };
 
   return (
@@ -60,7 +79,7 @@ const Login: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -74,7 +93,7 @@ const Login: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -83,7 +102,7 @@ const Login: React.FC = () => {
                   {isLoading ? "Signing In..." : "Sign In"}
                 </Button>
               </form>
-              
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   Don't have an account?{" "}

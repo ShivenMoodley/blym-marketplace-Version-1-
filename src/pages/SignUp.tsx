@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
@@ -6,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ const SignUp: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,22 +28,39 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match");
+      toast({
+        title: "Error",
+        description: "Passwords don't match",
+        variant: "destructive",
+      });
       return;
     }
-    
+
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log("Sign up attempt:", formData);
-    setIsLoading(false);
-    
-    // For demo purposes, redirect to choose role
+
+    const { error } = await signUp(formData.email, formData.password, {
+      full_name: `${formData.firstName} ${formData.lastName}`,
+    });
+
+    if (error) {
+      toast({
+        title: "Sign Up Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    toast({
+      title: "Account Created",
+      description: "Please check your email to verify your account, then choose your role.",
+    });
+
     navigate("/choose-role");
+    setIsLoading(false);
   };
 
   return (
@@ -51,7 +71,7 @@ const SignUp: React.FC = () => {
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
               <CardDescription>
-                Join Blym to start buying or selling businesses
+                Join Blym to start buying or selling dApps & protocols
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -84,7 +104,7 @@ const SignUp: React.FC = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -98,7 +118,7 @@ const SignUp: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -112,7 +132,7 @@ const SignUp: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
                   <Input
@@ -126,7 +146,7 @@ const SignUp: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -135,7 +155,7 @@ const SignUp: React.FC = () => {
                   {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
               </form>
-              
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
@@ -56,18 +55,14 @@ const BuyerProfileSetup: React.FC = () => {
   const handleMultiSelectChange = (name: keyof FormData, value: string, checked: boolean) => {
     setFormData(prev => ({
       ...prev,
-      [name]: checked 
+      [name]: checked
         ? [...(prev[name] as string[]), value]
         : (prev[name] as string[]).filter(item => item !== value)
     }));
   };
 
   const handleBudgetChange = (values: number[]) => {
-    setFormData(prev => ({
-      ...prev,
-      budgetMin: values[0],
-      budgetMax: values[1]
-    }));
+    setFormData(prev => ({ ...prev, budgetMin: values[0], budgetMax: values[1] }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,77 +74,45 @@ const BuyerProfileSetup: React.FC = () => {
     const requiredFields = ['fullName', 'buyerType', 'revenueRange', 'dealType'];
     for (const field of requiredFields) {
       if (!formData[field as keyof FormData]) {
-        toast({
-          title: "Validation Error",
-          description: `Please fill in all required fields.`,
-          variant: "destructive",
-        });
+        toast({ title: "Validation Error", description: "Please fill in all required fields.", variant: "destructive" });
         return false;
       }
     }
-    
     if (formData.industriesOfInterest.length === 0) {
-      toast({
-        title: "Validation Error",
-        description: "Please select at least one industry of interest.",
-        variant: "destructive",
-      });
+      toast({ title: "Validation Error", description: "Please select at least one category of interest.", variant: "destructive" });
       return false;
     }
-
     if (formData.preferredBusinessModels.length === 0) {
-      toast({
-        title: "Validation Error",
-        description: "Please select at least one preferred business model.",
-        variant: "destructive",
-      });
+      toast({ title: "Validation Error", description: "Please select at least one preferred protocol model.", variant: "destructive" });
       return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+    if (!validateForm()) return;
     setIsLoading(true);
-    
     try {
-      // Simulate API call to store buyer profile
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
       console.log("Buyer profile data:", formData);
-      
-      toast({
-        title: "Profile Created Successfully",
-        description: "Your buyer profile has been set up. Welcome to the platform!",
-      });
-      
-      // Redirect to buyer dashboard
+      toast({ title: "Profile Created Successfully", description: "Your buyer profile has been set up. Welcome to the platform!" });
       navigate("/buyer-dashboard");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to create profile. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to create profile. Please try again.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
   };
 
   const industries = [
-    "SaaS", "eCommerce", "Services", "Brick & Mortar", "Healthcare", 
-    "Education", "Manufacturing", "Real Estate", "Other"
+    "DeFi", "NFT", "Gaming", "Infrastructure", "Social",
+    "DAO", "Identity", "L2/Rollup", "Other"
   ];
 
   const businessModels = [
-    "Subscription", "One-Time", "Agency", "Marketplace", "SaaS", 
-    "E-commerce", "Consulting", "Franchise", "Other"
+    "DeFi Protocol", "NFT Marketplace", "SaaS dApp", "Infrastructure",
+    "Gaming/GameFi", "Social Protocol", "DAO Tooling", "Other"
   ];
 
   return (
@@ -160,104 +123,77 @@ const BuyerProfileSetup: React.FC = () => {
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold">Buyer Profile Setup</CardTitle>
               <CardDescription>
-                Complete your profile to help us match you with the perfect business opportunities
+                Complete your profile to help us match you with the perfect dApp & protocol opportunities
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Full Name */}
                 <div>
                   <Label htmlFor="fullName">Full Name *</Label>
-                  <Input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    placeholder="John Smith"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    required
-                    className="mt-1"
-                  />
+                  <Input id="fullName" name="fullName" type="text" placeholder="John Smith" value={formData.fullName} onChange={handleInputChange} required className="mt-1" />
                 </div>
 
-                {/* Buyer Type */}
                 <div>
                   <Label htmlFor="buyerType">Role / Buyer Type *</Label>
                   <Select onValueChange={(value) => handleSelectChange("buyerType", value)}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select your buyer type" />
-                    </SelectTrigger>
+                    <SelectTrigger className="mt-1"><SelectValue placeholder="Select your buyer type" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="individual">Individual</SelectItem>
-                      <SelectItem value="investor">Investor</SelectItem>
-                      <SelectItem value="private-equity">Private Equity</SelectItem>
+                      <SelectItem value="investor">Crypto Fund / Investor</SelectItem>
+                      <SelectItem value="dao">DAO</SelectItem>
                       <SelectItem value="corporate-acquirer">Corporate Acquirer</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Industries of Interest */}
                 <div>
-                  <Label className="text-base font-medium">Industries of Interest *</Label>
+                  <Label className="text-base font-medium">Categories of Interest *</Label>
                   <div className="grid grid-cols-2 gap-3 mt-2">
                     {industries.map((industry) => (
                       <div key={industry} className="flex items-center space-x-2">
                         <Checkbox
                           id={`industry-${industry}`}
                           checked={formData.industriesOfInterest.includes(industry)}
-                          onCheckedChange={(checked) => 
-                            handleMultiSelectChange("industriesOfInterest", industry, checked as boolean)
-                          }
+                          onCheckedChange={(checked) => handleMultiSelectChange("industriesOfInterest", industry, checked as boolean)}
                         />
-                        <Label htmlFor={`industry-${industry}`} className="text-sm">
-                          {industry}
-                        </Label>
+                        <Label htmlFor={`industry-${industry}`} className="text-sm">{industry}</Label>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Preferred Business Models */}
                 <div>
-                  <Label className="text-base font-medium">Preferred Business Models *</Label>
+                  <Label className="text-base font-medium">Preferred Protocol Models *</Label>
                   <div className="grid grid-cols-2 gap-3 mt-2">
                     {businessModels.map((model) => (
                       <div key={model} className="flex items-center space-x-2">
                         <Checkbox
                           id={`model-${model}`}
                           checked={formData.preferredBusinessModels.includes(model)}
-                          onCheckedChange={(checked) => 
-                            handleMultiSelectChange("preferredBusinessModels", model, checked as boolean)
-                          }
+                          onCheckedChange={(checked) => handleMultiSelectChange("preferredBusinessModels", model, checked as boolean)}
                         />
-                        <Label htmlFor={`model-${model}`} className="text-sm">
-                          {model}
-                        </Label>
+                        <Label htmlFor={`model-${model}`} className="text-sm">{model}</Label>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Revenue Range */}
                 <div>
-                  <Label htmlFor="revenueRange">Revenue Range of Target Businesses *</Label>
+                  <Label htmlFor="revenueRange">Protocol Revenue Range *</Label>
                   <Select onValueChange={(value) => handleSelectChange("revenueRange", value)}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select revenue range" />
-                    </SelectTrigger>
+                    <SelectTrigger className="mt-1"><SelectValue placeholder="Select revenue range" /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="R20K-R100K">R20K – R100K</SelectItem>
-                      <SelectItem value="R100K-R500K">R100K – R500K</SelectItem>
-                      <SelectItem value="R500K-R1M">R500K – R1M</SelectItem>
-                      <SelectItem value="R1M-R5M">R1M – R5M</SelectItem>
-                      <SelectItem value="R5M+">R5M+</SelectItem>
+                      <SelectItem value="$0-$10K USDC/mo">$0 – $10K USDC/mo</SelectItem>
+                      <SelectItem value="$10K-$50K USDC/mo">$10K – $50K USDC/mo</SelectItem>
+                      <SelectItem value="$50K-$200K USDC/mo">$50K – $200K USDC/mo</SelectItem>
+                      <SelectItem value="$200K-$1M USDC/mo">$200K – $1M USDC/mo</SelectItem>
+                      <SelectItem value="$1M+ USDC/mo">$1M+ USDC/mo</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Budget / Investment Size */}
                 <div>
-                  <Label className="text-base font-medium">Budget / Investment Size</Label>
+                  <Label className="text-base font-medium">Budget / Investment Size (USDC)</Label>
                   <div className="mt-2 px-3">
                     <Slider
                       min={10000}
@@ -268,76 +204,58 @@ const BuyerProfileSetup: React.FC = () => {
                       className="w-full"
                     />
                     <div className="flex justify-between text-sm text-gray-600 mt-2">
-                      <span>R{formData.budgetMin.toLocaleString()}</span>
-                      <span>R{formData.budgetMax.toLocaleString()}</span>
+                      <span>${formData.budgetMin.toLocaleString()} USDC</span>
+                      <span>${formData.budgetMax.toLocaleString()} USDC</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Geographic Preference */}
                 <div>
-                  <Label htmlFor="geographicPreference">Geographic Preference</Label>
+                  <Label htmlFor="geographicPreference">Chain / Ecosystem Preference</Label>
                   <Input
                     id="geographicPreference"
                     name="geographicPreference"
                     type="text"
-                    placeholder="e.g., Cape Town, Johannesburg, National, International"
+                    placeholder="e.g., Base, Ethereum, Solana, Multi-chain"
                     value={formData.geographicPreference}
                     onChange={handleInputChange}
                     className="mt-1"
                   />
                 </div>
 
-                {/* Deal Type */}
                 <div>
                   <Label htmlFor="dealType">Deal Type *</Label>
                   <Select onValueChange={(value) => handleSelectChange("dealType", value)}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select deal type preference" />
-                    </SelectTrigger>
+                    <SelectTrigger className="mt-1"><SelectValue placeholder="Select deal type preference" /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="asset-sale">Asset Sale</SelectItem>
-                      <SelectItem value="equity-sale">Equity Sale</SelectItem>
-                      <SelectItem value="both">Both</SelectItem>
+                      <SelectItem value="stablecoin">Stablecoin (Full USDC)</SelectItem>
+                      <SelectItem value="token-swap">Token Swap</SelectItem>
+                      <SelectItem value="milestone-escrow">Milestone Escrow</SelectItem>
+                      <SelectItem value="both">Flexible</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* LinkedIn Profile */}
                 <div>
-                  <Label htmlFor="linkedinProfile">LinkedIn Profile or Website (Optional)</Label>
+                  <Label htmlFor="linkedinProfile">Twitter / Website (Optional)</Label>
                   <Input
                     id="linkedinProfile"
                     name="linkedinProfile"
                     type="url"
-                    placeholder="https://linkedin.com/in/yourprofile"
+                    placeholder="https://twitter.com/yourprofile"
                     value={formData.linkedinProfile}
                     onChange={handleInputChange}
                     className="mt-1"
                   />
                 </div>
 
-                {/* Proof of Funds Upload */}
                 <div>
                   <Label htmlFor="proofOfFunds">Upload Proof of Funds (Optional)</Label>
-                  <Input
-                    id="proofOfFunds"
-                    name="proofOfFunds"
-                    type="file"
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                    onChange={handleFileChange}
-                    className="mt-1"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)
-                  </p>
+                  <Input id="proofOfFunds" name="proofOfFunds" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onChange={handleFileChange} className="mt-1" />
+                  <p className="text-xs text-gray-500 mt-1">Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)</p>
                 </div>
 
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-smooth"
-                >
+                <Button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-smooth">
                   {isLoading ? "Setting up profile..." : "Complete Profile Setup"}
                 </Button>
               </form>
